@@ -7,7 +7,7 @@
   <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
   <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/tdt?useSSL=false</property>
   <property name="hibernate.connection.username">root</property>
-  <property name="hibernate.connection.password">admin</property> 
+  <property name="hibernate.connection.password">root</property> 
   <property name="hibernate.current_session_context_class">thread</property>
   <property name="hibernate.show_sql">true</property>
 
@@ -19,5 +19,9 @@
   
   <mapping class="com.efe13.tdt.model.entity.State"/>
   <mapping class="com.efe13.tdt.model.entity.Population"/>
+  <mapping class="com.efe13.tdt.model.entity.ChannelBand"/>
+  <mapping class="com.efe13.tdt.model.entity.Concessionaire"/>
+  <mapping class="com.efe13.tdt.model.entity.ConcessionType"/>
+  <mapping class="com.efe13.tdt.model.entity.Channel"/>
  </session-factory>
 </hibernate-configuration>
