@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.efe13.mvc.model.api.impl.dto.DTOAPI;
+import com.efe13.mvc.service.api.impl.ServiceAPI;
 import com.efe13.tdt.model.dto.StateDTO;
 import com.efe13.tdt.service.StateService;
-import com.efe13.tdt.service.impl.StateServiceImpl;
 
 /**
  * @author Emmanuel
@@ -18,20 +18,20 @@ import com.efe13.tdt.service.impl.StateServiceImpl;
  */
 @RestController
 @RequestMapping( "/state" )
-public class EstadoController {
+public class StateController {
 	
-	private final static StateService stateService = new StateServiceImpl();
+	private final static ServiceAPI service = new StateService();
 	
 	@RequestMapping( value="/", method=RequestMethod.GET )
 	public List<DTOAPI> getStates() {
-		return stateService.getAll();
+		return service.getAll();
 	}
 	
 	@RequestMapping( value="/{id}", method=RequestMethod.GET )
-	public StateDTO getState( @PathVariable("id") short stateId ) {
+	public DTOAPI getState( @PathVariable("id") short stateId ) {
 		StateDTO state = new StateDTO();
-		state.setStateId( stateId );
+		state.setId( stateId );
 		
-		return stateService.getById( state );
+		return service.getById( state );
 	}
 }
