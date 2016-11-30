@@ -1,10 +1,16 @@
 package com.efe13.tdt.model.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.efe13.mvc.model.api.impl.entity.EntityAPI;
@@ -23,6 +29,9 @@ public class State extends EntityAPI {
 	
 	@Column( name="shortName" )
 	private String shortName;
+	
+	@OneToMany( cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="state" )
+	private Set<Population> populations = new HashSet<>();
 	
 	@Override
 	public Short getId() {
@@ -48,4 +57,13 @@ public class State extends EntityAPI {
 	public void setShortName(String shortName) {
 		this.shortName = shortName;
 	}
+
+	public Set<Population> getPopulations() {
+		return populations;
+	}
+
+	public void setPopulations(Set<Population> populations) {
+		this.populations = populations;
+	}
+	
 }

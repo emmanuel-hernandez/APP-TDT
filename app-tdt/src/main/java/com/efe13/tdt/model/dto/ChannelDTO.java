@@ -1,6 +1,7 @@
 package com.efe13.tdt.model.dto;
 
 import com.efe13.mvc.model.api.impl.dto.DTOAPI;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public class ChannelDTO extends DTOAPI {
 
@@ -14,10 +15,18 @@ public class ChannelDTO extends DTOAPI {
 	private String longitude;
 	private String effectiveDateStart;
 	private String effectiveDateEnd;
-	private short channelBandId;
-	private short populationId;
-	private short concessionaireId;
-	private short concessionTypeId;
+	
+	@JsonIgnoreProperties("channels")
+	private ChannelBandDTO channelBand;
+	
+	@JsonIgnoreProperties("channels")
+	private PopulationDTO population;
+	
+	@JsonIgnoreProperties("channels")
+	private ConcessionaireDTO concessionaire;
+	
+	@JsonIgnoreProperties("channels")
+	private ConcessionTypeDTO concessionType;
 	private boolean active;
 
 	public Short getId() {
@@ -100,36 +109,36 @@ public class ChannelDTO extends DTOAPI {
 		this.effectiveDateEnd = efectiveDateEnd;
 	}
 
-	public short getChannelBandId() {
-		return channelBandId;
+	public ChannelBandDTO getChannelBand() {
+		return channelBand;
 	}
 
-	public void setChannelBandId(short channelBandId) {
-		this.channelBandId = channelBandId;
+	public void setChannelBand(ChannelBandDTO channelBand) {
+		this.channelBand = channelBand;
 	}
 
-	public short getPopulationId() {
-		return populationId;
+	public PopulationDTO getPopulation() {
+		return population;
 	}
 
-	public void setPopulationId(short populationId) {
-		this.populationId = populationId;
+	public void setPopulation(PopulationDTO population) {
+		this.population = population;
 	}
 
-	public short getConcessionaireId() {
-		return concessionaireId;
+	public ConcessionaireDTO getConcessionaire() {
+		return concessionaire;
 	}
 
-	public void setConcessionaireId(short concessionaireId) {
-		this.concessionaireId = concessionaireId;
+	public void setConcessionaire(ConcessionaireDTO concessionaire) {
+		this.concessionaire = concessionaire;
 	}
 
-	public short getConcessionTypeId() {
-		return concessionTypeId;
+	public ConcessionTypeDTO getConcessionType() {
+		return concessionType;
 	}
 
-	public void setConcessionTypeId(short concessionTypeId) {
-		this.concessionTypeId = concessionTypeId;
+	public void setConcessionType(ConcessionTypeDTO concessionType) {
+		this.concessionType = concessionType;
 	}
 
 	public boolean getActive() {

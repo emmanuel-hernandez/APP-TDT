@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS channelBand(
 CREATE TABLE IF NOT EXISTS channel(
 	channelId SMALLINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	distinctive VARCHAR(8) NOT NULL,
+	name VARCHAR(50) NOT NULL,
 	virtualChannel TINYINT NOT NULL,
 	physicChannel TINYINT NOT NULL,
 	power SMALLINT NOT NULL,
@@ -57,5 +58,7 @@ CREATE TABLE IF NOT EXISTS channel(
 	FOREIGN KEY (concessionaireId) REFERENCES concessionaire(concessionaireId),
 	FOREIGN KEY (concessionTypeId) REFERENCES concessionType(concessionTypeId)
 );
+
+
 
 

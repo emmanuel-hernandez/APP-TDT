@@ -30,7 +30,7 @@ public class PopulationController {
 	}
 	
 	@RequestMapping( value="/{id}", method=RequestMethod.GET )
-	public DTOAPI getPopultation( @PathVariable("id") short populationId ) {
+	public DTOAPI getPopultation( @PathVariable("id") int populationId ) {
 		PopulationDTO population = new PopulationDTO();
 		population.setId( populationId );
 		

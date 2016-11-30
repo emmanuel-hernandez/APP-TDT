@@ -1,10 +1,14 @@
 package com.efe13.tdt.model.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.efe13.mvc.model.api.impl.entity.EntityAPI;
@@ -45,17 +49,21 @@ public class Channel extends EntityAPI {
 	@Column( name="effectiveDateEnd" )
 	private String effectiveDateEnd;
 	
-	@Column( name="channelBandId" )
-	private short channelBandId;
+	@ManyToOne( fetch=FetchType.LAZY, cascade=CascadeType.ALL )
+	@JoinColumn( name="channelBandId" )
+	private ChannelBand channelBand;
 	
-	@Column( name="populationId" )
-	private short populationId;
+	@ManyToOne( fetch=FetchType.LAZY, cascade=CascadeType.ALL )
+	@JoinColumn( name="populationId" )
+	private Population population;
 	
-	@Column( name="concessionaireId" )
-	private short concessionaireId;
+	@ManyToOne( fetch=FetchType.LAZY, cascade=CascadeType.ALL )
+	@JoinColumn( name="concessionaireId" )
+	private Concessionaire concessionaire;
 	
-	@Column( name="concessionTypeId" )
-	private short concessionTypeId;
+	@ManyToOne( fetch=FetchType.LAZY, cascade=CascadeType.ALL )
+	@JoinColumn( name="concessionTypeId" )
+	private ConcessionType concessionType;
 	
 	@Column( name="active" )
 	private boolean active;
@@ -141,36 +149,36 @@ public class Channel extends EntityAPI {
 		this.effectiveDateEnd = efectiveDateEnd;
 	}
 
-	public short getChannelBandId() {
-		return channelBandId;
+	public ChannelBand getChannelBand() {
+		return channelBand;
 	}
 
-	public void setChannelBandId(short channelBandId) {
-		this.channelBandId = channelBandId;
+	public void setChannelBand(ChannelBand channelBandId) {
+		this.channelBand = channelBandId;
 	}
 
-	public short getPopulationId() {
-		return populationId;
+	public Population getPopulation() {
+		return population;
 	}
 
-	public void setPopulationId(short populationId) {
-		this.populationId = populationId;
+	public void setPopulation(Population populationId) {
+		this.population = populationId;
 	}
 
-	public short getConcessionaireId() {
-		return concessionaireId;
+	public Concessionaire getConcessionaire() {
+		return concessionaire;
 	}
 
-	public void setConcessionaireId(short concessionaireId) {
-		this.concessionaireId = concessionaireId;
+	public void setConcessionaire(Concessionaire concessionaireId) {
+		this.concessionaire = concessionaireId;
 	}
 
-	public short getConcessionTypeId() {
-		return concessionTypeId;
+	public ConcessionType getConcessionType() {
+		return concessionType;
 	}
 
-	public void setConcessionTypeId(short concessionTypeId) {
-		this.concessionTypeId = concessionTypeId;
+	public void setConcessionType(ConcessionType concessionTypeId) {
+		this.concessionType = concessionTypeId;
 	}
 
 	public boolean getActive() {

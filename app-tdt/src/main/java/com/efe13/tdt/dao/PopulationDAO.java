@@ -7,7 +7,6 @@ import com.efe13.mvc.commons.api.exception.DAOException;
 import com.efe13.mvc.dao.api.impl.DAOAPI;
 import com.efe13.mvc.model.api.impl.entity.EntityAPI;
 import com.efe13.tdt.model.entity.Population;
-import com.efe13.tdt.model.entity.State;
 
 public class PopulationDAO extends DAOAPI<Population> {
 
