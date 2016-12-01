@@ -12,12 +12,14 @@ public class ConcessionaireDTO extends DTOAPI {
 	private boolean active;
 	private Set<ChannelDTO> channels = new HashSet<>();
 	
+	@Override
 	public Short getId() {
 		return id;
 	}
 	
-	public void setId(short id) {
-		this.id = id;
+	@Override
+	public void setId(Number id) {
+		this.id = (short) id;
 	}
 	
 	public String getName() {
@@ -28,11 +30,13 @@ public class ConcessionaireDTO extends DTOAPI {
 		this.name = name;
 	}
 	
-	public boolean getActive() {
+	@Override
+	public Boolean isActive() {
 		return active;
 	}
-	
-	public void setActive(boolean active) {
+
+	@Override
+	public void setActive(Boolean active) {
 		this.active = active;
 	}
 

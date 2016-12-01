@@ -24,7 +24,7 @@ public class Population extends EntityAPI {
 	@Id
 	@Column( name="populationId" )
 	@GeneratedValue( strategy=GenerationType.AUTO )
-	private int id;
+	private short id;
 	
 	@Column( name="name" )
 	private String name;
@@ -40,12 +40,13 @@ public class Population extends EntityAPI {
 	private Set<Channel> channels = new HashSet<>();
 	
 	@Override
-	public Integer getId() {
+	public Short getId() {
 		return id;
 	}
 	
-	public void setId(Integer id) {
-		this.id = id;
+	@Override
+	public void setId(Number id) {
+		this.id = (short) id;
 	}
 	
 	public String getName() {
@@ -56,11 +57,13 @@ public class Population extends EntityAPI {
 		this.name = name;
 	}
 	
-	public boolean getActive() {
+	@Override
+	public Boolean isActive() {
 		return active;
 	}
 	
-	public void setActive(boolean active) {
+	@Override
+	public void setActive(Boolean active) {
 		this.active = active;
 	}
 
@@ -79,5 +82,4 @@ public class Population extends EntityAPI {
 	public void setChannels(Set<Channel> channels) {
 		this.channels = channels;
 	}
-	
 }

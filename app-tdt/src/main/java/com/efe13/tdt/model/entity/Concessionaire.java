@@ -38,8 +38,9 @@ public class Concessionaire extends EntityAPI {
 		return id;
 	}
 	
-	public void setId(short id) {
-		this.id = id;
+	@Override
+	public void setId(Number id) {
+		this.id = (short) id;
 	}
 	
 	public String getName() {
@@ -50,11 +51,13 @@ public class Concessionaire extends EntityAPI {
 		this.name = name;
 	}
 	
-	public boolean getActive() {
+	@Override
+	public Boolean isActive() {
 		return active;
 	}
 	
-	public void setActive(boolean active) {
+	@Override
+	public void setActive(Boolean active) {
 		this.active = active;
 	}
 
@@ -65,5 +68,4 @@ public class Concessionaire extends EntityAPI {
 	public void setChannels(Set<Channel> channels) {
 		this.channels = channels;
 	}
-	
 }

@@ -4,7 +4,7 @@ import com.efe13.mvc.model.api.impl.dto.DTOAPI;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public class ChannelDTO extends DTOAPI {
-
+	
 	private short id;
 	private String distinctive;
 	private short virtualChannel;
@@ -29,12 +29,14 @@ public class ChannelDTO extends DTOAPI {
 	private ConcessionTypeDTO concessionType;
 	private boolean active;
 
+	@Override
 	public Short getId() {
 		return id;
 	}
 	
-	public void setId(short id) {
-		this.id = id;
+	@Override
+	public void setId(Number id) {
+		this.id = (short) id;
 	}
 	
 	public String getDistinctive() {
@@ -141,11 +143,13 @@ public class ChannelDTO extends DTOAPI {
 		this.concessionType = concessionType;
 	}
 
-	public boolean getActive() {
+	@Override
+	public Boolean isActive() {
 		return active;
 	}
-	
-	public void setActive(boolean active) {
+
+	@Override
+	public void setActive(Boolean active) {
 		this.active = active;
 	}
 }

@@ -9,15 +9,18 @@ public class StateDTO extends DTOAPI {
 	
 	private short id;
 	private String name;
-	private String shortName;	
+	private String shortName;
+	private boolean active;
 	private Set<PopulationDTO> populations = new HashSet<>();
 
-	public short getId() {
+	@Override
+	public Short getId() {
 		return id;
 	}
 
-	public void setId(short id) {
-		this.id = id;
+	@Override
+	public void setId(Number id) {
+		this.id = (short) id;
 	}
 
 	public String getName() {
@@ -44,4 +47,13 @@ public class StateDTO extends DTOAPI {
 		this.populations = populations;
 	}
 
+	@Override
+	public Boolean isActive() {
+		return active;
+	}
+
+	@Override
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
 }

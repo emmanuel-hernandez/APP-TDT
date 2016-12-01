@@ -60,5 +60,19 @@ CREATE TABLE IF NOT EXISTS channel(
 );
 
 
+<!-- applicationContext-maintenance-dao.xml -->
+	<bean id="informationSendDistributionDAO" class="com.biva.lima.persistence.dao.impl.distribution.InformationSendDistributionDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
 
+<!-- hibernate-maintenance.xml -->
+<mapping class="com.biva.lima.persistence.model.distribution.InformationDistribution"/>
+<mapping class="com.biva.lima.persistence.model.distribution.InformationSendDistribution"/>
+
+ <mapping class="com.biva.lima.persistence.model.monitor.InformationSend" />
+<mapping class="com.biva.lima.persistence.model.assembly.Assembly" />
+<mapping class="com.biva.lima.persistence.model.assembly.AssemblyAgreement" />
+
+<!-- applicationContext-maintenance-services.xml -->
+ <context:component-scan base-package="com.biva.lima.maintenance.service.distribution"/>
 

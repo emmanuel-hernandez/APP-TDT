@@ -45,6 +45,44 @@ public class StateService extends ServiceAPI {
 		
 		return dtos;
 	}
-	
+
+	@Override
+	public Short save(DTOAPI stateDTO) {
+		try {
+			State state = (State) map( stateDTO, new State() );
+			return (short) stateDAO.save( state );
+		}
+		catch( Exception ex ) {
+			System.out.println( "EXCEPTION ON save()!!!!" );
+			ex.printStackTrace();
+			return 0;
+		}
+	}
+
+	@Override
+	public Boolean update(DTOAPI stateDTO) {
+		try {
+			State state = (State) map( stateDTO, new State() );
+			return stateDAO.update( state );
+		}
+		catch( Exception ex ) {
+			System.out.println( "EXCEPTION ON update()!!!!" );
+			ex.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
+	public Boolean delete(DTOAPI stateDTO) {
+		try {
+			State state = (State) map( stateDTO, new State() );
+			return stateDAO.delete( state );
+		}
+		catch( Exception ex ) {
+			System.out.println( "EXCEPTION ON delete()!!!!" );
+			ex.printStackTrace();
+			return false;
+		}
+	}
 	
 }

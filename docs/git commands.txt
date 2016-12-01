@@ -1,0 +1,23 @@
+DISCARD LOCAL CHANGES:
+git stash save --keep-index
+git stash drop
+
+RETRIEVE REMOTE CHANGES
+git pull
+
+-------------------------
+ADD CHANGES TO COMMIT
+git add --all
+
+COMMIT CHANGES
+git commit -m "Commit message"
+
+PUSH CHANGES TO REMOTE REPOSITORY
+git push
+-------------------------
+
+CHECK LOCAL FILE CHANGES 
+git status -v
+
+CHECK LAS COMMIT
+git show --name-status

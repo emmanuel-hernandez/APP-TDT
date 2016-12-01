@@ -30,6 +30,9 @@ public class State extends EntityAPI {
 	@Column( name="shortName" )
 	private String shortName;
 	
+	@Column( name="active" )
+	private boolean active;
+	
 	@OneToMany( cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="state" )
 	private Set<Population> populations = new HashSet<>();
 	
@@ -38,8 +41,9 @@ public class State extends EntityAPI {
 		return id;
 	}
 	
-	public void setId(short id) {
-		this.id = id;
+	@Override
+	public void setId(Number id) {
+		this.id = (short) id;
 	}
 	
 	public String getName() {
@@ -66,4 +70,13 @@ public class State extends EntityAPI {
 		this.populations = populations;
 	}
 	
+	@Override
+	public Boolean isActive() {
+		return active;
+	}
+	
+	@Override
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
 }

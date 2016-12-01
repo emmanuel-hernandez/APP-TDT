@@ -5,19 +5,21 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public class PopulationDTO extends DTOAPI {
 
-	private int id;
+	private short id;
 	private String name;
 	private boolean active;
 	
 	@JsonIgnoreProperties("populations")
 	private StateDTO state;
 	
-	public Integer getId() {
+	@Override
+	public Short getId() {
 		return id;
 	}
 	
-	public void setId(Integer id) {
-		this.id = id;
+	@Override
+	public void setId(Number id) {
+		this.id = (short) id;
 	}
 	
 	public String getName() {
@@ -28,11 +30,13 @@ public class PopulationDTO extends DTOAPI {
 		this.name = name;
 	}
 	
-	public boolean getActive() {
+	@Override
+	public Boolean isActive() {
 		return active;
 	}
-	
-	public void setActive(boolean active) {
+
+	@Override
+	public void setActive(Boolean active) {
 		this.active = active;
 	}
 
