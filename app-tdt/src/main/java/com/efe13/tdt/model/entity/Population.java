@@ -32,7 +32,7 @@ public class Population extends EntityAPI {
 	@Column( name="active" )
 	private boolean active;
 	
-	@ManyToOne( fetch=FetchType.LAZY, cascade=CascadeType.ALL )
+	@ManyToOne( fetch=FetchType.LAZY )
 	@JoinColumn( name="stateId" )
 	private State state;
 	

@@ -3,6 +3,10 @@ package com.efe13.tdt.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
+import com.efe13.mvc.commons.api.enums.ActiveEnum;
+import com.efe13.mvc.commons.api.exception.ValidationException;
 import com.efe13.mvc.model.api.impl.dto.DTOAPI;
 import com.efe13.mvc.model.api.impl.entity.EntityAPI;
 import com.efe13.mvc.service.api.impl.ServiceAPI;
@@ -12,7 +16,8 @@ import com.efe13.tdt.model.entity.Concessionaire;
 
 public class ConcessionaireService extends ServiceAPI {
 	
-	private static final ConcessionaireDAO dao = new ConcessionaireDAO();
+	private static final Logger log = Logger.getLogger( ConcessionaireService.class );
+	private static final ConcessionaireDAO CONCESSIONAIRE_DAO = new ConcessionaireDAO();
 	
 	@Override
 	public ConcessionaireDTO getById( DTOAPI dto ) {
@@ -20,7 +25,7 @@ public class ConcessionaireService extends ServiceAPI {
 		
 		try {
 			entity = (Concessionaire) map( dto, entity );
-			entity = dao.getById( entity );
+			entity = CONCESSIONAIRE_DAO.getById( entity );
 		}
 		catch( Exception ex ) {
 			ex.printStackTrace();
@@ -34,7 +39,7 @@ public class ConcessionaireService extends ServiceAPI {
 
 	@Override
 	public List<DTOAPI> getAll() {
-		List<EntityAPI> entities = dao.getAll();
+		List<EntityAPI> entities = CONCESSIONAIRE_DAO.getAll();
 		
 		ArrayList<DTOAPI> dtos = new ArrayList<>();
 		if( !entities.isEmpty() ) {
@@ -45,6 +50,45 @@ public class ConcessionaireService extends ServiceAPI {
 		
 		return dtos;
 	}
-	
-	
+
+	@Override
+	public Short save(DTOAPI concessionaireDTO) {
+		try {
+			Concessionaire concessionaire = (Concessionaire) map( concessionaireDTO, new Concessionaire() );
+			return (short) CONCESSIONAIRE_DAO.save( concessionaire );
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+			throw ex;
+		}
+	}
+
+	@Override
+	public Boolean update(DTOAPI concessionaireDTO) {
+		try {
+			Concessionaire concessionaire = (Concessionaire) map( concessionaireDTO, new Concessionaire() );
+			return CONCESSIONAIRE_DAO.update( concessionaire );
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+			throw ex;
+		}
+	}
+
+	@Override
+	public Boolean delete(DTOAPI concessionaireDTO) {
+		try {
+			concessionaireDTO.setActive( ActiveEnum.INACTIVE.getValue() );
+			return update( concessionaireDTO );
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+			throw ex;
+		}
+	}
+
+	@Override
+	public void validateDTO(DTOAPI dto) throws ValidationException {
+		throw new ValidationException( "This method has not implementation. It needs to be implemented by the concrete class" );
+	}
 }

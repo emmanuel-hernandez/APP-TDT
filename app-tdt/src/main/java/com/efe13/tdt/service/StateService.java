@@ -1,8 +1,13 @@
 package com.efe13.tdt.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
+import com.efe13.mvc.commons.api.enums.ActiveEnum;
+import com.efe13.mvc.commons.api.exception.ValidationException;
 import com.efe13.mvc.model.api.impl.dto.DTOAPI;
 import com.efe13.mvc.model.api.impl.entity.EntityAPI;
 import com.efe13.mvc.service.api.impl.ServiceAPI;
@@ -12,6 +17,7 @@ import com.efe13.tdt.model.entity.State;
 
 public class StateService extends ServiceAPI {
 	
+	private static final Logger log = Logger.getLogger( StateService.class );
 	private static final StateDAO stateDAO = new StateDAO();
 	
 	@Override
@@ -23,27 +29,37 @@ public class StateService extends ServiceAPI {
 			entity = stateDAO.getById( entity );
 		}
 		catch( Exception ex ) {
-			ex.printStackTrace();
+			log.error( ex.getMessage(), ex );
+			throw ex;
 		}
 		
 		if( entity == null )
-			return new StateDTO();
+			return null;
 		
 		return (StateDTO) map( entity, stateDTO );	
 	}
 
 	@Override
 	public List<DTOAPI> getAll() {
-		List<EntityAPI> entities = stateDAO.getAll();
-		
-		ArrayList<DTOAPI> dtos = new ArrayList<>();
-		if( !entities.isEmpty() ) {
-			for( EntityAPI state : entities ) {
-				dtos.add( (StateDTO) map( state, new StateDTO() ) );
-			}			
+		try {
+			List<EntityAPI> entities = stateDAO.getAll();
+			ArrayList<DTOAPI> dtos = new ArrayList<>();
+			
+			if( !entities.isEmpty() ) {
+				for( EntityAPI state : entities ) {
+					dtos.add( (StateDTO) map( state, new StateDTO() ) );
+				}
+			}
+			else {
+				return Collections.emptyList();
+			}
+
+			return dtos;
 		}
-		
-		return dtos;
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+			throw ex;
+		}
 	}
 
 	@Override
@@ -53,9 +69,8 @@ public class StateService extends ServiceAPI {
 			return (short) stateDAO.save( state );
 		}
 		catch( Exception ex ) {
-			System.out.println( "EXCEPTION ON save()!!!!" );
-			ex.printStackTrace();
-			return 0;
+			log.error( ex.getMessage(), ex );
+			throw ex;
 		}
 	}
 
@@ -66,23 +81,25 @@ public class StateService extends ServiceAPI {
 			return stateDAO.update( state );
 		}
 		catch( Exception ex ) {
-			System.out.println( "EXCEPTION ON update()!!!!" );
-			ex.printStackTrace();
-			return false;
+			log.error( ex.getMessage(), ex );
+			throw ex;
 		}
 	}
 
 	@Override
 	public Boolean delete(DTOAPI stateDTO) {
 		try {
-			State state = (State) map( stateDTO, new State() );
-			return stateDAO.delete( state );
+			stateDTO.setActive( ActiveEnum.INACTIVE.getValue() );
+			return update( stateDTO );
 		}
 		catch( Exception ex ) {
-			System.out.println( "EXCEPTION ON delete()!!!!" );
-			ex.printStackTrace();
-			return false;
+			log.error( ex.getMessage(), ex );
+			throw ex;
 		}
 	}
-	
+
+	@Override
+	public void validateDTO(DTOAPI dto) throws ValidationException {
+		throw new ValidationException( "This method has not implementation. It needs to be implemented by the concrete class" );
+	}
 }

@@ -4,14 +4,27 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.efe13.mvc.service.api.impl.ServiceAPI;
 import com.efe13.tdt.model.dto.StateDTO;
-import com.efe13.tdt.service.StateService;
+import com.efe13.tdt.service.impl.StateServiceImpl;
 
+public class StateTest {
 
-public class ServiceTests {
-
-	private static final ServiceAPI STATE_SERVICE = new StateService();
+	private static final StateServiceImpl STATE_SERVICE = new StateServiceImpl();
+	
+	@Test
+	public void testGetState() {
+		try {
+			StateDTO dto = new StateDTO();
+			dto.setId( (short) 20 );
+			
+			dto = STATE_SERVICE.getById( dto );
+			System.out.println( "dto.getName(): " + dto.getName() );
+			Assert.assertNotEquals( dto, null );
+		}
+		catch( Exception ex ) {
+			ex.printStackTrace();
+		}
+	}
 	
 	@Ignore
 	@Test
@@ -43,6 +56,7 @@ public class ServiceTests {
 		Assert.assertTrue( result );
 	}
 	
+	@Ignore
 	@Test
 	public void testDeleteState() {
 		StateDTO stateDTO = new StateDTO();
