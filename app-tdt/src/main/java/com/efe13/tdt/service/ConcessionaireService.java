@@ -1,6 +1,7 @@
 package com.efe13.tdt.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -28,24 +29,31 @@ public class ConcessionaireService extends ServiceAPI {
 			entity = CONCESSIONAIRE_DAO.getById( entity );
 		}
 		catch( Exception ex ) {
-			ex.printStackTrace();
+			log.error( ex.getMessage(), ex );
 		}
 		
 		if( entity == null )
-			return new ConcessionaireDTO();
+			return null;
 		
 		return (ConcessionaireDTO) map( entity, dto );	
 	}
 
 	@Override
 	public List<DTOAPI> getAll() {
-		List<EntityAPI> entities = CONCESSIONAIRE_DAO.getAll();
+		List<DTOAPI> dtos = Collections.emptyList();
 		
-		ArrayList<DTOAPI> dtos = new ArrayList<>();
-		if( !entities.isEmpty() ) {
-			for( EntityAPI entity : entities ) {
-				dtos.add( (ConcessionaireDTO) map( entity, new ConcessionaireDTO() ) );
-			}			
+		try {
+			List<EntityAPI> entities = CONCESSIONAIRE_DAO.getAll();
+			if( !entities.isEmpty() ) {
+				dtos = new ArrayList<>();
+				
+				for( EntityAPI entity : entities ) {
+					dtos.add( (ConcessionaireDTO) map( entity, new ConcessionaireDTO() ) );
+				}			
+			}
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
 		}
 		
 		return dtos;

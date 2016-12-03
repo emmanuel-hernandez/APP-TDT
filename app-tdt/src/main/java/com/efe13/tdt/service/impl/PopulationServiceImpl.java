@@ -14,26 +14,22 @@ public class PopulationServiceImpl extends PopulationService {
 	
 	private static final Logger log = Logger.getLogger( PopulationServiceImpl.class );
 	
-	public PopulationDTO getById( PopulationDTO populationDTO ) {
-		try {
-			populationDTO = super.getById( populationDTO );
-			if( populationDTO == null )
-				throw new NullPointerException( "El estado especificado no existe" );
-			
-			return populationDTO;
+	public PopulationDTO getById( PopulationDTO populationDTO ) throws RuntimeException {
+		populationDTO = super.getById( populationDTO );
+		if( populationDTO == null ) {
+			throw new NullPointerException( "La población especificada no existe" );
 		}
-		catch( Exception ex ) {
-			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al obtener el estado" );
-		}
+		
+		return populationDTO;
 	}
 
 	public ArrayList<PopulationDTO> listAll() {
 		try {
 			ArrayList<PopulationDTO> dtos = new ArrayList<>();
-			for( DTOAPI dto : super.getAll() )
+			for( DTOAPI dto : super.getAll() ) {
 				dtos.add( (PopulationDTO) dto );
-
+			}
+			
 			return dtos;
 		}
 		catch( Exception ex ) {
@@ -52,7 +48,7 @@ public class PopulationServiceImpl extends PopulationService {
 		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al guardar el estado" );
+			throw new RuntimeException( "Ocurrió un error al guardar la poblacion" );
 		}
 	}
 
@@ -66,7 +62,7 @@ public class PopulationServiceImpl extends PopulationService {
 		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al actualizar el estado" );
+			throw new RuntimeException( "Ocurrió un error al actualizar la poblacion" );
 		}
 	}
 
@@ -76,7 +72,7 @@ public class PopulationServiceImpl extends PopulationService {
 		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al eliminar el estado" );
+			throw new RuntimeException( "Ocurrió un error al eliminar la poblacion" );
 		}
 	}
 	

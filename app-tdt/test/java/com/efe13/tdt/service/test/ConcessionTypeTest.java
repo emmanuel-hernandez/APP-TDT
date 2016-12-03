@@ -12,18 +12,19 @@ public class ConcessionTypeTest {
 	
 	private static final ConcessionTypeServiceImpl CONCESSION_TYPE_SERVICE = new ConcessionTypeServiceImpl();
 
+	@Ignore
 	@Test
 	public void testGet() {
 		try {
 			ConcessionTypeDTO dto = new ConcessionTypeDTO();
-			dto.setId( (short) 20 );
-			
+			dto.setId( (short) 2 );
+
 			dto = CONCESSION_TYPE_SERVICE.getById( dto );
 			System.out.println( "dto.getType(): " + dto.getType() );
 			Assert.assertNotEquals( dto, null );
 		}
 		catch( Exception ex ) {
-			ex.printStackTrace();
+			System.out.println( ex.getMessage() );
 		}
 	}
 	
@@ -32,16 +33,18 @@ public class ConcessionTypeTest {
 	public void testSave() {
 		try {
 			ConcessionTypeDTO concessionTypeDTO = new ConcessionTypeDTO();
-			//concessionTypeDTO.setName( "POBLACION" );
+			concessionTypeDTO.setType( "PR" );
+			concessionTypeDTO.setDescription( "PRESTAMO" );
 			concessionTypeDTO.setActive( ActiveEnum.ACTIVE.getValue() );
 			
 			System.out.println( "concessionTypeDTO: " + concessionTypeDTO.getType() );
 			short id = CONCESSION_TYPE_SERVICE.save( concessionTypeDTO );
 			
-			System.out.println( "ID: " + id );
 			Assert.assertNotEquals( id, 0 );
+			System.out.println( "ID: " + id );
 		}
 		catch( Exception ex ) {
+			System.err.println( ex.getMessage() );
 			ex.printStackTrace();
 		}
 	}
@@ -51,11 +54,12 @@ public class ConcessionTypeTest {
 	public void testUpdate() {
 		try {
 			ConcessionTypeDTO concessionTypeDTO = new ConcessionTypeDTO();
-			concessionTypeDTO.setId( (short) 327 );
-			concessionTypeDTO = (ConcessionTypeDTO) CONCESSION_TYPE_SERVICE.getById( concessionTypeDTO );
+			concessionTypeDTO.setId( (short) 9 );
+			concessionTypeDTO = CONCESSION_TYPE_SERVICE.getById( concessionTypeDTO );
 			
-			concessionTypeDTO.setType( "NEW NAME POPULATION" );
-			concessionTypeDTO.setActive( ActiveEnum.INACTIVE.getValue() );
+			concessionTypeDTO.setType( "PRST" );
+			concessionTypeDTO.setDescription( "new description" );
+			concessionTypeDTO.setActive( ActiveEnum.ACTIVE.getValue() );
 			
 			boolean result = CONCESSION_TYPE_SERVICE.update( concessionTypeDTO );
 			
@@ -64,6 +68,7 @@ public class ConcessionTypeTest {
 		}
 		catch( Exception ex ) {
 			ex.printStackTrace();
+			System.err.println( ex.getMessage() );
 		}
 	}
 	
@@ -72,8 +77,8 @@ public class ConcessionTypeTest {
 	public void testDelete() {
 		try {
 			ConcessionTypeDTO concessionTypeDTO = new ConcessionTypeDTO();
-			concessionTypeDTO.setId( (short) 328 );
-			concessionTypeDTO = (ConcessionTypeDTO) CONCESSION_TYPE_SERVICE.getById( concessionTypeDTO );
+			concessionTypeDTO.setId( (short) 9 );
+			concessionTypeDTO = CONCESSION_TYPE_SERVICE.getById( concessionTypeDTO );
 			
 			boolean result = CONCESSION_TYPE_SERVICE.delete( concessionTypeDTO );
 			

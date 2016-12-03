@@ -18,7 +18,7 @@ import com.efe13.tdt.model.entity.State;
 public class StateService extends ServiceAPI {
 	
 	private static final Logger log = Logger.getLogger( StateService.class );
-	private static final StateDAO stateDAO = new StateDAO();
+	private static final StateDAO STATE_DAO = new StateDAO();
 	
 	@Override
 	public StateDTO getById( DTOAPI stateDTO ) {
@@ -26,7 +26,7 @@ public class StateService extends ServiceAPI {
 		
 		try {
 			entity = (State) map( stateDTO, entity );
-			entity = stateDAO.getById( entity );
+			entity = STATE_DAO.getById( entity );
 		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );
@@ -41,17 +41,15 @@ public class StateService extends ServiceAPI {
 
 	@Override
 	public List<DTOAPI> getAll() {
+		List<DTOAPI> dtos = Collections.emptyList();
+		
 		try {
-			List<EntityAPI> entities = stateDAO.getAll();
-			ArrayList<DTOAPI> dtos = new ArrayList<>();
-			
+			List<EntityAPI> entities = STATE_DAO.getAll();
 			if( !entities.isEmpty() ) {
+				dtos = new ArrayList<>();
 				for( EntityAPI state : entities ) {
 					dtos.add( (StateDTO) map( state, new StateDTO() ) );
 				}
-			}
-			else {
-				return Collections.emptyList();
 			}
 
 			return dtos;
@@ -66,7 +64,7 @@ public class StateService extends ServiceAPI {
 	public Short save(DTOAPI stateDTO) {
 		try {
 			State state = (State) map( stateDTO, new State() );
-			return (short) stateDAO.save( state );
+			return (short) STATE_DAO.save( state );
 		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );
@@ -78,7 +76,7 @@ public class StateService extends ServiceAPI {
 	public Boolean update(DTOAPI stateDTO) {
 		try {
 			State state = (State) map( stateDTO, new State() );
-			return stateDAO.update( state );
+			return STATE_DAO.update( state );
 		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );

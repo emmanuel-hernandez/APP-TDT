@@ -25,11 +25,20 @@ public class Channel extends EntityAPI {
 	@Column( name="distinctive" )
 	private String distinctive;
 	
+	@Column( name="name" )
+	private String name;
+	
 	@Column( name="virtualChannel" )
-	private short virtualChannel;
+	private float virtualChannel;
 	
 	@Column( name="physicChannel" )
 	private short physicChannel;
+	
+	@Column( name="quality" )
+	private String quality;
+	
+	@Column( name="resolution" )
+	private String resolution;
 	
 	@Column( name="power" )
 	private short power;
@@ -49,19 +58,19 @@ public class Channel extends EntityAPI {
 	@Column( name="effectiveDateEnd" )
 	private String effectiveDateEnd;
 	
-	@ManyToOne( fetch=FetchType.LAZY, cascade=CascadeType.ALL )
+	@ManyToOne( fetch=FetchType.LAZY )
 	@JoinColumn( name="channelBandId" )
 	private ChannelBand channelBand;
 	
-	@ManyToOne( fetch=FetchType.LAZY, cascade=CascadeType.ALL )
+	@ManyToOne( fetch=FetchType.LAZY )
 	@JoinColumn( name="populationId" )
 	private Population population;
 	
-	@ManyToOne( fetch=FetchType.LAZY, cascade=CascadeType.ALL )
+	@ManyToOne( fetch=FetchType.LAZY )
 	@JoinColumn( name="concessionaireId" )
 	private Concessionaire concessionaire;
 	
-	@ManyToOne( fetch=FetchType.LAZY, cascade=CascadeType.ALL )
+	@ManyToOne( fetch=FetchType.LAZY )
 	@JoinColumn( name="concessionTypeId" )
 	private ConcessionType concessionType;
 	
@@ -86,11 +95,19 @@ public class Channel extends EntityAPI {
 		this.distinctive = distinctive;
 	}
 
-	public short getVirtualChannel() {
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public float getVirtualChannel() {
 		return virtualChannel;
 	}
 
-	public void setVirtualChannel(short virtualChannel) {
+	public void setVirtualChannel(float virtualChannel) {
 		this.virtualChannel = virtualChannel;
 	}
 
@@ -100,6 +117,22 @@ public class Channel extends EntityAPI {
 
 	public void setPhysicChannel(short physicChannel) {
 		this.physicChannel = physicChannel;
+	}
+
+	public String getQuality() {
+		return quality;
+	}
+
+	public void setQuality(String quality) {
+		this.quality = quality;
+	}
+
+	public String getResolution() {
+		return resolution;
+	}
+
+	public void setResolution(String resolution) {
+		this.resolution = resolution;
 	}
 
 	public short getPower() {

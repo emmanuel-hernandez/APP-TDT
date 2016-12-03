@@ -7,8 +7,11 @@ public class ChannelDTO extends DTOAPI {
 	
 	private short id;
 	private String distinctive;
-	private short virtualChannel;
+	private String name;
+	private float virtualChannel;
 	private short physicChannel;
+	private String quality;
+	private String resolution;
 	private short power;
 	private short acesli;
 	private String latitude;
@@ -47,11 +50,19 @@ public class ChannelDTO extends DTOAPI {
 		this.distinctive = distinctive;
 	}
 
-	public short getVirtualChannel() {
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public float getVirtualChannel() {
 		return virtualChannel;
 	}
 
-	public void setVirtualChannel(short virtualChannel) {
+	public void setVirtualChannel(float virtualChannel) {
 		this.virtualChannel = virtualChannel;
 	}
 
@@ -61,6 +72,22 @@ public class ChannelDTO extends DTOAPI {
 
 	public void setPhysicChannel(short physicChannel) {
 		this.physicChannel = physicChannel;
+	}
+
+	public String getQuality() {
+		return quality;
+	}
+
+	public void setQuality(String quality) {
+		this.quality = quality;
+	}
+
+	public String getResolution() {
+		return resolution;
+	}
+
+	public void setResolution(String resolution) {
+		this.resolution = resolution;
 	}
 
 	public short getPower() {

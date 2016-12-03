@@ -1,6 +1,7 @@
 package com.efe13.tdt.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -28,24 +29,31 @@ public class ChannelBandService extends ServiceAPI {
 			entity = CHANNEL_BAND_DAO.getById( entity );
 		}
 		catch( Exception ex ) {
-			ex.printStackTrace();
+			log.error( ex.getMessage(), ex );
 		}
 		
 		if( entity == null )
-			return new ChannelBandDTO();
+			return null;
 		
 		return (ChannelBandDTO) map( entity, dto );	
 	}
 
 	@Override
 	public List<DTOAPI> getAll() {
-		List<EntityAPI> entities = CHANNEL_BAND_DAO.getAll();
+		List<DTOAPI> dtos = Collections.emptyList();
 		
-		ArrayList<DTOAPI> dtos = new ArrayList<>();
-		if( !entities.isEmpty() ) {
-			for( EntityAPI entity : entities ) {
-				dtos.add( (ChannelBandDTO) map( entity, new ChannelBandDTO() ) );
-			}			
+		try {
+			List<EntityAPI> entities = CHANNEL_BAND_DAO.getAll();
+			if( !entities.isEmpty() ) {
+				dtos = new ArrayList<>();
+				
+				for( EntityAPI entity : entities ) {
+					dtos.add( (ChannelBandDTO) map( entity, new ChannelBandDTO() ) );
+				}			
+			}
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
 		}
 		
 		return dtos;
@@ -54,8 +62,8 @@ public class ChannelBandService extends ServiceAPI {
 	@Override
 	public Short save(DTOAPI channelBandDTO) {
 		try {
-			ChannelBand population = (ChannelBand) map( channelBandDTO, new ChannelBand() );
-			return (short) CHANNEL_BAND_DAO.save( population );
+			ChannelBand channelBand = (ChannelBand) map( channelBandDTO, new ChannelBand() );
+			return (short) CHANNEL_BAND_DAO.save( channelBand );
 		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );
@@ -66,8 +74,8 @@ public class ChannelBandService extends ServiceAPI {
 	@Override
 	public Boolean update(DTOAPI channelBandDTO) {
 		try {
-			ChannelBand population = (ChannelBand) map( channelBandDTO, new ChannelBand() );
-			return CHANNEL_BAND_DAO.update( population );
+			ChannelBand channelBand = (ChannelBand) map( channelBandDTO, new ChannelBand() );
+			return CHANNEL_BAND_DAO.update( channelBand );
 		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );

@@ -15,28 +15,21 @@ public class StateServiceImpl extends StateService {
 	private static final Logger log = Logger.getLogger( StateServiceImpl.class );
 	
 	public StateDTO getById( StateDTO stateDTO ) {
-		try {
-			stateDTO = super.getById( stateDTO );
-			if( stateDTO == null )
-				throw new NullPointerException( "El estado especificado no existe" );
-			
-			return stateDTO;
+		stateDTO = super.getById( stateDTO );
+		if( stateDTO == null ) {
+			throw new NullPointerException( "El estado especificado no existe" );
 		}
-		catch( ValidationException ex ) {
-			throw ex;
-		}
-		catch( Exception ex ) {
-			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al obtener el estado" );
-		}
+		
+		return stateDTO;
 	}
 
 	public ArrayList<StateDTO> listAll() {
 		try {
 			ArrayList<StateDTO> dtos = new ArrayList<>();
-			for( DTOAPI dto : super.getAll() )
+			for( DTOAPI dto : super.getAll() ) {
 				dtos.add( (StateDTO) dto );
-
+			}
+			
 			return dtos;
 		}
 		catch( Exception ex ) {
@@ -50,6 +43,9 @@ public class StateServiceImpl extends StateService {
 			validateDTO( stateDTO );
 			return super.save( stateDTO );
 		}
+		catch( ValidationException ex ) {
+			throw ex;
+		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );
 			throw new RuntimeException( "Ocurrió un error al guardar el estado" );
@@ -60,6 +56,9 @@ public class StateServiceImpl extends StateService {
 		try {
 			validateDTO( stateDTO );
 			return super.update( stateDTO );
+		}
+		catch( ValidationException ex ) {
+			throw ex;
 		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );

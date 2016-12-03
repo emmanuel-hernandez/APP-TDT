@@ -41,25 +41,23 @@ public class PopulationService extends ServiceAPI {
 
 	@Override
 	public List<DTOAPI> getAll() {
+		List<DTOAPI> dtos = Collections.emptyList();;
+		
 		try {
 			List<EntityAPI> entities = POPULATION_DAO.getAll();
-			ArrayList<DTOAPI> dtos = new ArrayList<>();
-			
 			if( !entities.isEmpty() ) {
+				dtos = new ArrayList<>();
+				
 				for( EntityAPI population : entities ) {
 					dtos.add( (PopulationDTO) map( population, new PopulationDTO() ) );
 				}
 			}
-			else {
-				return Collections.emptyList();
-			}
-
-			return dtos;
 		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );
-			throw ex;
 		}
+		
+		return dtos;
 	}
 
 	@Override

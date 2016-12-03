@@ -1,6 +1,7 @@
 package com.efe13.tdt.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -28,24 +29,31 @@ public class ChannelService extends ServiceAPI {
 			entity = CHANNEL_DAO.getById( entity );
 		}
 		catch( Exception ex ) {
-			ex.printStackTrace();
+			log.error( ex.getMessage(), ex );
 		}
 		
 		if( entity == null )
-			return new ChannelDTO();
+			return null;
 		
 		return (ChannelDTO) map( entity, dto );	
 	}
 
 	@Override
 	public List<DTOAPI> getAll() {
-		List<EntityAPI> entities = CHANNEL_DAO.getAll();
+		List<DTOAPI> dtos = Collections.emptyList();
 		
-		ArrayList<DTOAPI> dtos = new ArrayList<>();
-		if( !entities.isEmpty() ) {
-			for( EntityAPI entity : entities ) {
-				dtos.add( (ChannelDTO) map( entity, new ChannelDTO() ) );
-			}			
+		try {
+			List<EntityAPI> entities = CHANNEL_DAO.getAll();
+			if( !entities.isEmpty() ) {
+				dtos = new ArrayList<>();
+				
+				for( EntityAPI entity : entities ) {
+					dtos.add( (ChannelDTO) map( entity, new ChannelDTO() ) );
+				}			
+			}
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
 		}
 		
 		return dtos;

@@ -14,25 +14,20 @@ public class ChannelBandServiceImpl extends ChannelBandService {
 	
 	private static final Logger log = Logger.getLogger( ChannelBandServiceImpl.class );
 	
-	public ChannelBandDTO getById( ChannelBandDTO channelBandDto ) {
-		try {
-			channelBandDto = super.getById( channelBandDto );
-			if( channelBandDto == null )
-				throw new NullPointerException( "El estado especificado no existe" );
-			
-			return channelBandDto;
-		}
-		catch( Exception ex ) {
-			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al obtener el estado" );
-		}
+	public ChannelBandDTO getById( ChannelBandDTO channelBandDto ) throws RuntimeException {
+		channelBandDto = super.getById( channelBandDto );
+		if( channelBandDto == null )
+			throw new NullPointerException( "La banda especificada no existe" );
+		
+		return channelBandDto;
 	}
 
 	public ArrayList<ChannelBandDTO> listAll() {
 		try {
 			ArrayList<ChannelBandDTO> dtos = new ArrayList<>();
-			for( DTOAPI dto : super.getAll() )
+			for( DTOAPI dto : super.getAll() ) {
 				dtos.add( (ChannelBandDTO) dto );
+			}
 
 			return dtos;
 		}
@@ -52,7 +47,7 @@ public class ChannelBandServiceImpl extends ChannelBandService {
 		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al guardar el estado" );
+			throw new RuntimeException( "Ocurrió un error al guardar la banda" );
 		}
 	}
 
@@ -66,7 +61,7 @@ public class ChannelBandServiceImpl extends ChannelBandService {
 		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al actualizar el estado" );
+			throw new RuntimeException( "Ocurrió un error al actualizar la banda" );
 		}
 	}
 
@@ -76,7 +71,7 @@ public class ChannelBandServiceImpl extends ChannelBandService {
 		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al eliminar el estado" );
+			throw new RuntimeException( "Ocurrió un error al eliminar la banda" );
 		}
 	}
 	

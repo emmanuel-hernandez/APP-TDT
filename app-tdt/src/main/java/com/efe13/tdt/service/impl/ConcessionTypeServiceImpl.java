@@ -14,31 +14,27 @@ public class ConcessionTypeServiceImpl extends ConcessionTypeService {
 	
 	private static final Logger log = Logger.getLogger( ConcessionTypeServiceImpl.class );
 	
-	public ConcessionTypeDTO getById( ConcessionTypeDTO concessionTypeDto ) {
-		try {
-			concessionTypeDto = super.getById( concessionTypeDto );
-			if( concessionTypeDto == null )
-				throw new NullPointerException( "El estado especificado no existe" );
-			
-			return concessionTypeDto;
+	public ConcessionTypeDTO getById( ConcessionTypeDTO concessionTypeDto ) throws RuntimeException {
+		concessionTypeDto = super.getById( concessionTypeDto );
+		if( concessionTypeDto == null ) {
+			throw new NullPointerException( "La concesión especificada no existe" );
 		}
-		catch( Exception ex ) {
-			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al obtener el estado" );
-		}
+
+		return concessionTypeDto;
 	}
 
 	public ArrayList<ConcessionTypeDTO> listAll() {
 		try {
 			ArrayList<ConcessionTypeDTO> dtos = new ArrayList<>();
-			for( DTOAPI dto : super.getAll() )
+			for( DTOAPI dto : super.getAll() ) {
 				dtos.add( (ConcessionTypeDTO) dto );
+			}
 
 			return dtos;
 		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al obtener los estados" );
+			throw new RuntimeException( "Ocurrió un error al obtener las concesiones" );
 		}
 	}
 
@@ -52,7 +48,7 @@ public class ConcessionTypeServiceImpl extends ConcessionTypeService {
 		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al guardar el estado" );
+			throw new RuntimeException( "Ocurrió un error al guardar la concesión" );
 		}
 	}
 
@@ -66,7 +62,7 @@ public class ConcessionTypeServiceImpl extends ConcessionTypeService {
 		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al actualizar el estado" );
+			throw new RuntimeException( "Ocurrió un error al actualizar la concesión" );
 		}
 	}
 
@@ -76,7 +72,7 @@ public class ConcessionTypeServiceImpl extends ConcessionTypeService {
 		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al eliminar el estado" );
+			throw new RuntimeException( "Ocurrió un error al eliminar la concesión" );
 		}
 	}
 	

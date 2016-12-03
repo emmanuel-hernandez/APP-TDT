@@ -1,6 +1,7 @@
 package com.efe13.tdt.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -13,12 +14,11 @@ import com.efe13.mvc.service.api.impl.ServiceAPI;
 import com.efe13.tdt.dao.ConcessionTypeDAO;
 import com.efe13.tdt.model.dto.ConcessionTypeDTO;
 import com.efe13.tdt.model.entity.ConcessionType;
-import com.efe13.tdt.model.entity.Population;
 
 public class ConcessionTypeService extends ServiceAPI {
 	
 	private static final Logger log = Logger.getLogger( ConcessionTypeService.class );
-	private static final ConcessionTypeDAO CONCESSION_TYPE = new ConcessionTypeDAO();
+	private static final ConcessionTypeDAO CONCESSION_TYPE_DAO = new ConcessionTypeDAO();
 	
 	@Override
 	public ConcessionTypeDTO getById( DTOAPI dto ) {
@@ -26,27 +26,34 @@ public class ConcessionTypeService extends ServiceAPI {
 		
 		try {
 			entity = (ConcessionType) map( dto, entity );
-			entity = CONCESSION_TYPE.getById( entity );
+			entity = CONCESSION_TYPE_DAO.getById( entity );
 		}
 		catch( Exception ex ) {
-			ex.printStackTrace();
+			log.error( ex.getMessage(), ex );
+			throw ex;
 		}
-		
+
 		if( entity == null )
-			return new ConcessionTypeDTO();
-		
+			return null;
+
 		return (ConcessionTypeDTO) map( entity, dto );	
 	}
 
 	@Override
 	public List<DTOAPI> getAll() {
-		List<EntityAPI> entities = CONCESSION_TYPE.getAll();
+		List<DTOAPI> dtos = Collections.emptyList();
 		
-		ArrayList<DTOAPI> dtos = new ArrayList<>();
-		if( !entities.isEmpty() ) {
-			for( EntityAPI entity : entities ) {
-				dtos.add( (ConcessionTypeDTO) map( entity, new ConcessionTypeDTO() ) );
-			}			
+		try {
+			List<EntityAPI> entities = CONCESSION_TYPE_DAO.getAll();
+			if( !entities.isEmpty() ) {
+				dtos = new ArrayList<>();
+				for( EntityAPI entity : entities ) {
+					dtos.add( (ConcessionTypeDTO) map( entity, new ConcessionTypeDTO() ) );
+				}
+			}
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
 		}
 		
 		return dtos;
@@ -55,8 +62,8 @@ public class ConcessionTypeService extends ServiceAPI {
 	@Override
 	public Short save(DTOAPI concessionTypeDTO) {
 		try {
-			Population concessionType = (Population) map( concessionTypeDTO, new Population() );
-			return (short) CONCESSION_TYPE.save( concessionType );
+			ConcessionType concessionType = (ConcessionType) map( concessionTypeDTO, new ConcessionType() );
+			return (short) CONCESSION_TYPE_DAO.save( concessionType );
 		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );
@@ -67,8 +74,8 @@ public class ConcessionTypeService extends ServiceAPI {
 	@Override
 	public Boolean update(DTOAPI concessionTypeDTO) {
 		try {
-			Population concessionType = (Population) map( concessionTypeDTO, new Population() );
-			return CONCESSION_TYPE.update( concessionType );
+			ConcessionType concessionType = (ConcessionType) map( concessionTypeDTO, new ConcessionType() );
+			return CONCESSION_TYPE_DAO.update( concessionType );
 		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );

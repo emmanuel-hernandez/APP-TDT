@@ -1,4 +1,6 @@
-CREATE DATABASE IF NOT EXISTS tdt;
+CREATE DATABASE IF NOT EXISTS tdt
+	DEFAULT CHARACTER SET utf8
+	DEFAULT COLLATE utf8_general_ci;
 USE tdt;
 
 CREATE TABLE IF NOT EXISTS state(
@@ -40,8 +42,10 @@ CREATE TABLE IF NOT EXISTS channel(
 	channelId SMALLINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	distinctive VARCHAR(8) NOT NULL,
 	name VARCHAR(50) NOT NULL,
-	virtualChannel TINYINT NOT NULL,
+	virtualChannel FLOAT(2,1) NOT NULL,
 	physicChannel TINYINT NOT NULL,
+	quality VARCHAR(2) NOT NULL,
+	resolution VARCHAR(5) NOT NULL,
 	power SMALLINT NOT NULL,
 	acesli TINYINT NOT NULL,
 	longitude VARCHAR(15) NOT NULL,
@@ -58,21 +62,3 @@ CREATE TABLE IF NOT EXISTS channel(
 	FOREIGN KEY (concessionaireId) REFERENCES concessionaire(concessionaireId),
 	FOREIGN KEY (concessionTypeId) REFERENCES concessionType(concessionTypeId)
 );
-
-
-<!-- applicationContext-maintenance-dao.xml -->
-	<bean id="informationSendDistributionDAO" class="com.biva.lima.persistence.dao.impl.distribution.InformationSendDistributionDAOImpl">
-		<property name="sessionFactory" ref="sessionFactory"></property>
-	</bean>
-
-<!-- hibernate-maintenance.xml -->
-<mapping class="com.biva.lima.persistence.model.distribution.InformationDistribution"/>
-<mapping class="com.biva.lima.persistence.model.distribution.InformationSendDistribution"/>
-
- <mapping class="com.biva.lima.persistence.model.monitor.InformationSend" />
-<mapping class="com.biva.lima.persistence.model.assembly.Assembly" />
-<mapping class="com.biva.lima.persistence.model.assembly.AssemblyAgreement" />
-
-<!-- applicationContext-maintenance-services.xml -->
- <context:component-scan base-package="com.biva.lima.maintenance.service.distribution"/>
-

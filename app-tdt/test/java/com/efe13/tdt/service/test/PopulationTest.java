@@ -20,14 +20,14 @@ public class PopulationTest {
 	public void testGet() {
 		try {
 			PopulationDTO dto = new PopulationDTO();
-			dto.setId( (short) 20 );
-			
+			dto.setId( (short) 360 );
+
 			dto = POPULATION_SERVICE.getById( dto );
 			System.out.println( "dto.getName(): " + dto.getName() );
 			Assert.assertNotEquals( dto, null );
 		}
 		catch( Exception ex ) {
-			ex.printStackTrace();
+			System.out.println( ex.getMessage() );
 		}
 	}
 	
@@ -36,21 +36,23 @@ public class PopulationTest {
 	public void testSave() {
 		try {
 			PopulationDTO populationDTO = new PopulationDTO();
-			//populationDTO.setName( "POBLACION" );
+			populationDTO.setName( "POPULATION" );
 			populationDTO.setActive( ActiveEnum.ACTIVE.getValue() );
 			
-			StateDTO stateDTO = new StateDTO();
-			stateDTO.setId( (short) 12 );
-			stateDTO = STATE_SERVICE.getById( stateDTO );
+			StateDTO state = new StateDTO();
+			state.setId( (short) 20 );
+			state =  STATE_SERVICE.getById( state );
 			
-			populationDTO.setState( stateDTO );
-			System.out.println( "Assign State: " + stateDTO.getName() + " to population: " + populationDTO.getName() );
+			populationDTO.setState( state );
+			
+			System.out.println( "populationDTO: " + populationDTO.getName() );
 			short id = POPULATION_SERVICE.save( populationDTO );
 			
-			System.out.println( "ID: " + id );
 			Assert.assertNotEquals( id, 0 );
+			System.out.println( "ID: " + id );
 		}
 		catch( Exception ex ) {
+			System.err.println( ex.getMessage() );
 			ex.printStackTrace();
 		}
 	}
@@ -60,16 +62,15 @@ public class PopulationTest {
 	public void testUpdate() {
 		try {
 			PopulationDTO populationDTO = new PopulationDTO();
-			populationDTO.setId( (short) 327 );
-			populationDTO = (PopulationDTO) POPULATION_SERVICE.getById( populationDTO );
-	
-			StateDTO stateDTO = new StateDTO();
-			stateDTO.setId( (short) 16 );
-			stateDTO = STATE_SERVICE.getById( stateDTO );
+			populationDTO.setId( (short) 329 );
+			populationDTO = POPULATION_SERVICE.getById( populationDTO );
 			
-			populationDTO.setName( "NEW NAME POPULATION" );
-			populationDTO.setState( stateDTO );
+			populationDTO.setName( "NEW POPULATION" );
 			populationDTO.setActive( ActiveEnum.INACTIVE.getValue() );
+			
+			StateDTO state = new StateDTO();
+			state.setId( (short) 12 );
+			state =  STATE_SERVICE.getById( state );
 			
 			boolean result = POPULATION_SERVICE.update( populationDTO );
 			
@@ -78,15 +79,17 @@ public class PopulationTest {
 		}
 		catch( Exception ex ) {
 			ex.printStackTrace();
+			System.err.println( ex.getMessage() );
 		}
 	}
 	
+	@Ignore
 	@Test
 	public void testDelete() {
 		try {
 			PopulationDTO populationDTO = new PopulationDTO();
-			populationDTO.setId( (short) 328 );
-			populationDTO = (PopulationDTO) POPULATION_SERVICE.getById( populationDTO );
+			populationDTO.setId( (short) 329 );
+			populationDTO = POPULATION_SERVICE.getById( populationDTO );
 			
 			boolean result = POPULATION_SERVICE.delete( populationDTO );
 			
