@@ -4,15 +4,11 @@ import java.util.ArrayList;
 
 import javax.validation.ValidationException;
 
-import org.apache.log4j.Logger;
-
 import com.efe13.mvc.model.api.impl.dto.DTOAPI;
 import com.efe13.tdt.model.dto.PopulationDTO;
 import com.efe13.tdt.service.PopulationService;
 
 public class PopulationServiceImpl extends PopulationService {
-	
-	private static final Logger log = Logger.getLogger( PopulationServiceImpl.class );
 	
 	public PopulationDTO getById( PopulationDTO populationDTO ) throws RuntimeException {
 		populationDTO = super.getById( populationDTO );
@@ -24,56 +20,26 @@ public class PopulationServiceImpl extends PopulationService {
 	}
 
 	public ArrayList<PopulationDTO> listAll() {
-		try {
-			ArrayList<PopulationDTO> dtos = new ArrayList<>();
-			for( DTOAPI dto : super.getAll() ) {
-				dtos.add( (PopulationDTO) dto );
-			}
-			
-			return dtos;
+		ArrayList<PopulationDTO> dtos = new ArrayList<>();
+		for( DTOAPI dto : super.getAll() ) {
+			dtos.add( (PopulationDTO) dto );
 		}
-		catch( Exception ex ) {
-			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al obtener los estados" );
-		}
+		
+		return dtos;
 	}
 
 	public short save(PopulationDTO populationDTO) {
-		try {
-			validateDTO( populationDTO );
-			return super.save( populationDTO );
-		}
-		catch( ValidationException ex ) {
-			throw ex;
-		}
-		catch( Exception ex ) {
-			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al guardar la poblacion" );
-		}
+		validateDTO( populationDTO );
+		return super.save( populationDTO );
 	}
 
 	public boolean update(PopulationDTO populationDTO) {
-		try {
-			validateDTO( populationDTO );
-			return super.update( populationDTO );
-		}
-		catch( ValidationException ex ) {
-			throw ex;
-		}
-		catch( Exception ex ) {
-			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al actualizar la poblacion" );
-		}
+		validateDTO( populationDTO );
+		return super.update( populationDTO );
 	}
 
 	public boolean delete(PopulationDTO populationDTO) {
-		try {
-			return super.delete( populationDTO );
-		}
-		catch( Exception ex ) {
-			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al eliminar la poblacion" );
-		}
+		return super.delete( populationDTO );
 	}
 	
 	@Override

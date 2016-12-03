@@ -9,6 +9,7 @@ import com.efe13.tdt.model.dto.PopulationDTO;
 import com.efe13.tdt.model.dto.StateDTO;
 import com.efe13.tdt.service.impl.PopulationServiceImpl;
 import com.efe13.tdt.service.impl.StateServiceImpl;
+import com.efe13.tdt.util.ServiceResult;
 
 public class PopulationTest {
 	
@@ -41,9 +42,10 @@ public class PopulationTest {
 			
 			StateDTO state = new StateDTO();
 			state.setId( (short) 20 );
-			state =  STATE_SERVICE.getById( state );
-			
-			populationDTO.setState( state );
+			ServiceResult<StateDTO> serviceResult = STATE_SERVICE.getById( state );
+	
+			if( serviceResult.getStatusResult().getValue() )
+				populationDTO.setState( serviceResult.getObject() );
 			
 			System.out.println( "populationDTO: " + populationDTO.getName() );
 			short id = POPULATION_SERVICE.save( populationDTO );
@@ -70,9 +72,9 @@ public class PopulationTest {
 			
 			StateDTO state = new StateDTO();
 			state.setId( (short) 12 );
-			state =  STATE_SERVICE.getById( state );
+			ServiceResult<StateDTO> serviceResult =  STATE_SERVICE.getById( state );
 			
-			boolean result = POPULATION_SERVICE.update( populationDTO );
+			boolean result = POPULATION_SERVICE.update( serviceResult.getObject() );
 			
 			System.out.println( "RESULT: " + result );
 			Assert.assertTrue( result );

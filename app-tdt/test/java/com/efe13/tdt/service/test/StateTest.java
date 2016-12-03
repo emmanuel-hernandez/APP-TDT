@@ -19,7 +19,7 @@ public class StateTest {
 			StateDTO dto = new StateDTO();
 			dto.setId( (short) 20 );
 
-			dto = STATE_SERVICE.getById( dto );
+			//dto = STATE_SERVICE.getById( dto );
 			System.out.println( "dto.getName(): " + dto.getName() );
 			Assert.assertNotEquals( dto, null );
 		}
@@ -55,16 +55,16 @@ public class StateTest {
 		try {
 			StateDTO stateDTO = new StateDTO();
 			stateDTO.setId( (short) 38 );
-			stateDTO = STATE_SERVICE.getById( stateDTO );
+			//stateDTO = STATE_SERVICE.getById( stateDTO );
 			
 			stateDTO.setName( "NEW STATE" );
 			stateDTO.setShortName( "NST" );
 			stateDTO.setActive( ActiveEnum.INACTIVE.getValue() );
 			
-			boolean result = STATE_SERVICE.update( stateDTO );
+			//boolean result = STATE_SERVICE.update( stateDTO );
 			
-			System.out.println( "RESULT: " + result );
-			Assert.assertTrue( result );
+			//System.out.println( "RESULT: " + result );
+			//Assert.assertTrue( result );
 		}
 		catch( Exception ex ) {
 			ex.printStackTrace();
@@ -78,12 +78,12 @@ public class StateTest {
 		try {
 			StateDTO stateDTO = new StateDTO();
 			stateDTO.setId( (short) 38 );
-			stateDTO = STATE_SERVICE.getById( stateDTO );
+			//stateDTO = STATE_SERVICE.getById( stateDTO );
 			
-			boolean result = STATE_SERVICE.delete( stateDTO );
+			//boolean result = STATE_SERVICE.delete( stateDTO );
 			
-			System.out.println( "RESULT: " + result );
-			Assert.assertTrue( result );
+			//System.out.println( "RESULT: " + result );
+			//Assert.assertTrue( result );
 		}
 		catch( Exception ex ) {
 			ex.printStackTrace();

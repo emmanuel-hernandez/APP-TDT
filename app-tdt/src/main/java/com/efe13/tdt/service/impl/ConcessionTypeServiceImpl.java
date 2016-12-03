@@ -4,15 +4,11 @@ import java.util.ArrayList;
 
 import javax.validation.ValidationException;
 
-import org.apache.log4j.Logger;
-
 import com.efe13.mvc.model.api.impl.dto.DTOAPI;
 import com.efe13.tdt.model.dto.ConcessionTypeDTO;
 import com.efe13.tdt.service.ConcessionTypeService;
 
 public class ConcessionTypeServiceImpl extends ConcessionTypeService {
-	
-	private static final Logger log = Logger.getLogger( ConcessionTypeServiceImpl.class );
 	
 	public ConcessionTypeDTO getById( ConcessionTypeDTO concessionTypeDto ) throws RuntimeException {
 		concessionTypeDto = super.getById( concessionTypeDto );
@@ -24,56 +20,26 @@ public class ConcessionTypeServiceImpl extends ConcessionTypeService {
 	}
 
 	public ArrayList<ConcessionTypeDTO> listAll() {
-		try {
-			ArrayList<ConcessionTypeDTO> dtos = new ArrayList<>();
-			for( DTOAPI dto : super.getAll() ) {
-				dtos.add( (ConcessionTypeDTO) dto );
-			}
+		ArrayList<ConcessionTypeDTO> dtos = new ArrayList<>();
+		for( DTOAPI dto : super.getAll() ) {
+			dtos.add( (ConcessionTypeDTO) dto );
+		}
 
-			return dtos;
-		}
-		catch( Exception ex ) {
-			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al obtener las concesiones" );
-		}
+		return dtos;
 	}
 
 	public short save(ConcessionTypeDTO concessionTypeDto) {
-		try {
-			validateDTO( concessionTypeDto );
-			return super.save( concessionTypeDto );
-		}
-		catch( ValidationException ex ) {
-			throw ex;
-		}
-		catch( Exception ex ) {
-			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al guardar la concesión" );
-		}
+		validateDTO( concessionTypeDto );
+		return super.save( concessionTypeDto );
 	}
 
 	public boolean update(ConcessionTypeDTO concessionTypeDto) {
-		try {
-			validateDTO( concessionTypeDto );
-			return super.update( concessionTypeDto );
-		}
-		catch( ValidationException ex ) {
-			throw ex;
-		}
-		catch( Exception ex ) {
-			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al actualizar la concesión" );
-		}
+		validateDTO( concessionTypeDto );
+		return super.update( concessionTypeDto );
 	}
 
 	public boolean delete(ConcessionTypeDTO concessionTypeDto) {
-		try {
-			return super.delete( concessionTypeDto );
-		}
-		catch( Exception ex ) {
-			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al eliminar la concesión" );
-		}
+		return super.delete( concessionTypeDto );
 	}
 	
 	@Override

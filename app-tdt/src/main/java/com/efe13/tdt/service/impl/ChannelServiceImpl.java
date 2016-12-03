@@ -4,15 +4,11 @@ import java.util.ArrayList;
 
 import javax.validation.ValidationException;
 
-import org.apache.log4j.Logger;
-
 import com.efe13.mvc.model.api.impl.dto.DTOAPI;
 import com.efe13.tdt.model.dto.ChannelDTO;
 import com.efe13.tdt.service.ChannelService;
 
 public class ChannelServiceImpl extends ChannelService {
-	
-	private static final Logger log = Logger.getLogger( ChannelServiceImpl.class );
 	
 	public ChannelDTO getById( ChannelDTO channelDto ) throws RuntimeException {
 		channelDto = super.getById( channelDto );
@@ -23,56 +19,26 @@ public class ChannelServiceImpl extends ChannelService {
 	}
 
 	public ArrayList<ChannelDTO> listAll() {
-		try {
-			ArrayList<ChannelDTO> dtos = new ArrayList<>();
-			for( DTOAPI dto : super.getAll() ) {
-				dtos.add( (ChannelDTO) dto );
-			}
+		ArrayList<ChannelDTO> dtos = new ArrayList<>();
+		for( DTOAPI dto : super.getAll() ) {
+			dtos.add( (ChannelDTO) dto );
+		}
 
-			return dtos;
-		}
-		catch( Exception ex ) {
-			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al obtener los canales" );
-		}
+		return dtos;
 	}
 
 	public short save(ChannelDTO channelDto) {
-		try {
-			validateDTO( channelDto );
-			return super.save( channelDto );
-		}
-		catch( ValidationException ex ) {
-			throw ex;
-		}
-		catch( Exception ex ) {
-			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al guardar el canal" );
-		}
+		validateDTO( channelDto );
+		return super.save( channelDto );
 	}
 
 	public boolean update(ChannelDTO channelDto) {
-		try {
-			validateDTO( channelDto );
-			return super.update( channelDto );
-		}
-		catch( ValidationException ex ) {
-			throw ex;
-		}
-		catch( Exception ex ) {
-			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al actualizar el canal" );
-		}
+		validateDTO( channelDto );
+		return super.update( channelDto );
 	}
 
 	public boolean delete(ChannelDTO channelDto) {
-		try {
-			return super.delete( channelDto );
-		}
-		catch( Exception ex ) {
-			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al eliminar el canal" );
-		}
+		return super.delete( channelDto );
 	}
 	
 	@Override

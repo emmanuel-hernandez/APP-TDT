@@ -7,73 +7,140 @@ import javax.validation.ValidationException;
 import org.apache.log4j.Logger;
 
 import com.efe13.mvc.model.api.impl.dto.DTOAPI;
+import com.efe13.tdt.controller.StateController;
+import com.efe13.tdt.enums.StatusResultService;
 import com.efe13.tdt.model.dto.StateDTO;
 import com.efe13.tdt.service.StateService;
+import com.efe13.tdt.util.ServiceResult;
 
 public class StateServiceImpl extends StateService {
 	
-	private static final Logger log = Logger.getLogger( StateServiceImpl.class );
+	private final static Logger log = Logger.getLogger( StateController.class );
 	
-	public StateDTO getById( StateDTO stateDTO ) {
-		stateDTO = super.getById( stateDTO );
-		if( stateDTO == null ) {
-			throw new NullPointerException( "El estado especificado no existe" );
+	private ServiceResult<StateDTO> serviceResult = null;
+	private String resultMessage;
+	private StatusResultService statusResultService;
+	
+	public ServiceResult<StateDTO> getById( StateDTO stateDTO ) {
+		try {
+			serviceResult = new ServiceResult<>();
+			
+			stateDTO = super.getById( stateDTO );
+			if( stateDTO != null ) {
+				serviceResult.setObject( stateDTO );
+				statusResultService = StatusResultService.STATUS_SUCCESS;
+			}
+			else {
+				resultMessage = "El estado especificado no existe";
+				statusResultService = StatusResultService.STATUS_FAILED;
+			}
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+			resultMessage = ex.getMessage();
+			statusResultService = StatusResultService.STATUS_FAILED;
 		}
 		
-		return stateDTO;
+		serviceResult.setMessage( resultMessage );
+		serviceResult.setStatusResult( statusResultService );
+		return serviceResult;
 	}
 
-	public ArrayList<StateDTO> listAll() {
+	public ServiceResult<StateDTO> listAll() {
 		try {
+			serviceResult = new ServiceResult<>();
+			
 			ArrayList<StateDTO> dtos = new ArrayList<>();
 			for( DTOAPI dto : super.getAll() ) {
 				dtos.add( (StateDTO) dto );
 			}
 			
-			return dtos;
+			serviceResult.setCollection( dtos );
+			statusResultService = StatusResultService.STATUS_SUCCESS;
 		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al obtener los estados" );
+			resultMessage = ex.getMessage();
+			statusResultService = StatusResultService.STATUS_FAILED;
 		}
+		
+		serviceResult.setMessage( resultMessage );
+		serviceResult.setStatusResult( statusResultService );
+		return serviceResult;
 	}
 
-	public short saveState(StateDTO stateDTO) {
+	public ServiceResult<StateDTO> saveState(StateDTO stateDTO) {
 		try {
+			serviceResult = new ServiceResult<>();
+			
 			validateDTO( stateDTO );
-			return super.save( stateDTO );
-		}
-		catch( ValidationException ex ) {
-			throw ex;
+			if( super.save( stateDTO ) > 0 ) {
+				resultMessage = "El estado se ha guardado correctamente";
+				statusResultService = StatusResultService.STATUS_SUCCESS;
+			}
+			else {
+				resultMessage = "No se pudo guardar el estado";
+				statusResultService = StatusResultService.STATUS_FAILED;
+			}
 		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al guardar el estado" );
+			resultMessage = ex.getMessage();
+			statusResultService = StatusResultService.STATUS_FAILED;
 		}
+		
+		serviceResult.setMessage( resultMessage );
+		serviceResult.setStatusResult( statusResultService );
+		return serviceResult;
 	}
 
-	public boolean update(StateDTO stateDTO) {
+	public ServiceResult<StateDTO> update(StateDTO stateDTO) {
 		try {
+			serviceResult = new ServiceResult<>();
+			
 			validateDTO( stateDTO );
-			return super.update( stateDTO );
-		}
-		catch( ValidationException ex ) {
-			throw ex;
+			if( super.update( stateDTO ) ) {
+				resultMessage = "El estado se ha actualizado correctamente";
+				statusResultService = StatusResultService.STATUS_SUCCESS;
+			}
+			else {
+				resultMessage = "No se pudo actualizar el estado";;
+				statusResultService = StatusResultService.STATUS_FAILED;
+			}
 		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al actualizar el estado" );
+			resultMessage = ex.getMessage();
+			statusResultService = StatusResultService.STATUS_FAILED;
 		}
+		
+		serviceResult.setMessage( resultMessage );
+		serviceResult.setStatusResult( statusResultService );
+		return serviceResult;
 	}
 
-	public boolean delete(StateDTO stateDTO) {
+	public ServiceResult<StateDTO> delete(StateDTO stateDTO) {
 		try {
-			return super.delete( stateDTO );
+			serviceResult = new ServiceResult<>();
+			
+			if( super.delete( stateDTO ) ) {
+				resultMessage = "El estado se ha eliminado correctamente";
+				statusResultService = StatusResultService.STATUS_SUCCESS;
+			}
+			else {
+				resultMessage = "No se pudo eliminar el estado";;
+				statusResultService = StatusResultService.STATUS_FAILED;
+			}
 		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al eliminar el estado" );
+			resultMessage = ex.getMessage();
+			statusResultService = StatusResultService.STATUS_FAILED;
 		}
+		
+		serviceResult.setMessage( resultMessage );
+		serviceResult.setStatusResult( statusResultService );
+		return serviceResult;
 	}
 	
 	@Override

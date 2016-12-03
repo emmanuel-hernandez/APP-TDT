@@ -4,17 +4,13 @@ import java.util.ArrayList;
 
 import javax.validation.ValidationException;
 
-import org.apache.log4j.Logger;
-
 import com.efe13.mvc.model.api.impl.dto.DTOAPI;
 import com.efe13.tdt.model.dto.ChannelBandDTO;
 import com.efe13.tdt.service.ChannelBandService;
 
 public class ChannelBandServiceImpl extends ChannelBandService {
 	
-	private static final Logger log = Logger.getLogger( ChannelBandServiceImpl.class );
-	
-	public ChannelBandDTO getById( ChannelBandDTO channelBandDto ) throws RuntimeException {
+	public ChannelBandDTO getById( ChannelBandDTO channelBandDto ) {
 		channelBandDto = super.getById( channelBandDto );
 		if( channelBandDto == null )
 			throw new NullPointerException( "La banda especificada no existe" );
@@ -23,56 +19,26 @@ public class ChannelBandServiceImpl extends ChannelBandService {
 	}
 
 	public ArrayList<ChannelBandDTO> listAll() {
-		try {
-			ArrayList<ChannelBandDTO> dtos = new ArrayList<>();
-			for( DTOAPI dto : super.getAll() ) {
-				dtos.add( (ChannelBandDTO) dto );
-			}
+		ArrayList<ChannelBandDTO> dtos = new ArrayList<>();
+		for( DTOAPI dto : super.getAll() ) {
+			dtos.add( (ChannelBandDTO) dto );
+		}
 
-			return dtos;
-		}
-		catch( Exception ex ) {
-			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al obtener los estados" );
-		}
+		return dtos;
 	}
 
 	public short save(ChannelBandDTO channelBandDto) {
-		try {
-			validateDTO( channelBandDto );
-			return super.save( channelBandDto );
-		}
-		catch( ValidationException ex ) {
-			throw ex;
-		}
-		catch( Exception ex ) {
-			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al guardar la banda" );
-		}
+		validateDTO( channelBandDto );
+		return super.save( channelBandDto );
 	}
 
 	public boolean update(ChannelBandDTO channelBandDto) {
-		try {
-			validateDTO( channelBandDto );
-			return super.update( channelBandDto );
-		}
-		catch( ValidationException ex ) {
-			throw ex;
-		}
-		catch( Exception ex ) {
-			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al actualizar la banda" );
-		}
+		validateDTO( channelBandDto );
+		return super.update( channelBandDto );
 	}
 
 	public boolean delete(ChannelBandDTO channelBandDto) {
-		try {
-			return super.delete( channelBandDto );
-		}
-		catch( Exception ex ) {
-			log.error( ex.getMessage(), ex );
-			throw new RuntimeException( "Ocurrió un error al eliminar la banda" );
-		}
+		return super.delete( channelBandDto );
 	}
 	
 	@Override

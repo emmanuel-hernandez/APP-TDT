@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.efe13.mvc.model.api.impl.dto.DTOAPI;
 import com.efe13.mvc.service.api.impl.ServiceAPI;
 import com.efe13.tdt.model.dto.PopulationDTO;
-import com.efe13.tdt.model.dto.StateDTO;
 import com.efe13.tdt.service.PopulationService;
-import com.efe13.tdt.service.StateService;
 
 /**
  * @author Emmanuel

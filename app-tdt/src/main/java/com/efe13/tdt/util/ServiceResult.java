@@ -3,44 +3,43 @@ package com.efe13.tdt.util;
 import java.util.Collections;
 import java.util.List;
 
-public class JSONOutputWrapper<T> {
+import com.efe13.tdt.enums.StatusResultService;
 
-	public static final boolean RESULT_SUCCESS = true;
-	public static final boolean RESULT_FAILED = false;
+public class ServiceResult<T> {
 	
 	private T object;
 	private List<T> collection = Collections.emptyList();
-	private boolean success;
+	private StatusResultService statusResult;
 	private String message;
 	
-	public JSONOutputWrapper() {
+	public ServiceResult() {
 	}
 	
-	public JSONOutputWrapper(T object, boolean success) {
+	public ServiceResult(T object, StatusResultService success) {
 		this( object, Collections.emptyList(), success, "" );
 	}
 	
-	public JSONOutputWrapper(List<T> collection, boolean success) {
+	public ServiceResult(List<T> collection, StatusResultService success) {
 		this( null, collection, success, "" );
 	}
 	
-	public JSONOutputWrapper(String message, boolean success) {
+	public ServiceResult(String message, StatusResultService success) {
 		this( null, Collections.emptyList(), success, message );
 	}
 	
-	public JSONOutputWrapper(T object, List<T> collection, boolean success, String message) {
-		this.success = success;
+	public ServiceResult(T object, List<T> collection, StatusResultService success, String message) {
+		this.statusResult = success;
 		this.message = message;
 		this.object = object;
 		this.collection = collection;
 	}
 
-	public boolean isResultSuccess() {
-		return success;
+	public StatusResultService getStatusResult() {
+		return statusResult;
 	}
 	
-	public void setResultSuccess(boolean success) {
-		this.success = success;
+	public void setStatusResult( StatusResultService success) {
+		this.statusResult = success;
 	}
 	
 	public String getMessage() {
@@ -66,5 +65,4 @@ public class JSONOutputWrapper<T> {
 	public void setCollection(List<T> collection) {
 		this.collection = collection;
 	}
-	
 }
