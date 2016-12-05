@@ -20,7 +20,7 @@ public class ChannelBandDTO extends DTOAPI {
 	
 	@Override
 	public void setId(Number id) {
-		this.id = (short) id;
+		this.id = new Short( String.valueOf(id) );
 	}
 	
 	public String getName() {

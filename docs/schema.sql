@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS channel(
 	channelId SMALLINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	distinctive VARCHAR(8) NOT NULL,
 	name VARCHAR(50) NOT NULL,
-	virtualChannel FLOAT(2,1) NOT NULL,
+	virtualChannel FLOAT(3,1) NOT NULL,
 	physicChannel TINYINT NOT NULL,
 	quality VARCHAR(2) NOT NULL,
 	resolution VARCHAR(5) NOT NULL,

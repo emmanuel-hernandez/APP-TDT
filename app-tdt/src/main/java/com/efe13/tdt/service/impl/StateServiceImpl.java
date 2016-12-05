@@ -7,7 +7,6 @@ import javax.validation.ValidationException;
 import org.apache.log4j.Logger;
 
 import com.efe13.mvc.model.api.impl.dto.DTOAPI;
-import com.efe13.tdt.controller.StateController;
 import com.efe13.tdt.enums.StatusResultService;
 import com.efe13.tdt.model.dto.StateDTO;
 import com.efe13.tdt.service.StateService;
@@ -15,7 +14,7 @@ import com.efe13.tdt.util.ServiceResult;
 
 public class StateServiceImpl extends StateService {
 	
-	private final static Logger log = Logger.getLogger( StateController.class );
+	private final static Logger log = Logger.getLogger( StateServiceImpl.class );
 	
 	private ServiceResult<StateDTO> serviceResult = null;
 	private String resultMessage;
@@ -27,6 +26,7 @@ public class StateServiceImpl extends StateService {
 			
 			stateDTO = super.getById( stateDTO );
 			if( stateDTO != null ) {
+				resultMessage = null;
 				serviceResult.setObject( stateDTO );
 				statusResultService = StatusResultService.STATUS_SUCCESS;
 			}

@@ -487,7 +487,7 @@ INSERT INTO channelBand(name, description, active) VALUES('TDT', 'DIGITAL', TRUE
 
 
 INSERT INTO channel(distinctive, name, virtualChannel, physicChannel, quality, resolution, power, acesli, longitude, latitude, effectiveDateStart, effectiveDateEnd, channelBandId, populationId, concessionaireId, concessionTypeId, active) VALUES
-('XHGC', 'CANAL 5', 5.1, 35, 'HD', '1080i' 225, 34, '33.33', '44.33', '2000-03-12', '2030-03-12', 2, 204, 67, 1, TRUE);
+('XHGC', 'CANAL 5', 5.1, 35, 'HD', '1080i', 225, 34, '33.33', '44.33', '2000-03-12', '2030-03-12', 2, 204, 67, 1, TRUE);
 INSERT INTO channel(distinctive, name, virtualChannel, physicChannel, quality, resolution, power, acesli, longitude, latitude, effectiveDateStart, effectiveDateEnd, channelBandId, populationId, concessionaireId, concessionTypeId, active) VALUES
 ('XHIH', 'AZTECA 7', 7.1, 30, 'SD', '480i', 200, 50, '43.33', '54.33', '2002-11-01', '2032-11-01', 1, 184, 69, 2, TRUE);
 INSERT INTO channel(distinctive, name, virtualChannel, physicChannel, quality, resolution, power, acesli, longitude, latitude, effectiveDateStart, effectiveDateEnd, channelBandId, populationId, concessionaireId, concessionTypeId, active) VALUES

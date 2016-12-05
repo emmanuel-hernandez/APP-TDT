@@ -4,42 +4,143 @@ import java.util.ArrayList;
 
 import javax.validation.ValidationException;
 
+import org.apache.log4j.Logger;
+
 import com.efe13.mvc.model.api.impl.dto.DTOAPI;
+import com.efe13.tdt.enums.StatusResultService;
 import com.efe13.tdt.model.dto.PopulationDTO;
 import com.efe13.tdt.service.PopulationService;
+import com.efe13.tdt.util.ServiceResult;
 
 public class PopulationServiceImpl extends PopulationService {
 	
-	public PopulationDTO getById( PopulationDTO populationDTO ) throws RuntimeException {
-		populationDTO = super.getById( populationDTO );
-		if( populationDTO == null ) {
-			throw new NullPointerException( "La población especificada no existe" );
+	private final static Logger log = Logger.getLogger( PopulationServiceImpl.class );
+	
+	private ServiceResult<PopulationDTO> serviceResult = null;
+	private String resultMessage;
+	private StatusResultService statusResultService;
+	
+	public ServiceResult<PopulationDTO> getById( PopulationDTO populationDTO ) {
+		try {
+			serviceResult = new ServiceResult<>();
+			
+			populationDTO = super.getById( populationDTO );
+			if( populationDTO != null ) {
+				resultMessage = null;
+				serviceResult.setObject( populationDTO );
+				statusResultService = StatusResultService.STATUS_SUCCESS;
+			}
+			else {
+				resultMessage = "La población especificada no existe";
+				statusResultService = StatusResultService.STATUS_FAILED;
+			}
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+			resultMessage = ex.getMessage();
+			statusResultService = StatusResultService.STATUS_FAILED;
 		}
 		
-		return populationDTO;
+		serviceResult.setMessage( resultMessage );
+		serviceResult.setStatusResult( statusResultService );
+		return serviceResult;
 	}
 
-	public ArrayList<PopulationDTO> listAll() {
-		ArrayList<PopulationDTO> dtos = new ArrayList<>();
-		for( DTOAPI dto : super.getAll() ) {
-			dtos.add( (PopulationDTO) dto );
+	public ServiceResult<PopulationDTO> listAll() {
+		try {
+			serviceResult = new ServiceResult<>();
+			
+			ArrayList<PopulationDTO> dtos = new ArrayList<>();
+			for( DTOAPI dto : super.getAll() ) {
+				dtos.add( (PopulationDTO) dto );
+			}
+			
+			serviceResult.setCollection( dtos );
+			statusResultService = StatusResultService.STATUS_SUCCESS;
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+			resultMessage = ex.getMessage();
+			statusResultService = StatusResultService.STATUS_FAILED;
 		}
 		
-		return dtos;
+		serviceResult.setMessage( resultMessage );
+		serviceResult.setStatusResult( statusResultService );
+		return serviceResult;
 	}
 
-	public short save(PopulationDTO populationDTO) {
-		validateDTO( populationDTO );
-		return super.save( populationDTO );
+	public ServiceResult<PopulationDTO> savePopulation(PopulationDTO populationDTO) {
+		try {
+			serviceResult = new ServiceResult<>();
+			
+			validateDTO( populationDTO );
+			if( super.save( populationDTO ) > 0 ) {
+				resultMessage = "La población se ha guardado correctamente";
+				statusResultService = StatusResultService.STATUS_SUCCESS;
+			}
+			else {
+				resultMessage = "No se pudo guardar la población";
+				statusResultService = StatusResultService.STATUS_FAILED;
+			}
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+			resultMessage = ex.getMessage();
+			statusResultService = StatusResultService.STATUS_FAILED;
+		}
+		
+		serviceResult.setMessage( resultMessage );
+		serviceResult.setStatusResult( statusResultService );
+		return serviceResult;
 	}
 
-	public boolean update(PopulationDTO populationDTO) {
-		validateDTO( populationDTO );
-		return super.update( populationDTO );
+	public ServiceResult<PopulationDTO> update(PopulationDTO populationDTO) {
+		try {
+			serviceResult = new ServiceResult<>();
+			
+			validateDTO( populationDTO );
+			if( super.update( populationDTO ) ) {
+				resultMessage = "La población se ha actualizado correctamente";
+				statusResultService = StatusResultService.STATUS_SUCCESS;
+			}
+			else {
+				resultMessage = "No se pudo actualizar la población";;
+				statusResultService = StatusResultService.STATUS_FAILED;
+			}
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+			resultMessage = ex.getMessage();
+			statusResultService = StatusResultService.STATUS_FAILED;
+		}
+		
+		serviceResult.setMessage( resultMessage );
+		serviceResult.setStatusResult( statusResultService );
+		return serviceResult;
 	}
 
-	public boolean delete(PopulationDTO populationDTO) {
-		return super.delete( populationDTO );
+	public ServiceResult<PopulationDTO> delete(PopulationDTO populationDTO) {
+		try {
+			serviceResult = new ServiceResult<>();
+			
+			if( super.delete( populationDTO ) ) {
+				resultMessage = "El estado se ha eliminado correctamente";
+				statusResultService = StatusResultService.STATUS_SUCCESS;
+			}
+			else {
+				resultMessage = "No se pudo eliminar el estado";;
+				statusResultService = StatusResultService.STATUS_FAILED;
+			}
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+			resultMessage = ex.getMessage();
+			statusResultService = StatusResultService.STATUS_FAILED;
+		}
+		
+		serviceResult.setMessage( resultMessage );
+		serviceResult.setStatusResult( statusResultService );
+		return serviceResult;
 	}
 	
 	@Override
