@@ -3,7 +3,7 @@
   <groupId>com.efe13.tdt</groupId>
   <artifactId>app-tdt</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>war</packaging>
+  <!--packaging>war</packaging-->
   <name>App TDT</name>
   
   <properties>
@@ -61,20 +61,29 @@
   </dependencies>
   
   <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-				</configuration>
-			</plugin>
-        </plugins>
+    <plugins>
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+        </plugin>
+      <plugin>
+  			<groupId>org.apache.maven.plugins</groupId>
+  			<artifactId>maven-compiler-plugin</artifactId>
+  				<configuration>
+  					<source>${java.version}</source>
+  					<target>${java.version}</target>
+          </configuration>
+      </plugin>
+    </plugins>
+
+     <resources>
+      <resource>
+        <directory>src/main/webapp/app</directory>
+        <includes>
+          <include>**/*.*</include>
+        </includes>
+      </resource>
+    </resources>
   </build>
 
     <repositories>
