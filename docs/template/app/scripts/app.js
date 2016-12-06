@@ -7,9 +7,8 @@
  *
  * Main module of the application.
  */
-const APP_NAME = 'sbAdminApp';
 angular
-  .module( APP_NAME, [
+  .module('sbAdminApp', [
     'oc.lazyLoad',
     'ui.router',
     'ui.bootstrap',
@@ -94,30 +93,18 @@ angular
           }
         }
       })
-      //.state('dashboard.form',{
-      .state('state',{
-        templateUrl:'views/states.html',
-        url:'/estados',
-        controller: 'StateController',
-        resolve: {
-            loadMyFiles:function($ocLazyLoad) {
-              return $ocLazyLoad.load({
-                name:'sbAdminApp',
-                files:[
-                'scripts/controllers/StateController.js',
-                ]
-              })
-            }
-          }
+      .state('dashboard.form',{
+        templateUrl:'views/form.html',
+        url:'/form'
     })
-      .state('population',{
+      .state('dashboard.blank',{
         templateUrl:'views/pages/blank.html',
-        url:'/poblaciones'
+        url:'/blank'
     })
-      .state('cocessionaire',{
+      .state('login',{
         templateUrl:'views/pages/login.html',
-        url:'/concesionarias'
-    })/*
+        url:'/login'
+    })
       .state('dashboard.chart',{
         templateUrl:'views/chart.html',
         url:'/chart',
@@ -165,7 +152,7 @@ angular
       .state('dashboard.grid',{
        templateUrl:'views/ui-elements/grid.html',
        url:'/grid'
-   })*/
+   })
   }]);
 
     

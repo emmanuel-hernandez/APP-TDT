@@ -1,5 +1,6 @@
 package com.efe13.tdt.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  */
 @RestController
+@CrossOrigin
 @RequestMapping( "/state" )
 public class StateController {
 	
