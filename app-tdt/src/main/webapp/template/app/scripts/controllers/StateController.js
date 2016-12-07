@@ -8,52 +8,83 @@
  */
 angular.module( APP_NAME ).controller( 'StateController',
 	function($scope, $position, $http) {
-		$scope.state = null;
+		$scope.state = {
+			id: 0,
+			name: null,
+			shortName: null
+		};
+		var isUpdate = false;
 		$scope.states = new Array();
+		$scope.alerts = {
+			message: '',
+			type: '',
+			show: false
+		};
 		
-		$http.get( 'http://localhost:8181/state/' ).success( function(data) {
-			if( data.statusResult.value ) {
-				$scope.states = data.collection;
-			}
-		});
-		
-		$scope.save = function() {
-			var config = {
-                headers : {
-                    'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
-                }
-            };
-			
-			var state = $.param({
-                id: 0,
-                name: $scope.state.name,
-                shortName: $scope.state.shortName
-            });
-
-			$http.post( 'http://localhost:8181/state/', {"state": JSON.stringify(state)}, config ).success( function(data) {
+		$scope.get = function() {
+			$http.get( 'http://localhost:8181/state/' ).success( function(data) {
 				if( data.statusResult.value ) {
-					alert( data.message );
+					$scope.states = data.collection;
 				}
 				else {
-					console.log( data );
+					$scope.alerts.show = true;
+					$scope.alerts.resultMessage = data.message;
 				}
 			});
 		}
 		
+		$scope.save = function() {
+			$scope.alerts.show = true;
+			if( !isUpdate ) {
+				$http.post( 'http://localhost:8181/state/', JSON.stringify($scope.state) ).success( function(data) {
+					$scope.alerts.type = ( data.statusResult.value ) ? 'success' : 'danger';
+					$scope.alerts.message = data.message;
+					
+					if( data.statusResult.value ) {
+						$scope.cancell();
+						$scope.get();
+					}
+				});
+			}
+			else {
+				$http.put( 'http://localhost:8181/state/' + $scope.state.id, JSON.stringify($scope.state) ).success( function(data) {
+					$scope.alerts.type = ( data.statusResult.value ) ? 'success' : 'danger';
+					$scope.alerts.message = data.message;
+					
+					if( data.statusResult.value ) {
+						$scope.cancell();
+						$scope.get();
+						isUpdate = false;
+					}
+				});
+			}
+		}
+		
 		$scope.delete = function( state ) {
-			var c = confirm( "¿Estas seguro que deseas eliminar este registro?" );
-			if( c) {
-				alert( 'Registro eliminado' );
+			var response = confirm( "¿Estas seguro que deseas eliminar este registro?" );
+			if( response ) {
+				$http.delete( 'http://localhost:8181/state/' + state.id ).success( function(data) {
+					if( data.statusResult.value ) {
+						$scope.alerts.type = ( data.statusResult.value ) ? 'success' : 'danger';
+						$scope.alerts.message = data.message;
+						$scope.alerts.show = true;
+						$scope.get();
+					}
+				});
 			}
 		}
 		
 		$scope.update = function( state ) {
-			$scope.state = state;
+			$scope.state = JSON.parse( JSON.stringify( state ) );
+			isUpdate = true;
 		}
 		
 		$scope.cancell = function() {
-			$scope.name = "";
-			$scope.shortName = "";
+			$scope.state.name = "";
+			$scope.state.shortName = "";
+			isUpdate = false;
 		}
+		
+		$scope.get();
 	}	
 );

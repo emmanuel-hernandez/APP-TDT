@@ -15,7 +15,6 @@
   <property name="hibernate.c3p0.min_size">1</property>
   <property name="hibernate.c3p0.max_size">10</property>
   <property name="hibernate.c3p0.timeout">50</property>
-  <property name="hibernate.c3p0.max_statements">10</property>
   <property name="hibernate.c3p0.idle_test_period">3000</property>
   
   <mapping class="com.efe13.tdt.model.entity.State"/>

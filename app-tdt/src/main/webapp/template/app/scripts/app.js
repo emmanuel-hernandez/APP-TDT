@@ -105,6 +105,7 @@ angular
                 name:'sbAdminApp',
                 files:[
                 'scripts/controllers/StateController.js',
+                'scripts/directives/alerts/alerts.js'
                 ]
               })
             }

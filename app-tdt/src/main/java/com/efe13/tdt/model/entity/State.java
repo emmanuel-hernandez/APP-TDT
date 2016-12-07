@@ -3,7 +3,6 @@ package com.efe13.tdt.model.entity;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -33,7 +32,7 @@ public class State extends EntityAPI {
 	@Column( name="active" )
 	private boolean active;
 	
-	@OneToMany( cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="state" )
+	@OneToMany( fetch=FetchType.LAZY, mappedBy="state" )
 	private Set<Population> populations = new HashSet<>();
 	
 	@Override

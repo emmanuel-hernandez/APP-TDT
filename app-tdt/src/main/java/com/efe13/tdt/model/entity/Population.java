@@ -36,7 +36,7 @@ public class Population extends EntityAPI {
 	@JoinColumn( name="stateId" )
 	private State state;
 	
-	@OneToMany( cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="population" )
+	@OneToMany( fetch=FetchType.LAZY, mappedBy="population" )
 	private Set<Channel> channels = new HashSet<>();
 	
 	@Override
