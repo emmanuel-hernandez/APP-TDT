@@ -1,22 +1,23 @@
 package com.efe13.tdt.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.efe13.tdt.enums.StatusResultService;
 import com.efe13.tdt.model.dto.ConcessionaireDTO;
 import com.efe13.tdt.service.impl.ConcessionaireServiceImpl;
 import com.efe13.tdt.util.ServiceResult;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author Emmanuel
  *
  */
 @RestController
+@CrossOrigin
 @RequestMapping( "/concessionaire" )
 public class ConcessionaireController {
 	
@@ -45,9 +46,8 @@ public class ConcessionaireController {
 	}
 	
 	@RequestMapping( value="/", method=RequestMethod.POST )
-	public ServiceResult<ConcessionaireDTO> saveConcessionaire( @RequestParam("concessionaire") String jsonConcessionaire ) {
+	public ServiceResult<ConcessionaireDTO> saveConcessionaire( @RequestBody ConcessionaireDTO concessionaireDTO ) {
 		try {
-			ConcessionaireDTO concessionaireDTO = new ObjectMapper().readValue( jsonConcessionaire, ConcessionaireDTO.class );
 			return CONCESSIONAIRE_SERVICE.saveConcessionaire( concessionaireDTO );
 		}
 		catch( Exception ex ) {
@@ -55,11 +55,16 @@ public class ConcessionaireController {
 		}
 	}
 	
-	@RequestMapping( value="/", method=RequestMethod.PUT )
-	public ServiceResult<ConcessionaireDTO> updateConcessionaire( @RequestParam("concessionaire") String jsonConcessionaire ) {
+	@RequestMapping( value="/{id}", method=RequestMethod.PUT )
+	public ServiceResult<ConcessionaireDTO> updateConcessionaire( @PathVariable("id") short concessionaireId, @RequestBody ConcessionaireDTO concessionaireDTO ) {
 		try {
-			ConcessionaireDTO concessionaireDTO = new ObjectMapper().readValue( jsonConcessionaire, ConcessionaireDTO.class );
-			return CONCESSIONAIRE_SERVICE.update( concessionaireDTO );
+			ServiceResult<ConcessionaireDTO> serviceResult = getConcessionaire( concessionaireId );
+			if( serviceResult.getStatusResult() == StatusResultService.STATUS_SUCCESS ) {
+				concessionaireDTO.setId( concessionaireId );
+				return CONCESSIONAIRE_SERVICE.update( concessionaireDTO );
+			}
+			
+			return serviceResult;
 		}
 		catch( Exception ex ) {
 			return new ServiceResult<ConcessionaireDTO>( ex.getMessage(), StatusResultService.STATUS_FAILED );
@@ -67,11 +72,15 @@ public class ConcessionaireController {
 
 	}
 	
-	@RequestMapping( value="/", method=RequestMethod.DELETE )
-	public ServiceResult<ConcessionaireDTO> deleteConcessionaire( @RequestParam("concessionaire") String jsonConcessionaire ) {
+	@RequestMapping( value="/{id}", method=RequestMethod.DELETE )
+	public ServiceResult<ConcessionaireDTO> deleteConcessionaire( @PathVariable("id") short concessionaireId ) {
 		try {
-			ConcessionaireDTO concessionaireDTO = new ObjectMapper().readValue( jsonConcessionaire, ConcessionaireDTO.class );
-			return CONCESSIONAIRE_SERVICE.delete( concessionaireDTO );
+			ServiceResult<ConcessionaireDTO> serviceResult = getConcessionaire( concessionaireId );
+			if( serviceResult.getStatusResult() == StatusResultService.STATUS_SUCCESS ) {
+				return CONCESSIONAIRE_SERVICE.delete( serviceResult.getObject() );
+			}
+			
+			return serviceResult;
 		}
 		catch( Exception ex ) {
 			return new ServiceResult<ConcessionaireDTO>( ex.getMessage(), StatusResultService.STATUS_FAILED );

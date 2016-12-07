@@ -15,7 +15,7 @@ public class StateDAO extends DAOAPI<State> {
 	
 	private final static String ACTIVE_CONDITION = "AND active = " + ActiveEnum.ACTIVE.getValue();
 	private final static String QUERY_GET_ALL = "FROM State WHERE 1=1 " + ACTIVE_CONDITION;
-	private final static String QUERY_GET_BY_ID = "FROM State WHERE stateId = :stateId " + ACTIVE_CONDITION;
+	private final static String QUERY_GET_BY_ID = "FROM State s WHERE stateId = :stateId " + ACTIVE_CONDITION + " ORDER BY s.name";
 
 	@Override
 	public State getById( EntityAPI object ) throws HibernateException, DAOException {

@@ -32,7 +32,7 @@ public class State extends EntityAPI {
 	@Column( name="active" )
 	private boolean active;
 	
-	@OneToMany( fetch=FetchType.LAZY, mappedBy="state" )
+	@OneToMany( fetch=FetchType.EAGER, mappedBy="state" )
 	private Set<Population> populations = new HashSet<>();
 	
 	@Override

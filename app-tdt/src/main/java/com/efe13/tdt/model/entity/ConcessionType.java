@@ -32,7 +32,7 @@ public class ConcessionType extends EntityAPI {
 	@Column( name="active" )
 	private boolean active;
 	
-	@OneToMany( fetch=FetchType.LAZY, mappedBy="concessionType" )
+	@OneToMany( fetch=FetchType.EAGER, mappedBy="concessionType" )
 	private Set<Channel> channels = new HashSet<>();
 	
 	@Override

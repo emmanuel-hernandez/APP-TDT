@@ -29,7 +29,7 @@ public class Concessionaire extends EntityAPI {
 	@Column( name="active" )
 	private boolean active;
 	
-	@OneToMany( fetch=FetchType.LAZY, mappedBy="concessionaire" )
+	@OneToMany( fetch=FetchType.EAGER, mappedBy="concessionaire" )
 	private Set<Channel> channels = new HashSet<>();
 	
 	@Override

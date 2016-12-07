@@ -32,7 +32,7 @@ public class ChannelBand extends EntityAPI {
 	@Column( name="active" )
 	private boolean active;
 	
-	@OneToMany( fetch=FetchType.LAZY, mappedBy="channelBand" )
+	@OneToMany( fetch=FetchType.EAGER, mappedBy="channelBand" )
 	private Set<Channel> channels = new HashSet<>();
 	
 	@Override

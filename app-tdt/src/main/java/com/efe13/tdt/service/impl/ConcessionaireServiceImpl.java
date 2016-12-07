@@ -31,7 +31,7 @@ public class ConcessionaireServiceImpl extends ConcessionaireService {
 				statusResultService = StatusResultService.STATUS_SUCCESS;
 			}
 			else {
-				resultMessage = "El canal especificada no existe";
+				resultMessage = "La concesionaria especificada no existe";
 				statusResultService = StatusResultService.STATUS_FAILED;
 			}
 		}
@@ -75,11 +75,11 @@ public class ConcessionaireServiceImpl extends ConcessionaireService {
 			
 			validateDTO( concessionaireDTO );
 			if( super.save( concessionaireDTO ) > 0 ) {
-				resultMessage = "El canal se ha guardado correctamente";
+				resultMessage = "La concesionaria se ha guardado correctamente";
 				statusResultService = StatusResultService.STATUS_SUCCESS;
 			}
 			else {
-				resultMessage = "No se pudo guardar el canal";
+				resultMessage = "No se pudo guardar la concesionaria";
 				statusResultService = StatusResultService.STATUS_FAILED;
 			}
 		}
@@ -100,11 +100,11 @@ public class ConcessionaireServiceImpl extends ConcessionaireService {
 			
 			validateDTO( concessionaireDTO );
 			if( super.update( concessionaireDTO ) ) {
-				resultMessage = "El canal se ha actualizado correctamente";
+				resultMessage = "La concesionaria se ha actualizado correctamente";
 				statusResultService = StatusResultService.STATUS_SUCCESS;
 			}
 			else {
-				resultMessage = "No se pudo actualizar el canal";;
+				resultMessage = "No se pudo actualizar la concesionaria";;
 				statusResultService = StatusResultService.STATUS_FAILED;
 			}
 		}

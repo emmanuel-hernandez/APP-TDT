@@ -57,19 +57,19 @@ public class Channel extends EntityAPI {
 	@Column( name="effectiveDateEnd" )
 	private String effectiveDateEnd;
 	
-	@ManyToOne( fetch=FetchType.LAZY )
+	@ManyToOne( fetch=FetchType.EAGER )
 	@JoinColumn( name="channelBandId" )
 	private ChannelBand channelBand;
 	
-	@ManyToOne( fetch=FetchType.LAZY )
+	@ManyToOne( fetch=FetchType.EAGER )
 	@JoinColumn( name="populationId" )
 	private Population population;
 	
-	@ManyToOne( fetch=FetchType.LAZY )
+	@ManyToOne( fetch=FetchType.EAGER )
 	@JoinColumn( name="concessionaireId" )
 	private Concessionaire concessionaire;
 	
-	@ManyToOne( fetch=FetchType.LAZY )
+	@ManyToOne( fetch=FetchType.EAGER )
 	@JoinColumn( name="concessionTypeId" )
 	private ConcessionType concessionType;
 	

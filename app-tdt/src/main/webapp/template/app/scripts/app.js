@@ -95,10 +95,10 @@ angular
         }
       })
       //.state('dashboard.form',{
-      .state('state',{
-        templateUrl:'views/states.html',
+      .state('dashboard.state',{
         url:'/estados',
         controller: 'StateController',
+        templateUrl:'views/states.html',
         resolve: {
             loadMyFiles:function($ocLazyLoad) {
               return $ocLazyLoad.load({
@@ -114,11 +114,23 @@ angular
       .state('population',{
         templateUrl:'views/pages/blank.html',
         url:'/poblaciones'
+    })		  
+      .state('dashboard.concessionaire',{
+        url:'/concesionarias',
+        controller: 'ConcessionaireController',
+        templateUrl:'views/concesionarias.html',
+        resolve: {
+            loadMyFiles:function($ocLazyLoad) {
+              return $ocLazyLoad.load({
+                name:'sbAdminApp',
+                files:[
+                'scripts/controllers/ConcessionaireController.js',
+                'scripts/directives/alerts/alerts.js'
+                ]
+              })
+            }
+          }
     })
-      .state('cocessionaire',{
-        templateUrl:'views/pages/login.html',
-        url:'/concesionarias'
-    })/*
       .state('dashboard.chart',{
         templateUrl:'views/chart.html',
         url:'/chart',
@@ -166,7 +178,7 @@ angular
       .state('dashboard.grid',{
        templateUrl:'views/ui-elements/grid.html',
        url:'/grid'
-   })*/
+   })
   }]);
 
     
