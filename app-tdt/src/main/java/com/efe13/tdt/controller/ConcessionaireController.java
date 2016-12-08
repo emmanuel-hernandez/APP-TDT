@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.efe13.mvc.commons.api.enums.ActiveEnum;
 import com.efe13.tdt.enums.StatusResultService;
 import com.efe13.tdt.model.dto.ConcessionaireDTO;
 import com.efe13.tdt.service.impl.ConcessionaireServiceImpl;
@@ -48,6 +49,7 @@ public class ConcessionaireController {
 	@RequestMapping( value="/", method=RequestMethod.POST )
 	public ServiceResult<ConcessionaireDTO> saveConcessionaire( @RequestBody ConcessionaireDTO concessionaireDTO ) {
 		try {
+			concessionaireDTO.setActive( ActiveEnum.ACTIVE.getValue() );
 			return CONCESSIONAIRE_SERVICE.saveConcessionaire( concessionaireDTO );
 		}
 		catch( Exception ex ) {

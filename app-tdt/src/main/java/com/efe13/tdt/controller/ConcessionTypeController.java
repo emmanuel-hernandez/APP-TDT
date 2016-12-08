@@ -1,22 +1,24 @@
 package com.efe13.tdt.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.efe13.mvc.commons.api.enums.ActiveEnum;
 import com.efe13.tdt.enums.StatusResultService;
 import com.efe13.tdt.model.dto.ConcessionTypeDTO;
 import com.efe13.tdt.service.impl.ConcessionTypeServiceImpl;
 import com.efe13.tdt.util.ServiceResult;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author Emmanuel
  *
  */
 @RestController
+@CrossOrigin
 @RequestMapping( "/concessionType" )
 public class ConcessionTypeController {
 	
@@ -45,9 +47,9 @@ public class ConcessionTypeController {
 	}
 	
 	@RequestMapping( value="/", method=RequestMethod.POST )
-	public ServiceResult<ConcessionTypeDTO> saveConcessionType( @RequestParam("concessionType") String jsonConcessionType ) {
+	public ServiceResult<ConcessionTypeDTO> saveConcessionType( @RequestBody ConcessionTypeDTO concessionTypeDTO ) {
 		try {
-			ConcessionTypeDTO concessionTypeDTO = new ObjectMapper().readValue( jsonConcessionType, ConcessionTypeDTO.class );
+			concessionTypeDTO.setActive( ActiveEnum.ACTIVE.getValue() );
 			return CONCESSION_TYPE_SERVICE.saveConcessionType( concessionTypeDTO );
 		}
 		catch( Exception ex ) {
@@ -55,27 +57,34 @@ public class ConcessionTypeController {
 		}
 	}
 	
-	@RequestMapping( value="/", method=RequestMethod.PUT )
-	public ServiceResult<ConcessionTypeDTO> updateConcessionType( @RequestParam("concessionType") String jsonConcessionType ) {
+	@RequestMapping( value="/{id}", method=RequestMethod.PUT )
+	public ServiceResult<ConcessionTypeDTO> updateConcessionType( @PathVariable("id") short concessionTypeId, @RequestBody ConcessionTypeDTO concessionTypeDTO ) {
 		try {
-			ConcessionTypeDTO concessionTypeDTO = new ObjectMapper().readValue( jsonConcessionType, ConcessionTypeDTO.class );
-			return CONCESSION_TYPE_SERVICE.update( concessionTypeDTO );
+			ServiceResult<ConcessionTypeDTO> serviceResult = getConcessionType( concessionTypeId );
+			if( serviceResult.getStatusResult() == StatusResultService.STATUS_SUCCESS ) {
+				serviceResult.getObject().setId( concessionTypeId );
+				return CONCESSION_TYPE_SERVICE.update( concessionTypeDTO );
+			}
+			
+			return serviceResult;
 		}
 		catch( Exception ex ) {
 			return new ServiceResult<ConcessionTypeDTO>( ex.getMessage(), StatusResultService.STATUS_FAILED );
 		}
-
 	}
 	
-	@RequestMapping( value="/", method=RequestMethod.DELETE )
-	public ServiceResult<ConcessionTypeDTO> deleteConcessionType( @RequestParam("concessionType") String jsonConcessionType ) {
+	@RequestMapping( value="/{id}", method=RequestMethod.DELETE )
+	public ServiceResult<ConcessionTypeDTO> deleteConcessionType( @PathVariable("id") short concessionTypeId ) {
 		try {
-			ConcessionTypeDTO concessionTypeDTO = new ObjectMapper().readValue( jsonConcessionType, ConcessionTypeDTO.class );
-			return CONCESSION_TYPE_SERVICE.delete( concessionTypeDTO );
+			ServiceResult<ConcessionTypeDTO> serviceResult = getConcessionType( concessionTypeId );
+			if( serviceResult.getStatusResult() == StatusResultService.STATUS_SUCCESS ) {
+				return CONCESSION_TYPE_SERVICE.delete( serviceResult.getObject() );	
+			}
+			
+			return serviceResult;
 		}
 		catch( Exception ex ) {
 			return new ServiceResult<ConcessionTypeDTO>( ex.getMessage(), StatusResultService.STATUS_FAILED );
 		}
-
 	}
 }

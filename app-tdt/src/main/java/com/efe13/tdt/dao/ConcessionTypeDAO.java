@@ -1,5 +1,7 @@
 package com.efe13.tdt.dao;
 
+import java.util.List;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 
@@ -13,6 +15,7 @@ public class ConcessionTypeDAO extends DAOAPI<ConcessionType> {
 
 	private final static String ACTIVE_CONDITION = "AND active = " + ActiveEnum.ACTIVE.getValue();
 	private final static String QUERY_GET_BY_ID = "FROM ConcessionType WHERE concessionTypeId = :concessionTypeId " + ACTIVE_CONDITION;
+	private final static String QUERY_GET_ALL = "FROM ConcessionType ct WHERE 1=1 " + ACTIVE_CONDITION + " ORDER BY ct.type";
 	
 	@Override
 	public ConcessionType getById( EntityAPI object ) throws HibernateException, DAOException {
@@ -20,6 +23,17 @@ public class ConcessionTypeDAO extends DAOAPI<ConcessionType> {
 		query.setParameter( "concessionTypeId", object.getId() );
 		
 		return (ConcessionType) query.uniqueResult();
+	}
+	
+	@Override
+	public List<EntityAPI> getAll() {
+		try {
+			Query query = getSession().createQuery( QUERY_GET_ALL );
+			return query.list();
+		}
+		finally {
+			super.closeSession();
+		}
 	}
 
 }

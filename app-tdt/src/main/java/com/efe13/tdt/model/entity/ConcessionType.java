@@ -32,8 +32,10 @@ public class ConcessionType extends EntityAPI {
 	@Column( name="active" )
 	private boolean active;
 	
+	/*
 	@OneToMany( fetch=FetchType.EAGER, mappedBy="concessionType" )
 	private Set<Channel> channels = new HashSet<>();
+	*/
 	
 	@Override
 	public Short getId() {
@@ -71,6 +73,7 @@ public class ConcessionType extends EntityAPI {
 		this.active = active;
 	}
 
+	/*
 	public Set<Channel> getChannels() {
 		return channels;
 	}
@@ -78,5 +81,6 @@ public class ConcessionType extends EntityAPI {
 	public void setChannels(Set<Channel> channels) {
 		this.channels = channels;
 	}
+	*/
 	
 }

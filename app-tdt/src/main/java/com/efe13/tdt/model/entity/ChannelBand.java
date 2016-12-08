@@ -32,8 +32,10 @@ public class ChannelBand extends EntityAPI {
 	@Column( name="active" )
 	private boolean active;
 	
+	/*
 	@OneToMany( fetch=FetchType.EAGER, mappedBy="channelBand" )
 	private Set<Channel> channels = new HashSet<>();
+	*/
 	
 	@Override
 	public Short getId() {
@@ -71,6 +73,7 @@ public class ChannelBand extends EntityAPI {
 		this.active = active;
 	}
 
+	/*
 	public Set<Channel> getChannels() {
 		return channels;
 	}
@@ -78,4 +81,5 @@ public class ChannelBand extends EntityAPI {
 	public void setChannels(Set<Channel> channels) {
 		this.channels = channels;
 	}
+	*/
 }

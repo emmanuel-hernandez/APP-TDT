@@ -1,0 +1,165 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Canales</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+	<div class="row">
+		<div class="col-lg-12 col-sm-12">
+			<p ng-show="alerts.show"><br/>
+				<alert-info message="{{alerts.message}}" type="{{alerts.type}}"/>
+			</p>
+		</div>
+	    <div class="col-lg-12 col-sm-12">
+	        <div class="panel panel-default">
+	            <div class="panel-heading">Registro</div>
+	            <div class="panel-body">
+	            	<form role="form">
+		            	<div class="row">
+		                    <div class="col-lg-2">
+                                <label for="distinctive">Distintivo:</label>
+                                <input class="form-control" id="distinctive" placeholder="Distintivo del canal" ng-model="channel.distinctive">
+		                    </div>
+		                    <div class="col-lg-4">
+                                <label for="name">Nombre:</label>
+                                <input class="form-control" id="name" placeholder="Nombre del canal" ng-model="channel.name">
+		                    </div>
+		                    <div class="col-lg-2">
+                                <label for="virtualChannel">Canal Virtual:</label>
+                                <input class="form-control" id="virtualChannel" placeholder="Canal virtual" ng-model="channel.virtualChannel">
+		                    </div>
+		                    <div class="col-lg-2">
+                                <label for="physicChannel">Canal F&iacute;sico:</label>
+                                <select id="physicChannel" class="form-control" ng-options="physicChannel.name for physicChannel in physicChannels track by physicChannel.id" ng-model="selectedPhysicChannel"></select>
+		                    </div>
+		                    <div class="col-lg-2">
+		                		<div class="form-group">
+			                		<label for="quality">Calidad:</label>
+			                		<select id="quality" class="form-control" ng-options="quality.name for quality in qualities track by quality.id" ng-model="selectedQuality"></select>
+	                            </div>
+		                	</div>
+		                </div><!-- /.row (nested) -->
+		                <div class="row">
+		                	<div class="col-lg-2">
+		                		<div class="form-group">
+			                		<label for="resolution">Resolución:</label>
+			                		<select id="resolution" class="form-control" ng-options="resolution.name for resolution in resolutions track by resolution.id" ng-model="selectedResolution"></select>
+	                            </div>
+		                	</div>
+		                	<div class="col-lg-2">
+		                		<div class="form-group">
+			                		<label for="power">Potencia:</label>
+	                                <input class="form-control" id="power" placeholder="Potencia" ng-model="channel.power">
+	                            </div>
+		                	</div>
+		                	<div class="col-lg-2">
+		                		<div class="form-group">
+			                		<label for="acesli">ACESLI:</label>
+	                                <input class="form-control" id="acesli" placeholder="ACESLI" ng-model="channel.acesli">
+	                            </div>
+		                	</div>
+		                	<div class="col-lg-2">
+		                		<div class="form-group">
+			                		<label for="longitude">Longitud:</label>
+	                                <input class="form-control" id="longitude" placeholder="Longitud" ng-model="channel.longitude">
+	                            </div>
+		                	</div>
+		                	<div class="col-lg-2">
+		                		<div class="form-group">
+			                		<label for="latitude">Latitud:</label>
+	                                <input class="form-control" id="latitude" placeholder="Latitud" ng-model="channel.latitude">
+	                            </div>
+		                	</div>
+		                	<div class="col-lg-2">
+		                		<div class="form-group">
+			                		<label for="channelBand">Banda:</label>
+			                		<select id="channelBand" class="form-control" ng-options="channelBand.name for channelBand in channelBands track by channelBand.id" ng-model="selectedChannelBand"></select>
+	                            </div>
+		                	</div>
+		                </div>
+		                <div class="row">
+		                	<div class="col-lg-4">
+		                		<div class="form-group">
+			                		<label for="population">Población:</label>
+			                		<select id="population" class="form-control" ng-options="population.name for population in populations track by population.id" ng-model="selectedPopulation"></select>
+	                            </div>
+		                	</div>
+		                	<div class="col-lg-4">
+		                		<div class="form-group">
+			                		<label for="concessionaire">Concesionaria:</label>
+			                		<select id="concessionaire" class="form-control" ng-options="concessionaire.name for concessionaire in concessionaires track by concessionaire.id" ng-model="selectedConcessionaire"></select>
+	                            </div>
+		                	</div>
+		                	<div class="col-lg-4">
+		                		<div class="form-group">
+			                		<label for="concessionType">Tipo de concesi&oacute;n:</label>
+			                		<select id="concessionType" class="form-control" ng-options="concessionType.type for concessionType in concessionTypes track by concessionType.id" ng-model="selectedConcessionType"></select>
+	                            </div>
+		                	</div>
+		                </div>
+		                <div class="row">
+		                	<div class="col-lg-12">
+		                		<button type="reset" class="btn btn-default" ng-click="cancell()">Cancelar</button>
+		                        <button type="submit" class="btn btn-primary" ng-click="save()">Guardar</button>
+		                	</div>
+		                </div>
+	                </form>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	<div class="row">
+	    <div class="col-lg-12 col-sm-12">
+	        <div class="panel panel-default">
+	            <div class="panel-heading">Listado</div>
+	            <div class="panel-body">
+	            	<div class="dataTable_wrapper">
+	                    <table class="table table-striped table-bordered table-hover">
+	                        <thead>
+	                            <tr>
+	                                <th>Distintivo</th>
+	                                <th>Nombre</th>
+	                                <th>Canal virtual</th>
+	                                <th>Canal f&iacute;sico</th>
+	                                <th>Calidad</th>
+	                                <th>Resoluci&oacute;n</th>
+	                                <th>Banda</th>
+	                                <!--th>Potencia</th>
+	                                <th>ACESLI</th>
+	                                <th>Longitud</th>
+	                                <th>Latitud</th-->
+	                                <th align="center" colspan="3" width="30%">Acciones</th>
+	                            </tr>
+	                        </thead>
+	                        <tbody>
+	                            <tr ng-repeat="channel in channels">
+	                                <td>{{channel.distinctive}}</td>
+	                                <td>{{channel.name}}</td>
+	                                <td>{{channel.virtualChannel}}</td>
+	                                <td>{{channel.physicChannel}}</td>
+	                                <td>{{channel.quality}}</td>
+	                                <td>{{channel.resolution}}</td>
+	                                <td>{{channel.channelBand.name}}</td>
+	                                <!--td>{{channel.power}}</td>
+	                                <td>{{channel.acesli}}</td>
+	                                <td>{{channel.longitude}}</td>
+	                                <td>{{channel.latitude}}</td-->
+	                                <td class="center">
+	                                	 <button type="button" class="btn btn-primary" ng-click="update(channel)">Detalles</button>
+	                                </td>
+	                                <td class="center">
+	                                	 <button type="button" class="btn btn-danger" ng-click="delete(channel)">Eliminar</button>
+	                                </td>
+	                                <td class="center">
+	                          			 <button type="button" class="btn btn-default" ng-click="update(channel)">Actualizar</button>
+	                                </td>
+	                            </tr>
+	                        </tbody>
+	                    </table>
+	                </div><!-- /.table-responsive -->
+	            </div>
+	        </div>
+	    </div>
+	</div>
+</div>

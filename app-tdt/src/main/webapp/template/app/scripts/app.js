@@ -111,14 +111,26 @@ angular
             }
           }
     })
-      .state('population',{
-        templateUrl:'views/pages/blank.html',
-        url:'/poblaciones'
+      .state('dashboard.population',{
+        url:'/poblaciones',
+        controller: 'PopulationController',
+        templateUrl:'views/populations.html',
+        resolve: {
+	        loadMyFiles:function($ocLazyLoad) {
+	          return $ocLazyLoad.load({
+	            name:'sbAdminApp',
+	            files:[
+	            'scripts/controllers/PopulationController.js',
+	            'scripts/directives/alerts/alerts.js'
+	            ]
+	          })
+	        }
+	      }
     })		  
       .state('dashboard.concessionaire',{
         url:'/concesionarias',
         controller: 'ConcessionaireController',
-        templateUrl:'views/concesionarias.html',
+        templateUrl:'views/concessionaires.html',
         resolve: {
             loadMyFiles:function($ocLazyLoad) {
               return $ocLazyLoad.load({
@@ -131,6 +143,22 @@ angular
             }
           }
     })
+      .state('dashboard.channel',{
+        url:'/canales',
+        controller: 'ChannelController',
+        templateUrl:'views/channels.html',
+        resolve: {
+            loadMyFiles:function($ocLazyLoad) {
+              return $ocLazyLoad.load({
+                name:'sbAdminApp',
+                files:[
+                'scripts/controllers/ChannelController.js',
+                'scripts/directives/alerts/alerts.js'
+                ]
+              })
+            }
+          }
+      })
       .state('dashboard.chart',{
         templateUrl:'views/chart.html',
         url:'/chart',

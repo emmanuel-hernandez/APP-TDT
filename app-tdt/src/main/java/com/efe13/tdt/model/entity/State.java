@@ -32,8 +32,10 @@ public class State extends EntityAPI {
 	@Column( name="active" )
 	private boolean active;
 	
+	/*
 	@OneToMany( fetch=FetchType.EAGER, mappedBy="state" )
 	private Set<Population> populations = new HashSet<>();
+	*/
 	
 	@Override
 	public Short getId() {
@@ -61,6 +63,7 @@ public class State extends EntityAPI {
 		this.shortName = shortName;
 	}
 
+	/*
 	public Set<Population> getPopulations() {
 		return populations;
 	}
@@ -68,6 +71,7 @@ public class State extends EntityAPI {
 	public void setPopulations(Set<Population> populations) {
 		this.populations = populations;
 	}
+	*/
 	
 	@Override
 	public Boolean isActive() {

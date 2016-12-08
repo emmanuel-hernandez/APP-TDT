@@ -1,22 +1,24 @@
 package com.efe13.tdt.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.efe13.mvc.commons.api.enums.ActiveEnum;
 import com.efe13.tdt.enums.StatusResultService;
 import com.efe13.tdt.model.dto.ChannelDTO;
 import com.efe13.tdt.service.impl.ChannelServiceImpl;
 import com.efe13.tdt.util.ServiceResult;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author Emmanuel
  *
  */
 @RestController
+@CrossOrigin
 @RequestMapping( "/channel" )
 public class ChannelController {
 	
@@ -45,9 +47,9 @@ public class ChannelController {
 	}
 	
 	@RequestMapping( value="/", method=RequestMethod.POST )
-	public ServiceResult<ChannelDTO> saveChannel( @RequestParam("channel") String jsonChannel ) {
+	public ServiceResult<ChannelDTO> saveChannel( @RequestBody ChannelDTO channelDTO ) {
 		try {
-			ChannelDTO channelDTO = new ObjectMapper().readValue( jsonChannel, ChannelDTO.class );
+			channelDTO.setActive( ActiveEnum.ACTIVE.getValue() );
 			return CHANNEL_SERVICE.saveChannel( channelDTO );
 		}
 		catch( Exception ex ) {
@@ -55,11 +57,16 @@ public class ChannelController {
 		}
 	}
 	
-	@RequestMapping( value="/", method=RequestMethod.PUT )
-	public ServiceResult<ChannelDTO> updateChannel( @RequestParam("channel") String jsonChannel ) {
+	@RequestMapping( value="/{id}", method=RequestMethod.PUT )
+	public ServiceResult<ChannelDTO> updateChannel( @PathVariable("id") short channelId, @RequestBody ChannelDTO channelDTO ) {
 		try {
-			ChannelDTO channelDTO = new ObjectMapper().readValue( jsonChannel, ChannelDTO.class );
-			return CHANNEL_SERVICE.update( channelDTO );
+			ServiceResult<ChannelDTO> serviceResult = getChannel( channelId );
+			if( serviceResult.getStatusResult() == StatusResultService.STATUS_SUCCESS ) {
+				serviceResult.getObject().setId( channelId );
+				return CHANNEL_SERVICE.update( channelDTO );
+			}
+			
+			return serviceResult;
 		}
 		catch( Exception ex ) {
 			return new ServiceResult<ChannelDTO>( ex.getMessage(), StatusResultService.STATUS_FAILED );
@@ -67,11 +74,15 @@ public class ChannelController {
 
 	}
 	
-	@RequestMapping( value="/", method=RequestMethod.DELETE )
-	public ServiceResult<ChannelDTO> deleteChannel( @RequestParam("channel") String jsonChannel ) {
+	@RequestMapping( value="/{id}", method=RequestMethod.DELETE )
+	public ServiceResult<ChannelDTO> deleteChannel( @PathVariable("id") short channelId ) {
 		try {
-			ChannelDTO channelDTO = new ObjectMapper().readValue( jsonChannel, ChannelDTO.class );
-			return CHANNEL_SERVICE.delete( channelDTO );
+			ServiceResult<ChannelDTO> serviceResult = getChannel( channelId );
+			if( serviceResult.getStatusResult() == StatusResultService.STATUS_SUCCESS ) {
+				return CHANNEL_SERVICE.delete( serviceResult.getObject() );
+			}
+			
+			return serviceResult;
 		}
 		catch( Exception ex ) {
 			return new ServiceResult<ChannelDTO>( ex.getMessage(), StatusResultService.STATUS_FAILED );
