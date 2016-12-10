@@ -494,4 +494,8 @@ INSERT INTO channel(distinctive, name, virtualChannel, physicChannel, quality, r
 ('XHAOX', 'IMAGEN TV', 3.1, 26, 'SD', '480i', 215, 25, '23.33', '34.33', '2016-11-25', '2046-11-25', 2, 190, 64, 3, TRUE);
 
 
-
+INSERT INTO channel(populationId, concessionTypeId, concessionaireId, distinctive,
+					channelBandId, physicChannel, virtualChannel, power, latitude,
+					longitude, acesli, effectiveDateStart, effectiveDateEnd, quality,
+					resolution, name, active) 
+VALUES()
