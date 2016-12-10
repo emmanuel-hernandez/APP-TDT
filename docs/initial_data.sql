@@ -499,3 +499,4 @@ INSERT INTO channel(populationId, concessionTypeId, concessionaireId, distinctiv
 					longitude, acesli, effectiveDateStart, effectiveDateEnd, quality,
 					resolution, name, active) 
 VALUES()
+
