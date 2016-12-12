@@ -8,9 +8,10 @@ import org.apache.log4j.Logger;
 
 import com.efe13.mvc.model.api.impl.dto.DTOAPI;
 import com.efe13.tdt.enums.StatusResultService;
+import com.efe13.tdt.helper.ServiceRequest;
+import com.efe13.tdt.helper.ServiceResult;
 import com.efe13.tdt.model.dto.ChannelBandDTO;
 import com.efe13.tdt.service.ChannelBandService;
-import com.efe13.tdt.util.ServiceResult;
 
 public class ChannelBandServiceImpl extends ChannelBandService {
 
@@ -46,12 +47,12 @@ public class ChannelBandServiceImpl extends ChannelBandService {
 		return serviceResult;
 	}
 
-	public ServiceResult<ChannelBandDTO> listAll() {
+	public ServiceResult<ChannelBandDTO> listAll( ServiceRequest serviceRequest ) {
 		try {
 			serviceResult = new ServiceResult<>();
 			
 			ArrayList<ChannelBandDTO> dtos = new ArrayList<>();
-			for( DTOAPI dto : super.getAll() ) {
+			for( DTOAPI dto : super.getAll( serviceRequest ) ) {
 				dtos.add( (ChannelBandDTO) dto );
 			}
 			

@@ -5,11 +5,11 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.efe13.mvc.commons.api.enums.ActiveEnum;
+import com.efe13.tdt.helper.ServiceResult;
 import com.efe13.tdt.model.dto.PopulationDTO;
 import com.efe13.tdt.model.dto.StateDTO;
 import com.efe13.tdt.service.impl.PopulationServiceImpl;
 import com.efe13.tdt.service.impl.StateServiceImpl;
-import com.efe13.tdt.util.ServiceResult;
 
 public class PopulationTest {
 	

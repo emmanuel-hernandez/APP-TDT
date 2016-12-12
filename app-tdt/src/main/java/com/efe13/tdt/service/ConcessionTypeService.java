@@ -40,11 +40,11 @@ public class ConcessionTypeService extends ServiceAPI {
 	}
 
 	@Override
-	public List<DTOAPI> getAll() {
+	public <E> List<DTOAPI> getAll( E queryHelper ) {
 		List<DTOAPI> dtos = Collections.emptyList();
 		
 		try {
-			List<EntityAPI> entities = CONCESSION_TYPE_DAO.getAll();
+			List<EntityAPI> entities = CONCESSION_TYPE_DAO.getAll( queryHelper );
 			if( !entities.isEmpty() ) {
 				dtos = new ArrayList<>();
 				for( EntityAPI entity : entities ) {

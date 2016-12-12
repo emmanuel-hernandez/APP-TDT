@@ -39,11 +39,11 @@ public class ChannelBandService extends ServiceAPI {
 	}
 
 	@Override
-	public List<DTOAPI> getAll() {
+	public <E> List<DTOAPI> getAll( E queryHelper ) {
 		List<DTOAPI> dtos = Collections.emptyList();
 		
 		try {
-			List<EntityAPI> entities = CHANNEL_BAND_DAO.getAll();
+			List<EntityAPI> entities = CHANNEL_BAND_DAO.getAll( queryHelper );
 			if( !entities.isEmpty() ) {
 				dtos = new ArrayList<>();
 				

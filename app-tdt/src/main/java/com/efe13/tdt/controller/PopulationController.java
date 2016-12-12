@@ -5,15 +5,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.efe13.mvc.commons.api.enums.ActiveEnum;
 import com.efe13.tdt.enums.StatusResultService;
+import com.efe13.tdt.helper.ServiceRequest;
+import com.efe13.tdt.helper.ServiceResult;
 import com.efe13.tdt.model.dto.PopulationDTO;
 import com.efe13.tdt.model.dto.StateDTO;
 import com.efe13.tdt.service.impl.PopulationServiceImpl;
 import com.efe13.tdt.service.impl.StateServiceImpl;
-import com.efe13.tdt.util.ServiceResult;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author Emmanuel
@@ -27,9 +30,11 @@ public class PopulationController {
 	private final static PopulationServiceImpl POPULATION_SERVICE = new PopulationServiceImpl();
 	
 	@RequestMapping( value="/", method=RequestMethod.GET )
-	public ServiceResult<PopulationDTO> getPopulations() {
+	public ServiceResult<PopulationDTO> getPopulations( @RequestParam(name="serviceRequest", required=false) String serviceRequestString ) {
 		try {
-			return POPULATION_SERVICE.listAll();
+			ServiceRequest serviceRequest = new ObjectMapper().readValue( serviceRequestString, ServiceRequest.class );
+			
+			return POPULATION_SERVICE.listAll( serviceRequest );
 		}
 		catch( Exception ex ) {
 			return new ServiceResult<PopulationDTO>( ex.getMessage(), StatusResultService.STATUS_FAILED );

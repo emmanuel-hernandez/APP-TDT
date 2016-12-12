@@ -5,13 +5,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.efe13.mvc.commons.api.enums.ActiveEnum;
+import com.efe13.mvc.model.api.impl.helper.QueryHelper;
 import com.efe13.tdt.enums.StatusResultService;
+import com.efe13.tdt.helper.ServiceResult;
 import com.efe13.tdt.model.dto.ChannelDTO;
 import com.efe13.tdt.service.impl.ChannelServiceImpl;
-import com.efe13.tdt.util.ServiceResult;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author Emmanuel
@@ -24,10 +27,16 @@ public class ChannelController {
 	
 	private final static ChannelServiceImpl CHANNEL_SERVICE = new ChannelServiceImpl();
 	
-	@RequestMapping( value="/", method=RequestMethod.GET )
-	public ServiceResult<ChannelDTO> getChannels() {
+	@RequestMapping( value="/", method=RequestMethod.GET)
+	public ServiceResult<ChannelDTO> getChannels( @RequestParam(name="queryHelper", required=false) String serviceRequestString ) {
 		try {
-			return CHANNEL_SERVICE.listAll();
+			QueryHelper queryHelper = null;
+			
+			if( serviceRequestString != null ) {
+				queryHelper = new ObjectMapper().readValue( serviceRequestString, QueryHelper.class );
+			}
+			
+			return CHANNEL_SERVICE.listAll( queryHelper );
 		}
 		catch( Exception ex ) {
 			return new ServiceResult<ChannelDTO>( ex.getMessage(), StatusResultService.STATUS_FAILED );

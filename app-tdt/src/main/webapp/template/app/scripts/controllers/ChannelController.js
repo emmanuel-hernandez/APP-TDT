@@ -8,31 +8,11 @@
  */
 angular.module( APP_NAME ).controller( 'ChannelController',
 	function($scope, $position, $http) {
-		const URL_CHANNEL = 'http://localhost:8181/channel/';
-		const URL_CHANNEL_BAND = 'http://localhost:8181/channelBand/';
-		const URL_POPULATION = 'http://localhost:8181/population/';
-		const URL_CONCESSIONAIRE = 'http://localhost:8181/concessionaire/';
-		const URL_CONCESSION_TYPE = 'http://localhost:8181/concessionType/';
-		
-		$scope.channel = {
-		  id: 0,
-		  distinctive: null,
-		  name: null,
-		  virtualChannel: null,
-		  physicChannel: null,
-		  quality: null,
-		  resolution: null,
-		  power: null,
-		  acesli: null,
-		  latitude: null,
-		  longitude: null,
-		  effectiveDateStart: null,
-		  effectiveDateEnd: null,
-		  channelBand: null,
-		  population: null,
-		  concessionaire: null,
-		  concessionType: null
-		};
+		$scope.channel = getInstance( ChannelDTO );
+		$scope.queryHelper = getInstance( QueryHelper );
+		$scope.queryHelper.paginationAPI.page = 1;
+		$scope.queryHelper.paginationAPI.pageSize = 10;
+		$scope.queryHelper.filterAPI = null;
 		
 		var defaultPhysicChannel = { id: 1, name: 14 };
 		var defaultResolution = { id: 1, name: '1080i' };
@@ -73,7 +53,7 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 		};
 
 		var getChannelBands = function() {
-			$http.get( URL_CHANNEL_BAND ).success( function(data) {
+			$http.get( CHANNEL_BAND_URL ).success( function(data) {
 				if( data.statusResult.value ) {
 					$scope.channelBands = data.collection;
 					defaultChannelBand = $scope.channelBands[0];
@@ -83,11 +63,10 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 					$scope.alerts.show = true;
 					$scope.alerts.resultMessage = data.message;
 				}
-				//$scope.channelBands.unshift( defaultChannelBand )
 			});
 		};
 		var getPopulations = function() {
-			$http.get( URL_POPULATION ).success( function(data) {
+			$http.get( POPULATION_URL ).success( function(data) {
 				if( data.statusResult.value ) {
 					$scope.populations = data.collection;
 				}
@@ -99,7 +78,7 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 			});
 		};
 		var getConcessionaires = function() {
-			$http.get( URL_CONCESSIONAIRE ).success( function(data) {
+			$http.get( CONCESSIONAIRE_URL ).success( function(data) {
 				if( data.statusResult.value ) {
 					$scope.concessionaires = data.collection;
 				}
@@ -111,7 +90,7 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 			});
 		};
 		var getConcessionTypes = function() {
-			$http.get( URL_CONCESSION_TYPE ).success( function(data) {
+			$http.get( CONCESSION_TYPE_URL ).success( function(data) {
 				if( data.statusResult.value ) {
 					$scope.concessionTypes = data.collection;
 				}
@@ -124,7 +103,7 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 		};
 		
 		$scope.get = function() {
-			$http.get( URL_CHANNEL ).success( function(data) {
+			$http.get( CHANNEL_URL +'?queryHelper='+ JSON.stringify($scope.queryHelper) ).success( function(data) {
 				if( data.statusResult.value ) {
 					$scope.channels = data.collection;
 				}
@@ -164,7 +143,7 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 			}
 			
 			if( !isUpdate ) {
-				$http.post( URL_CHANNEL, JSON.stringify($scope.channel) ).success( function(data) {
+				$http.post( CHANNEL_URL, JSON.stringify($scope.channel) ).success( function(data) {
 					$scope.alerts.type = ( data.statusResult.value ) ? 'success' : 'danger';
 					$scope.alerts.message = data.message;
 					
@@ -175,7 +154,7 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 				});
 			}
 			else {
-				$http.put( URL_CHANNEL + $scope.channel.id, JSON.stringify($scope.channel) ).success( function(data) {
+				$http.put( CHANNEL_URL + $scope.channel.id, JSON.stringify($scope.channel) ).success( function(data) {
 					$scope.alerts.type = ( data.statusResult.value ) ? 'success' : 'danger';
 					$scope.alerts.message = data.message;
 					
@@ -191,7 +170,7 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 		$scope.delete = function( channel ) {
 			var response = confirm( "¿Estas seguro que deseas eliminar este registro?" );
 			if( response ) {
-				$http.delete( URL_CHANNEL + channel.id ).success( function(data) {
+				$http.delete( CHANNEL_URL + channel.id ).success( function(data) {
 					if( data.statusResult.value ) {
 						$scope.alerts.type = ( data.statusResult.value ) ? 'success' : 'danger';
 						$scope.alerts.message = data.message;
@@ -203,7 +182,7 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 		}
 		
 		$scope.update = function( channel ) {
-			$scope.channel = JSON.parse( JSON.stringify( channel ) );
+			$scope.channel = getInstance( channel );
 			$scope.selectedChannelBand = $scope.channel.channelBand;
 			$scope.selectedPopulation = $scope.channel.population;
 			$scope.selectedConcessionaire = $scope.channel.concessionaire;

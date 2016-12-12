@@ -8,9 +8,10 @@ import org.apache.log4j.Logger;
 
 import com.efe13.mvc.model.api.impl.dto.DTOAPI;
 import com.efe13.tdt.enums.StatusResultService;
+import com.efe13.tdt.helper.ServiceRequest;
+import com.efe13.tdt.helper.ServiceResult;
 import com.efe13.tdt.model.dto.ConcessionTypeDTO;
 import com.efe13.tdt.service.ConcessionTypeService;
-import com.efe13.tdt.util.ServiceResult;
 
 public class ConcessionTypeServiceImpl extends ConcessionTypeService {
 	
@@ -46,12 +47,12 @@ public class ConcessionTypeServiceImpl extends ConcessionTypeService {
 		return serviceResult;
 	}
 
-	public ServiceResult<ConcessionTypeDTO> listAll() {
+	public ServiceResult<ConcessionTypeDTO> listAll( ServiceRequest serviceRequest ) {
 		try {
 			serviceResult = new ServiceResult<>();
 			
 			ArrayList<ConcessionTypeDTO> dtos = new ArrayList<>();
-			for( DTOAPI dto : super.getAll() ) {
+			for( DTOAPI dto : super.getAll( serviceRequest ) ) {
 				dtos.add( (ConcessionTypeDTO) dto );
 			}
 			

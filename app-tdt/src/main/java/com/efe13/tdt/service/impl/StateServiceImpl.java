@@ -8,9 +8,10 @@ import org.apache.log4j.Logger;
 
 import com.efe13.mvc.model.api.impl.dto.DTOAPI;
 import com.efe13.tdt.enums.StatusResultService;
+import com.efe13.tdt.helper.ServiceRequest;
+import com.efe13.tdt.helper.ServiceResult;
 import com.efe13.tdt.model.dto.StateDTO;
 import com.efe13.tdt.service.StateService;
-import com.efe13.tdt.util.ServiceResult;
 
 public class StateServiceImpl extends StateService {
 	
@@ -46,12 +47,12 @@ public class StateServiceImpl extends StateService {
 		return serviceResult;
 	}
 
-	public ServiceResult<StateDTO> listAll() {
+	public ServiceResult<StateDTO> listAll( ServiceRequest serviceRequest ) {
 		try {
 			serviceResult = new ServiceResult<>();
 			
 			ArrayList<StateDTO> dtos = new ArrayList<>();
-			for( DTOAPI dto : super.getAll() ) {
+			for( DTOAPI dto : super.getAll( serviceRequest ) ) {
 				dtos.add( (StateDTO) dto );
 			}
 			

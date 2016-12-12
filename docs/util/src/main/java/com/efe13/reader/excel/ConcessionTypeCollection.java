@@ -10,10 +10,12 @@ public class ConcessionTypeCollection {
 	public ConcessionTypeCollection() {
 		list.add( "(C)" );
 		list.add( "(P)" );
+		list.add( "(CP)" );
 		list.add( "(C)*" );
 		list.add( "(P)*" );
 		list.add( "(CP)*" );
 		list.add( "(CS)*" );
+		list.add( "(P)**" );
 		list.add( "(CP)**" );
 		list.add( "(CS)**" );
 	}

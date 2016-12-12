@@ -27,7 +27,7 @@ public class PopulationsCollection {
 		list.add( "ARMERÍA" );
 		list.add( "ARRIAGA" );
 		list.add( "ARRIAGA - TONALÁ" );
-		list.add( "ASUNCIÓN  NOCHISTLAN" );
+		list.add( "ASUNCIÓN NOCHISTLAN" );
 		list.add( "ATARJEA" );
 		list.add( "ATIL" );
 		list.add( "ATOTONILCO EL ALTO" );
@@ -167,7 +167,7 @@ public class PopulationsCollection {
 		list.add( "MÉXICO" );
 		list.add( "MIAHUATLÁN" );
 		list.add( "MIER Y NORIEGA" );
-		list.add( "MOCTEZUMA " );
+		list.add( "MOCTEZUMA" );
 		list.add( "MONCLOVA" );
 		list.add( "MONTERREY" );
 		list.add( "MORELIA" );
@@ -242,7 +242,7 @@ public class PopulationsCollection {
 		list.add( "SAN LUIS DE LA PAZ" );
 		list.add( "SAN LUIS POTOSÍ" );
 		list.add( "SAN LUIS RIO COLORADO" );
-		list.add( "SAN MIGUEL ALLENDE " );
+		list.add( "SAN MIGUEL ALLENDE" );
 		list.add( "SAN MIGUEL TLACOTEPEC" );
 		list.add( "SAN NICOLÁS JACALA" );
 		list.add( "SAN PABLO DEL MONTE" );
@@ -258,7 +258,7 @@ public class PopulationsCollection {
 		list.add( "SANTA CRUZ" );
 		list.add( "SANTA CRUZ DE J. ROSAS" );
 		list.add( "SANTA MARÍA IXCATLAN" );
-		list.add( "SANTA ROSALÍA " );
+		list.add( "SANTA ROSALÍA" );
 		list.add( "SANTIAGO IXCUINTLA" );
 		list.add( "SANTIAGO JAMILTEPEC" );
 		list.add( "SANTIAGO JUXTLAHUACA" );
@@ -284,7 +284,7 @@ public class PopulationsCollection {
 		list.add( "TECATE" );
 		list.add( "TECOMÁN" );
 		list.add( "TECPAN DE GALEANA" );
-		list.add( "TEHUACÁN " );
+		list.add( "TEHUACÁN" );
 		list.add( "TEHUANTEPEC" );
 		list.add( "TENOSIQUE" );
 		list.add( "TEOTITLAN DE FLORES MAGÓN" );
@@ -313,7 +313,7 @@ public class PopulationsCollection {
 		list.add( "VERACRUZ" );
 		list.add( "VICTORIA" );
 		list.add( "VILLA FLORES" );
-		list.add( "VILLA HIDALGO " );
+		list.add( "VILLA HIDALGO" );
 		list.add( "VILLA PESQUEIRA" );
 		list.add( "VILLAHERMOSA" );
 		list.add( "VILLALDAMA-BUSTAMANTE" );
@@ -332,14 +332,19 @@ public class PopulationsCollection {
 	
 	public int getPopulationPk( String name ) {
 		int pk = 1;
+		
 		for( String element : list ) {
+			element = element.toUpperCase().replaceAll( "Á" , "A" ).replaceAll( "É", "E" ).replaceAll( "Í" , "I" ).replaceAll( "Ó" , "O" ).replaceAll( "Ú" , "U" );
+			name = name.toUpperCase().replaceAll( "Á" , "A" ).replaceAll( "É", "E" ).replaceAll( "Í" , "I" ).replaceAll( "Ó" , "O" ).replaceAll( "Ú" , "U" );
+			
 			if( element.compareToIgnoreCase( name ) == 0 ) {
+				//System.out.println( "COMPARING: " + element + " == " + name );
 				return pk;
 			}
 			
 			pk += 1;
 		}
-		
+
 		return 0;
 	}
 }

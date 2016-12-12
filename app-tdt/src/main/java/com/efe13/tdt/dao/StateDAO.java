@@ -31,7 +31,7 @@ public class StateDAO extends DAOAPI<State> {
 	}
 
 	@Override
-	public List<EntityAPI> getAll() {
+	public <E> List<EntityAPI> getAll( E helper ) {
 		try {
 			Query query = getSession().createQuery( QUERY_GET_ALL );
 			return query.list();

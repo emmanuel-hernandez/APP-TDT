@@ -17,6 +17,7 @@ public class ChannelBandDAO extends DAOAPI<ChannelBand> {
 	private final static String QUERY_GET_BY_ID = "FROM ChannelBand WHERE channelBandId = :channelBandId " + ACTIVE_CONDITION;
 	private final static String QUERY_GET_ALL = "FROM ChannelBand cb WHERE 1=1 " + ACTIVE_CONDITION + " ORDER BY cb.name";;
 
+	
 	@Override
 	public ChannelBand getById( EntityAPI object ) throws HibernateException, DAOException {
 		Query query = getSession().createQuery( QUERY_GET_BY_ID );
@@ -26,7 +27,7 @@ public class ChannelBandDAO extends DAOAPI<ChannelBand> {
 	}
 	
 	@Override
-	public List<EntityAPI> getAll() {
+	public <E> List<EntityAPI> getAll( E helper ) {
 		try {
 			Query query = getSession().createQuery( QUERY_GET_ALL );
 			return query.list();

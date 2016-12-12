@@ -7,10 +7,12 @@ import javax.validation.ValidationException;
 import org.apache.log4j.Logger;
 
 import com.efe13.mvc.model.api.impl.dto.DTOAPI;
+import com.efe13.mvc.model.api.impl.helper.QueryHelper;
 import com.efe13.tdt.enums.StatusResultService;
+import com.efe13.tdt.helper.ServiceRequest;
+import com.efe13.tdt.helper.ServiceResult;
 import com.efe13.tdt.model.dto.ChannelDTO;
 import com.efe13.tdt.service.ChannelService;
-import com.efe13.tdt.util.ServiceResult;
 
 public class ChannelServiceImpl extends ChannelService {
 	
@@ -46,12 +48,12 @@ public class ChannelServiceImpl extends ChannelService {
 		return serviceResult;
 	}
 
-	public ServiceResult<ChannelDTO> listAll() {
+	public ServiceResult<ChannelDTO> listAll( QueryHelper queryHelper ) {
 		try {
 			serviceResult = new ServiceResult<>();
 			
 			ArrayList<ChannelDTO> dtos = new ArrayList<>();
-			for( DTOAPI dto : super.getAll() ) {
+			for( DTOAPI dto : super.getAll( queryHelper ) ) {
 				dtos.add( (ChannelDTO) dto );
 			}
 			

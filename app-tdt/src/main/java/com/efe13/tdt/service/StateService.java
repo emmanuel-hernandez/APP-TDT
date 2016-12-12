@@ -40,11 +40,11 @@ public class StateService extends ServiceAPI {
 	}
 
 	@Override
-	public List<DTOAPI> getAll() {
+	public <E> List<DTOAPI> getAll( E queryHelper ) {
 		List<DTOAPI> dtos = Collections.emptyList();
 		
 		try {
-			List<EntityAPI> entities = STATE_DAO.getAll();
+			List<EntityAPI> entities = STATE_DAO.getAll( queryHelper );
 			if( !entities.isEmpty() ) {
 				dtos = new ArrayList<>();
 				for( EntityAPI state : entities ) {

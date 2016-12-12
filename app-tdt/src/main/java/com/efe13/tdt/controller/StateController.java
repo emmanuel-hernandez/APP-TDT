@@ -5,13 +5,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.efe13.mvc.commons.api.enums.ActiveEnum;
 import com.efe13.tdt.enums.StatusResultService;
+import com.efe13.tdt.helper.ServiceRequest;
+import com.efe13.tdt.helper.ServiceResult;
 import com.efe13.tdt.model.dto.StateDTO;
 import com.efe13.tdt.service.impl.StateServiceImpl;
-import com.efe13.tdt.util.ServiceResult;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author Emmanuel
@@ -25,9 +28,11 @@ public class StateController {
 	private final static StateServiceImpl STATE_SERVICE = new StateServiceImpl();
 	
 	@RequestMapping( value="/", method=RequestMethod.GET )
-	public ServiceResult<StateDTO> getStates() {
+	public ServiceResult<StateDTO> getStates( @RequestParam(name="serviceRequest", required=false) String serviceRequestString ) {
 		try {
-			return STATE_SERVICE.listAll();
+			ServiceRequest serviceRequest = new ObjectMapper().readValue( serviceRequestString, ServiceRequest.class );
+			
+			return STATE_SERVICE.listAll( serviceRequest );
 		}
 		catch( Exception ex ) {
 			return new ServiceResult<StateDTO>( ex.getMessage(), StatusResultService.STATUS_FAILED );

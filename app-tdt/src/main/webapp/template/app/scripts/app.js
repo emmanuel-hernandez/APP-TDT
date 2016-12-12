@@ -7,7 +7,6 @@
  *
  * Main module of the application.
  */
-const APP_NAME = 'sbAdminApp';
 angular
   .module( APP_NAME, [
     'oc.lazyLoad',
@@ -37,7 +36,13 @@ angular
                     'scripts/directives/header/header.js',
                     'scripts/directives/header/header-notification/header-notification.js',
                     'scripts/directives/sidebar/sidebar.js',
-                    'scripts/directives/sidebar/sidebar-search/sidebar-search.js'
+                    'scripts/directives/sidebar/sidebar-search/sidebar-search.js',
+                    
+                    'scripts/utils/Utils.js',
+                    'scripts/model/ChannelDTO.js',
+                    'scripts/model/PaginationAPI.js',
+                    'scripts/model/FilterAPI.js',
+                    'scripts/model/QueryHelper.js'
                     ]
                 }),
                 $ocLazyLoad.load(

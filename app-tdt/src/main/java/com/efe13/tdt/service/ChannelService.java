@@ -20,6 +20,7 @@ public class ChannelService extends ServiceAPI {
 	private static final Logger log = Logger.getLogger( ChannelService.class );
 	private static final ChannelDAO CHANNEL_DAO = new ChannelDAO();
 	
+	
 	@Override
 	public ChannelDTO getById( DTOAPI dto ) {
 		Channel entity = new Channel();
@@ -39,11 +40,12 @@ public class ChannelService extends ServiceAPI {
 	}
 
 	@Override
-	public List<DTOAPI> getAll() {
+	public <E> List<DTOAPI> getAll( E queryHelper ) {
 		List<DTOAPI> dtos = Collections.emptyList();
 		
 		try {
-			List<EntityAPI> entities = CHANNEL_DAO.getAll();
+			
+			List<EntityAPI> entities = CHANNEL_DAO.getAll( queryHelper );
 			if( !entities.isEmpty() ) {
 				dtos = new ArrayList<>();
 				
