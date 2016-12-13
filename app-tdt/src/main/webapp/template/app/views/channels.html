@@ -115,47 +115,8 @@
 	            <div class="panel-heading">Listado</div>
 	            <div class="panel-body">
 	            	<div class="dataTable_wrapper">
-	                    <table class="table table-striped table-bordered table-hover">
-	                        <thead>
-	                            <tr>
-	                                <th>Distintivo</th>
-	                                <th>Nombre</th>
-	                                <th>Canal virtual</th>
-	                                <th>Canal f&iacute;sico</th>
-	                                <th>Calidad</th>
-	                                <th>Resoluci&oacute;n</th>
-	                                <th>Banda</th>
-	                                <!--th>Potencia</th>
-	                                <th>ACESLI</th>
-	                                <th>Longitud</th>
-	                                <th>Latitud</th-->
-	                                <th align="center" colspan="3" width="30%">Acciones</th>
-	                            </tr>
-	                        </thead>
-	                        <tbody>
-	                            <tr ng-repeat="channel in channels">
-	                                <td>{{channel.distinctive}}</td>
-	                                <td>{{channel.name}}</td>
-	                                <td>{{channel.virtualChannel}}</td>
-	                                <td>{{channel.physicChannel}}</td>
-	                                <td>{{channel.quality}}</td>
-	                                <td>{{channel.resolution}}</td>
-	                                <td>{{channel.channelBand.name}}</td>
-	                                <!--td>{{channel.power}}</td>
-	                                <td>{{channel.acesli}}</td>
-	                                <td>{{channel.longitude}}</td>
-	                                <td>{{channel.latitude}}</td-->
-	                                <td class="center">
-	                                	 <button type="button" class="btn btn-primary" ng-click="update(channel)">Detalles</button>
-	                                </td>
-	                                <td class="center">
-	                                	 <button type="button" class="btn btn-danger" ng-click="delete(channel)">Eliminar</button>
-	                                </td>
-	                                <td class="center">
-	                          			 <button type="button" class="btn btn-default" ng-click="update(channel)">Actualizar</button>
-	                                </td>
-	                            </tr>
-	                        </tbody>
+	                    <table datatable="" dt-options="dtOptions" dt-columns="dtColumns" class="table table-striped table-bordered table-hover">
+	                        
 	                    </table>
 	                </div><!-- /.table-responsive -->
 	            </div>

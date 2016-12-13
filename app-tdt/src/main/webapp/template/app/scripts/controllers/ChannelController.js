@@ -7,12 +7,21 @@
  * Controller of the channels.html view
  */
 angular.module( APP_NAME ).controller( 'ChannelController',
-	function($scope, $position, $http) {
+	function($scope, $position, $http, DTOptionsBuilder, DTColumnBuilder) {
 		$scope.channel = getInstance( ChannelDTO );
 		$scope.queryHelper = getInstance( QueryHelper );
 		$scope.queryHelper.paginationAPI.page = 1;
 		$scope.queryHelper.paginationAPI.pageSize = 10;
 		$scope.queryHelper.filterAPI = null;
+		$scope.dtColumns =[
+		                   DTColumnBuilder.newColumn('id').withTitle('ID'),
+		                   DTColumnBuilder.newColumn('distinctive').withTitle('Distintivo')
+		];
+		$scope.dtOptions = DTOptionsBuilder.newOptions().withOption('ajax', {
+			url: CHANNEL_URL +'?queryHelper='+ JSON.stringify($scope.queryHelper),
+			type: 'GET',
+			dataSrc: 'collection'
+		}).withPaginationType('full_numbers');
 		
 		var defaultPhysicChannel = { id: 1, name: 14 };
 		var defaultResolution = { id: 1, name: '1080i' };
@@ -210,6 +219,6 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 		getConcessionaires();
 		getConcessionTypes();
 		
-		$scope.get();
+		//$scope.get();
 	}
 );
