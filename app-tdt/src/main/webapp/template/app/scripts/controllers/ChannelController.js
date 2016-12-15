@@ -7,30 +7,38 @@
  * Controller of the channels.html view
  */
 angular.module( APP_NAME ).controller( 'ChannelController',
-	function($scope, $position, $http, DTOptionsBuilder, DTColumnBuilder) {
-		$scope.channel = getInstance( ChannelDTO );
+	function($scope, $position, $http) {
+		$scope.channel = new ChannelDTO();
+		$scope.channel.setQuality(-1);
 		$scope.queryHelper = getInstance( QueryHelper );
 		$scope.queryHelper.paginationAPI.page = 1;
-		$scope.queryHelper.paginationAPI.pageSize = 10;
+		$scope.queryHelper.paginationAPI.pageSize = 15;
 		$scope.queryHelper.filterAPI = null;
-		$scope.dtColumns =[
-		                   DTColumnBuilder.newColumn('id').withTitle('ID'),
-		                   DTColumnBuilder.newColumn('distinctive').withTitle('Distintivo')
-		];
-		$scope.dtOptions = DTOptionsBuilder.newOptions().withOption('ajax', {
-			url: CHANNEL_URL +'?queryHelper='+ JSON.stringify($scope.queryHelper),
-			type: 'GET',
-			dataSrc: 'collection'
-		}).withPaginationType('full_numbers');
 		
+		/* Controller attribute */
+		$scope.qualities = [new QualityDTO( 1, 'HD' ), new QualityDTO( 2, 'SD' )];
+		$scope.resolutions = [new ResolutionDTO( 1, '1080i' ), new ResolutionDTO( 2, '480i' )];
+		$scope.channels = new Array();
+		$scope.channelBands = new Array();
+		$scope.populations = new Array();
+		$scope.concessionaires = new Array();
+		$scope.concessionTypes = new Array();
+		
+		$scope.alerts = {
+			message: '',
+			type: '',
+			show: false
+		};
+		
+		var defaultSelectedValue = { id: -1, name: 'Seleccionar...' };
 		var defaultPhysicChannel = { id: 1, name: 14 };
 		var defaultResolution = { id: 1, name: '1080i' };
-		var defaultQuality = { id: 1, name: 'HD' };
-		var defaultResolution = { id: 1, name: '1080i' };
-		var defaultChannelBand = { id: -1, name: 'Seleccionar...' };
-		var defaultPopulation = { id: -1, name: 'Seleccionar...' };
-		var defaultConcessionaire = { id: -1, name: 'Seleccionar...' };
-		var defaultConcessionType = { id: -1, name: 'Seleccionar...' };
+		var defaultQuality = $scope.qualities[0];
+		var defaultResolution = $scope.resolutions[0];
+		var defaultChannelBand = defaultSelectedValue;
+		var defaultPopulation = defaultSelectedValue;
+		var defaultConcessionaire = defaultSelectedValue;
+		var defaultConcessionType = defaultSelectedValue;
 		
 		$scope.selectedPhysicChannel = defaultPhysicChannel;
 		$scope.selectedQuality = defaultQuality;
@@ -47,20 +55,6 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 			$scope.physicChannels.push({ id: (i-13), name: i });
 		}
 		
-		$scope.qualities = [{id: 1, name: 'HD'}, {id: 2, name: 'SD'}];
-		$scope.resolutions = [{id: 1, name: '1080i'}, {id: 2, name: '480i'}];
-		$scope.channels = new Array();
-		$scope.channelBands = new Array();
-		$scope.populations = new Array();
-		$scope.concessionaires = new Array();
-		$scope.concessionTypes = new Array();
-		
-		$scope.alerts = {
-			message: '',
-			type: '',
-			show: false
-		};
-
 		var getChannelBands = function() {
 			$http.get( CHANNEL_BAND_URL ).success( function(data) {
 				if( data.statusResult.value ) {
@@ -125,6 +119,8 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 		
 		$scope.save = function() {
 			$scope.alerts.show = true;
+			console.log( $scope.channel );
+			return;
 			
 			for( var i=0; i<$scope.channelBands.length; i++ ) {
 				if( $scope.channelBands[i].id == $scope.selectedChannelBand.id ) {
@@ -151,7 +147,7 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 				}
 			}
 			
-			if( !isUpdate ) {
+			if( !isUpdate ) {								
 				$http.post( CHANNEL_URL, JSON.stringify($scope.channel) ).success( function(data) {
 					$scope.alerts.type = ( data.statusResult.value ) ? 'success' : 'danger';
 					$scope.alerts.message = data.message;
@@ -191,7 +187,7 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 		}
 		
 		$scope.update = function( channel ) {
-			$scope.channel = getInstance( channel );
+			$scope.channel = new ChannelDTO();
 			$scope.selectedChannelBand = $scope.channel.channelBand;
 			$scope.selectedPopulation = $scope.channel.population;
 			$scope.selectedConcessionaire = $scope.channel.concessionaire;
@@ -219,6 +215,6 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 		getConcessionaires();
 		getConcessionTypes();
 		
-		//$scope.get();
+		$scope.get();
 	}
 );

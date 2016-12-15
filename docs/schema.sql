@@ -46,8 +46,8 @@ CREATE TABLE IF NOT EXISTS channel(
 	physicChannel TINYINT NOT NULL,
 	quality VARCHAR(2) NOT NULL DEFAULT 'SD',
 	resolution VARCHAR(5) NOT NULL DEFAULT '480i',
-	power FLOAT(5,3) NOT NULL,
-	acesli TINYINT NOT NULL,
+	power FLOAT(10,3) NOT NULL,
+	acesli SMALLINT NOT NULL,
 	longitude VARCHAR(15) NOT NULL,
 	latitude VARCHAR(15) NOT NULL,
 	effectiveDateStart VARCHAR(60) NOT NULL,
@@ -62,3 +62,4 @@ CREATE TABLE IF NOT EXISTS channel(
 	FOREIGN KEY (concessionaireId) REFERENCES concessionaire(concessionaireId),
 	FOREIGN KEY (concessionTypeId) REFERENCES concessionType(concessionTypeId)
 );
+

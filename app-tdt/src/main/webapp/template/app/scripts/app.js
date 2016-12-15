@@ -11,9 +11,9 @@ angular
   .module( APP_NAME, [
     'oc.lazyLoad',
     'ui.router',
+	'smart-table',
     'ui.bootstrap',
-    'angular-loading-bar',
-    'datatables'
+    'angular-loading-bar'
   ])
   .config(['$stateProvider','$urlRouterProvider','$ocLazyLoadProvider',function ($stateProvider,$urlRouterProvider,$ocLazyLoadProvider) {
     
@@ -38,8 +38,10 @@ angular
                     'scripts/directives/header/header-notification/header-notification.js',
                     'scripts/directives/sidebar/sidebar.js',
                     'scripts/directives/sidebar/sidebar-search/sidebar-search.js',
-                    
+
                     'scripts/utils/Utils.js',
+                    'scripts/model/QualityDTO.js',
+                    'scripts/model/ResolutionDTO.js',
                     'scripts/model/ChannelDTO.js',
                     'scripts/model/PaginationAPI.js',
                     'scripts/model/FilterAPI.js',
