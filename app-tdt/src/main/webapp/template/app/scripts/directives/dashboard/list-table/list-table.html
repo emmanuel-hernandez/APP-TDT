@@ -1,0 +1,31 @@
+<div>
+	<table st-table="channels" st-pipe st-sticky-header class="table table-striped">
+	    <thead>
+	        <tr>
+	            <th ng-repeat="column in columns">{{ column }}</th>
+	            <th align="center" colspan="3" width="30%">Acciones</th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	        <tr ng-repeat="object in collection">
+	        	<td ng-repeat="(key, value) in object">{{ value.value }}</td>
+                <td class="center">
+                	 <button type="button" class="btn btn-primary">Detalles</button>
+                </td>
+                <td class="center">
+                	 <button type="button" class="btn btn-danger" ng-click="deleteFn(object)">Eliminar</button>
+                </td>
+                <td class="center">
+          			 <button type="button" class="btn btn-default" ng-click="updateFn(object)">Actualizar</button>
+                </td>
+            </tr>
+         </tbody>
+		<tfoot>
+			<tr>
+				<td colspan="5" class="center">
+					<div st-pagination="" st-items-by-page="5" st-displayed-pages="7"></div>
+				</td>
+			</tr>
+		</tfoot>
+	</table>
+</div>

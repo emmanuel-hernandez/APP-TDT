@@ -37,6 +37,7 @@
 		                		<div class="form-group">
 			                		<label for="quality">Calidad:</label>
 			                		<select id="quality" class="form-control" ng-model="channel.quality">
+			                			<option value="-1" selected="selected">Seleccionar...</option>
 			                			<option ng-repeat="quality in qualities" value="{{quality.id}}">{{quality.name}}</option>
 			                		</select>
 	                            </div>
@@ -80,6 +81,7 @@
 		                		<div class="form-group">
 			                		<label for="channelBand">Banda:</label>
 			                		<select id="channelBand" class="form-control" ng-model="channel.channelBand">
+			                			<option value="-1" selected="selected">Seleccionar...</option>
 			                			<option ng-repeat="channelBand in channelBands" value="{{channelBand.id}}">{{channelBand.name}}</option>
 			                		</select>
 	                            </div>
@@ -90,6 +92,7 @@
 		                		<div class="form-group">
 			                		<label for="population">Población:</label>
 			                		<select id="population" class="form-control" ng-model="channel.population">
+			                			<option value="-1" selected="selected">Seleccionar...</option>
 			                			<option ng-repeat="population in populations" value="{{population.id}}">{{population.name}}</option>
 			                		</select>
 	                            </div>
@@ -98,6 +101,7 @@
 		                		<div class="form-group">
 			                		<label for="concessionaire">Concesionaria:</label>
 			                		<select id="concessionaire" class="form-control" ng-model="channel.oncessionaire">
+			                			<option value="-1" selected="selected">Seleccionar...</option>
 			                			<option ng-repeat="concessionaire in concessionaires" value="{{concessionaire.id}}">{{concessionaire.name}}</option>
 			                		</select>
 	                            </div>
@@ -106,6 +110,7 @@
 		                		<div class="form-group">
 			                		<label for="concessionType">Tipo de concesi&oacute;n:</label>
 			                		<select id="concessionType" class="form-control" ng-model="channel.concessionType">
+			                			<option value="-1" selected="selected">Seleccionar...</option>
 			                			<option ng-repeat="concessionType in concessionTypes" value="{{concessionType.id}}">{{concessionType.type}}</option>
 			                		</select>
 	                            </div>
@@ -128,7 +133,8 @@
 	            <div class="panel-heading">Listado</div>
 	            <div class="panel-body">
 	            	<div class="dataTable_wrapper">
-	                    <table st-table="channels" st-pipe st-sticky-header class="table table-striped">
+	            		<list-table collection="channels" columns="columns" update-fn="update()" delete-fn="delete()"/>
+	                    <!--table st-table="channels" st-pipe st-sticky-header class="table table-striped">
 	                         <thead>
  	                            <tr>
  	                                <th st-sort="distinctive">Distintivo</th>
@@ -138,10 +144,6 @@
  	                                <th>Calidad</th>
  	                                <th>Resoluci&oacute;n</th>
  	                                <th>Banda</th>
- 	                                <!--th>Potencia</th>
- 	                                <th>ACESLI</th>
- 	                                <th>Longitud</th>
- 	                                <th>Latitud</th-->
  	                                <th align="center" colspan="3" width="30%">Acciones</th>
  	                            </tr>
  	                        </thead>
@@ -154,10 +156,6 @@
  	                                <td>{{channel.quality}}</td>
  	                                <td>{{channel.resolution}}</td>
  	                                <td>{{channel.channelBand.name}}</td>
- 	                                <!--td>{{channel.power}}</td>
- 	                                <td>{{channel.acesli}}</td>
- 	                                <td>{{channel.longitude}}</td>
- 	                                <td>{{channel.latitude}}</td-->
  	                                <td class="center">
  	                                	 <button type="button" class="btn btn-primary" ng-click="update(channel)">Detalles</button>
  	                                </td>
@@ -176,7 +174,7 @@
 									</td>
 								</tr>
 							</tfoot>
-	                    </table>
+	                    </table-->
 	                </div><!-- /.table-responsive -->
 	            </div>
 	        </div>

@@ -38,6 +38,8 @@ angular
                     'scripts/directives/header/header-notification/header-notification.js',
                     'scripts/directives/sidebar/sidebar.js',
                     'scripts/directives/sidebar/sidebar-search/sidebar-search.js',
+                    'scripts/directives/dashboard/list-table/list-table.js',
+                    
 
                     'scripts/utils/Utils.js',
                     'scripts/model/QualityDTO.js',
@@ -45,7 +47,8 @@ angular
                     'scripts/model/ChannelDTO.js',
                     'scripts/model/PaginationAPI.js',
                     'scripts/model/FilterAPI.js',
-                    'scripts/model/QueryHelper.js'
+                    'scripts/model/QueryHelper.js',
+                    'scripts/model/KeyValueDTO.js'
                     ]
                 }),
                 $ocLazyLoad.load(

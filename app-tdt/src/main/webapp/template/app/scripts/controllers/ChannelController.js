@@ -8,59 +8,73 @@
  */
 angular.module( APP_NAME ).controller( 'ChannelController',
 	function($scope, $position, $http) {
-		$scope.channel = new ChannelDTO();
-		$scope.channel.setQuality(-1);
-		$scope.queryHelper = getInstance( QueryHelper );
-		$scope.queryHelper.paginationAPI.page = 1;
-		$scope.queryHelper.paginationAPI.pageSize = 15;
-		$scope.queryHelper.filterAPI = null;
-		
-		/* Controller attribute */
-		$scope.qualities = [new QualityDTO( 1, 'HD' ), new QualityDTO( 2, 'SD' )];
-		$scope.resolutions = [new ResolutionDTO( 1, '1080i' ), new ResolutionDTO( 2, '480i' )];
-		$scope.channels = new Array();
-		$scope.channelBands = new Array();
-		$scope.populations = new Array();
-		$scope.concessionaires = new Array();
-		$scope.concessionTypes = new Array();
-		
-		$scope.alerts = {
-			message: '',
-			type: '',
-			show: false
+		var isUpdate;		
+		var init = function() {
+			isUpdate = false;
+			
+			$scope.queryHelper = getInstance( QueryHelper );
+			$scope.queryHelper.paginationAPI.page = 1;
+			$scope.queryHelper.paginationAPI.pageSize = 15;
+			$scope.queryHelper.filterAPI = null;
+			
+			$scope.channel = new ChannelDTO();
+			$scope.qualities = [new QualityDTO( 1, 'HD' ), new QualityDTO( 2, 'SD' )];
+			$scope.resolutions = [new ResolutionDTO( 1, '1080i' ), new ResolutionDTO( 2, '480i' )];
+			$scope.channels = new Array();
+			$scope.channelBands = new Array();
+			$scope.populations = new Array();
+			$scope.concessionaires = new Array();
+			$scope.concessionTypes = new Array();
+			$scope.physicChannels = new Array();
+			
+			for( var i=14; i<=84; i++ ) {
+				$scope.physicChannels.push({ id: (i-13), name: i });
+			}
+			
+			$scope.alerts = {
+				message: '',
+				type: '',
+				show: false
+			};
+			
+			$scope.columns = [
+				'Distintivo',
+				'Nombre',
+				'Canal virtual',
+				'Canal físico',
+				'Calidad',
+				'Resolución',
+				'Banda'
+			];
 		};
 		
-		var defaultSelectedValue = { id: -1, name: 'Seleccionar...' };
-		var defaultPhysicChannel = { id: 1, name: 14 };
-		var defaultResolution = { id: 1, name: '1080i' };
-		var defaultQuality = $scope.qualities[0];
-		var defaultResolution = $scope.resolutions[0];
-		var defaultChannelBand = defaultSelectedValue;
-		var defaultPopulation = defaultSelectedValue;
-		var defaultConcessionaire = defaultSelectedValue;
-		var defaultConcessionType = defaultSelectedValue;
-		
-		$scope.selectedPhysicChannel = defaultPhysicChannel;
-		$scope.selectedQuality = defaultQuality;
-		$scope.selectedResolution = defaultResolution;
-		$scope.selectedChannelBand = defaultChannelBand;
-		$scope.selectedPopulation = defaultPopulation;
-		$scope.selectedConcessionaire = defaultConcessionaire;
-		$scope.selectedConcessionType = defaultConcessionType;
-
-		var isUpdate = false;
-		
-		$scope.physicChannels = new Array();
-		for( var i=14; i<=84; i++ ) {
-			$scope.physicChannels.push({ id: (i-13), name: i });
-		}
+		var reset = function() {
+			isUpdate = false;
+			
+			$scope.channel.setId( 0 );
+			$scope.channel.setDistinctive( null );
+			$scope.channel.setName( null );
+			$scope.channel.setVirtualChannel( 0 );
+			$scope.channel.setPhysicChannel( 0 );
+			$scope.channel.setQuality( -1 );
+			$scope.channel.setResolution( -1 );
+			$scope.channel.setPower( 0 );
+			$scope.channel.setAcesli( 0 );
+			$scope.channel.setLongitude( 0 );
+			$scope.channel.setLatitude( 0 );
+			$scope.channel.setEffectiveDateStart();
+			$scope.channel.setEffectiveDateEnd();
+			$scope.channel.setChannelBand( -1 );
+			$scope.channel.setPopulation( -1 );
+			$scope.channel.setConcessionaire( -1 );
+			$scope.channel.setConcessionType( -1 );
+		};
 		
 		var getChannelBands = function() {
 			$http.get( CHANNEL_BAND_URL ).success( function(data) {
 				if( data.statusResult.value ) {
 					$scope.channelBands = data.collection;
 					defaultChannelBand = $scope.channelBands[0];
-					$scope.selectedChannelBand = defaultChannelBand;
 				}
 				else {
 					$scope.alerts.show = true;
@@ -77,7 +91,6 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 					$scope.alerts.show = true;
 					$scope.alerts.resultMessage = data.message;
 				}
-				$scope.populations.unshift( defaultPopulation );
 			});
 		};
 		var getConcessionaires = function() {
@@ -89,7 +102,6 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 					$scope.alerts.show = true;
 					$scope.alerts.resultMessage = data.message;
 				}
-				$scope.concessionaires.unshift( defaultConcessionaire );
 			});
 		};
 		var getConcessionTypes = function() {
@@ -101,14 +113,28 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 					$scope.alerts.show = true;
 					$scope.alerts.resultMessage = data.message;
 				}
-				$scope.concessionTypes.unshift( defaultConcessionType );
 			});
 		};
 		
 		$scope.get = function() {
 			$http.get( CHANNEL_URL +'?queryHelper='+ JSON.stringify($scope.queryHelper) ).success( function(data) {
 				if( data.statusResult.value ) {
-					$scope.channels = data.collection;
+					$scope.channels = new Array();
+					
+					for(var i=0; i<data.collection.length; i++ ) {
+						var channel = data.collection[ i ];
+						var object = new Array();
+						
+						object.push( new KeyValueDTO( i, channel.distinctive ) );
+						object.push( new KeyValueDTO( i, channel.name ) );
+						object.push( new KeyValueDTO( i, channel.virtualChannel ) );
+						object.push( new KeyValueDTO( i, channel.physicChannel ) );
+						object.push( new KeyValueDTO( i, channel.quality ) );
+						object.push( new KeyValueDTO( i, channel.resolution ) );
+						object.push( new KeyValueDTO( i, channel.channelBand.name ) );
+						
+						$scope.channels.push( object );
+					}			
 				}
 				else {
 					$scope.alerts.show = true;
@@ -187,11 +213,7 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 		}
 		
 		$scope.update = function( channel ) {
-			$scope.channel = new ChannelDTO();
-			$scope.selectedChannelBand = $scope.channel.channelBand;
-			$scope.selectedPopulation = $scope.channel.population;
-			$scope.selectedConcessionaire = $scope.channel.concessionaire;
-			$scope.selectedConcessionType = $scope.channel.concessionType;
+			console.log( channel );
 			//$scope.selectedQuality = $scope.channel.;
 			//$scope.selectedPhysicChannel = $scope.channel.concessionType;
 			
@@ -199,17 +221,12 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 		}
 		
 		$scope.cancell = function() {
-			$scope.channel.name = "";
-			isUpdate = false;
-			
-			$scope.selectedQuality = defaultQuality;
-			$scope.selectedPhysicChannel = defaultPhysicChannel;
-			$scope.selectedChannelBand = defaultChannelBand;
-			$scope.selectedPopulation = defaultPopulation;
-			$scope.selectedConcessionaire = defaultConcessionaire;
-			$scope.selectedConcessionType = defaultConcessionType;
+			reset();
 		}
-		
+
+		/* Initialization */
+		init();
+		reset();
 		getChannelBands();
 		getPopulations();
 		getConcessionaires();
