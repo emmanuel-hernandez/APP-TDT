@@ -1,0 +1,37 @@
+<div>
+    <table st-table="channels" st-pipe st-sticky-header class="table table-striped">
+        <thead>
+            <tr>
+                <th ng-repeat="header in headers">{{header}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="object in collection">
+                <td ng-repeat="field in object">{{object[field]}}</td>
+                <!--td>{{channel.distinctive}}</td>
+                <td>{{channel.name}}</td>
+                <td>{{channel.virtualChannel}}</td>
+                <td>{{channel.physicChannel}}</td>
+                <td>{{channel.quality}}</td>
+                <td>{{channel.resolution}}</td>
+                <td>{{channel.channelBand.name}}</td-->
+                <td class="center">
+                	 <button type="button" class="btn btn-primary" ng-click="update(object)">Detalles</button>
+                </td>
+                <td class="center">
+                	 <button type="button" class="btn btn-danger" ng-click="delete(object)">Eliminar</button>
+                </td>
+                <td class="center">
+          			 <button type="button" class="btn btn-default" ng-click="update(object)">Actualizar</button>
+                </td>
+            </tr>
+         </tbody>
+		<tfoot>
+			<tr>
+				<td colspan="5" class="center">
+					<div st-pagination="" st-items-by-page="5" st-displayed-pages="7"></div>
+				</td>
+			</tr>
+		</tfoot>
+	</table>
+</div>

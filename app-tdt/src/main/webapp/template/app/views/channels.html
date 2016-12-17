@@ -31,13 +31,14 @@
 		                    </div>
 		                    <div class="col-lg-2">
                                 <label for="physicChannel">Canal F&iacute;sico:</label>
-                                <select id="physicChannel" class="form-control" ng-options="physicChannel.name for physicChannel in physicChannels track by physicChannel.id" ng-model="selectedPhysicChannel"></select>
+                                <select id="physicChannel" class="form-control" ng-model="channel.physicChannel">
+                                	<option ng-repeat="physicChannel in physicChannels" value="{{physicChannel.id}}">{{ physicChannel.name }}</option>
+                                </select>
 		                    </div>
 		                    <div class="col-lg-2">
 		                		<div class="form-group">
 			                		<label for="quality">Calidad:</label>
 			                		<select id="quality" class="form-control" ng-model="channel.quality">
-			                			<option value="-1" selected="selected">Seleccionar...</option>
 			                			<option ng-repeat="quality in qualities" value="{{quality.id}}">{{quality.name}}</option>
 			                		</select>
 	                            </div>
@@ -48,7 +49,6 @@
 		                		<div class="form-group">
 			                		<label for="resolution">Resolución:</label>
 			                		<select id="resolution" class="form-control" ng-model="channel.resolution">
-			                			<option value="-1" selected="selected">Seleccionar...</option>
 			                			<option ng-repeat="resolution in resolutions" value="{{resolution.id}}">{{resolution.name}}</option>
 			                		</select>
 	                            </div>
@@ -81,7 +81,6 @@
 		                		<div class="form-group">
 			                		<label for="channelBand">Banda:</label>
 			                		<select id="channelBand" class="form-control" ng-model="channel.channelBand">
-			                			<option value="-1" selected="selected">Seleccionar...</option>
 			                			<option ng-repeat="channelBand in channelBands" value="{{channelBand.id}}">{{channelBand.name}}</option>
 			                		</select>
 	                            </div>
@@ -100,7 +99,7 @@
 		                	<div class="col-lg-4">
 		                		<div class="form-group">
 			                		<label for="concessionaire">Concesionaria:</label>
-			                		<select id="concessionaire" class="form-control" ng-model="channel.oncessionaire">
+			                		<select id="concessionaire" class="form-control" ng-model="channel.concessionaire">
 			                			<option value="-1" selected="selected">Seleccionar...</option>
 			                			<option ng-repeat="concessionaire in concessionaires" value="{{concessionaire.id}}">{{concessionaire.name}}</option>
 			                		</select>
@@ -118,7 +117,7 @@
 		                </div>
 		                <div class="row">
 		                	<div class="col-lg-12">
-		                		<button type="reset" class="btn btn-default" ng-click="cancell()">Cancelar</button>
+		                		<button type="reset" class="btn btn-default" ng-click="cancel()">Cancelar</button>
 		                        <button type="submit" class="btn btn-primary" ng-click="save()">Guardar</button>
 		                	</div>
 		                </div>
@@ -133,7 +132,7 @@
 	            <div class="panel-heading">Listado</div>
 	            <div class="panel-body">
 	            	<div class="dataTable_wrapper">
-	            		<list-table collection="channels" columns="columns" update-fn="update()" delete-fn="delete()"/>
+	            		<list-table collection="channels" columns="columns" update-fn="update" delete-fn="delete"/>
 	                    <!--table st-table="channels" st-pipe st-sticky-header class="table table-striped">
 	                         <thead>
  	                            <tr>

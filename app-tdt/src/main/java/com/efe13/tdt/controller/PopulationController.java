@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.efe13.mvc.commons.api.enums.ActiveEnum;
+import com.efe13.mvc.model.api.impl.helper.QueryHelper;
 import com.efe13.tdt.enums.StatusResultService;
 import com.efe13.tdt.helper.ServiceRequest;
 import com.efe13.tdt.helper.ServiceResult;
@@ -30,11 +31,15 @@ public class PopulationController {
 	private final static PopulationServiceImpl POPULATION_SERVICE = new PopulationServiceImpl();
 	
 	@RequestMapping( value="/", method=RequestMethod.GET )
-	public ServiceResult<PopulationDTO> getPopulations( @RequestParam(name="serviceRequest", required=false) String serviceRequestString ) {
+	public ServiceResult<PopulationDTO> getPopulations( @RequestParam(name="queryHelper", required=false) String serviceRequestString ) {
 		try {
-			ServiceRequest serviceRequest = new ObjectMapper().readValue( serviceRequestString, ServiceRequest.class );
+			QueryHelper queryHelper = null;
 			
-			return POPULATION_SERVICE.listAll( serviceRequest );
+			if( serviceRequestString != null ) {
+				queryHelper = new ObjectMapper().readValue( serviceRequestString, QueryHelper.class );
+			}
+			
+			return POPULATION_SERVICE.listAll( queryHelper );
 		}
 		catch( Exception ex ) {
 			return new ServiceResult<PopulationDTO>( ex.getMessage(), StatusResultService.STATUS_FAILED );

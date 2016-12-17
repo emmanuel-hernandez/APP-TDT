@@ -12,10 +12,16 @@ angular.module( APP_NAME ).directive( 'listTable', function() {
   		restrict: 'E',
   		replace: true,
   		scope: {
-	        'collection': '=',
-	        'columns': '=',
-	        'updateFn': '&',
-	        'deleteFn': '&'
-  		}
+	        collection: '=',
+	        columns: '=',
+	        updateFn: '&',
+	        deleteFn: '&'
+  		}/*,
+  		link: function( $scope, element, attrs ) {
+  			$scope.details = function( object ) {
+  				console.log( object );
+  				$scope.updateFn()(object);
+  			}
+  		}*/
 	}
 });

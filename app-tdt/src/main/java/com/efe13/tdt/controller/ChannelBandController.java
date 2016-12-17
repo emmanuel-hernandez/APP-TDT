@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.efe13.mvc.commons.api.enums.ActiveEnum;
+import com.efe13.mvc.model.api.impl.helper.QueryHelper;
 import com.efe13.tdt.enums.StatusResultService;
-import com.efe13.tdt.helper.ServiceRequest;
 import com.efe13.tdt.helper.ServiceResult;
 import com.efe13.tdt.model.dto.ChannelBandDTO;
 import com.efe13.tdt.service.impl.ChannelBandServiceImpl;
@@ -28,11 +28,15 @@ public class ChannelBandController {
 	private final static ChannelBandServiceImpl CHANNEL_BAND_SERVICE = new ChannelBandServiceImpl();
 	
 	@RequestMapping( value="/", method=RequestMethod.GET )
-	public ServiceResult<ChannelBandDTO> getChannelBands( @RequestParam(name="serviceRequest", required=false) String serviceRequestString ) {
+	public ServiceResult<ChannelBandDTO> getChannelBands( @RequestParam(name="queryHelper", required=false) String serviceRequestString ) {
 		try {
-			ServiceRequest serviceRequest = new ObjectMapper().readValue( serviceRequestString, ServiceRequest.class );
+			QueryHelper queryHelper = null;
 			
-			return CHANNEL_BAND_SERVICE.listAll( serviceRequest );
+			if( serviceRequestString != null ) {
+				queryHelper = new ObjectMapper().readValue( serviceRequestString, QueryHelper.class );
+			}
+			
+			return CHANNEL_BAND_SERVICE.listAll( queryHelper );
 		}
 		catch( Exception ex ) {
 			return new ServiceResult<ChannelBandDTO>( ex.getMessage(), StatusResultService.STATUS_FAILED );

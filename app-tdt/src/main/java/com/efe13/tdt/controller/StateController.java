@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.efe13.mvc.commons.api.enums.ActiveEnum;
+import com.efe13.mvc.model.api.impl.helper.QueryHelper;
 import com.efe13.tdt.enums.StatusResultService;
-import com.efe13.tdt.helper.ServiceRequest;
 import com.efe13.tdt.helper.ServiceResult;
 import com.efe13.tdt.model.dto.StateDTO;
 import com.efe13.tdt.service.impl.StateServiceImpl;
@@ -28,11 +28,15 @@ public class StateController {
 	private final static StateServiceImpl STATE_SERVICE = new StateServiceImpl();
 	
 	@RequestMapping( value="/", method=RequestMethod.GET )
-	public ServiceResult<StateDTO> getStates( @RequestParam(name="serviceRequest", required=false) String serviceRequestString ) {
+	public ServiceResult<StateDTO> getStates( @RequestParam(name="queryHelper", required=false) String serviceRequestString ) {
 		try {
-			ServiceRequest serviceRequest = new ObjectMapper().readValue( serviceRequestString, ServiceRequest.class );
+			QueryHelper queryHelper = null;
 			
-			return STATE_SERVICE.listAll( serviceRequest );
+			if( serviceRequestString != null ) {
+				queryHelper = new ObjectMapper().readValue( serviceRequestString, QueryHelper.class );
+			}
+			
+			return STATE_SERVICE.listAll( queryHelper );
 		}
 		catch( Exception ex ) {
 			return new ServiceResult<StateDTO>( ex.getMessage(), StatusResultService.STATUS_FAILED );

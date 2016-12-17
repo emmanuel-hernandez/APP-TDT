@@ -48,12 +48,12 @@ public class ChannelServiceImpl extends ChannelService {
 		return serviceResult;
 	}
 
-	public ServiceResult<ChannelDTO> listAll( QueryHelper queryHelper ) {
+	public ServiceResult<ChannelDTO> listAll( QueryHelper serviceRequest ) {
 		try {
 			serviceResult = new ServiceResult<>();
 			
 			ArrayList<ChannelDTO> dtos = new ArrayList<>();
-			for( DTOAPI dto : super.getAll( queryHelper ) ) {
+			for( DTOAPI dto : super.getAll( serviceRequest ) ) {
 				dtos.add( (ChannelDTO) dto );
 			}
 			

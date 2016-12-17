@@ -7,16 +7,16 @@
 	        </tr>
 	    </thead>
 	    <tbody>
-	        <tr ng-repeat="object in collection">
-	        	<td ng-repeat="(key, value) in object">{{ value.value }}</td>
+	        <tr ng-repeat="item in collection">
+	        	<td ng-repeat="(key, value) in item.properties">{{ value.value }}</td>
                 <td class="center">
-                	 <button type="button" class="btn btn-primary">Detalles</button>
+                	 <button type="button" class="btn btn-primary" ng-click="details(item.object)">Detalles</button>
                 </td>
                 <td class="center">
-                	 <button type="button" class="btn btn-danger" ng-click="deleteFn(object)">Eliminar</button>
+                	 <button type="button" class="btn btn-danger" ng-click="deleteFn()(item.object)">Eliminar</button>
                 </td>
                 <td class="center">
-          			 <button type="button" class="btn btn-default" ng-click="updateFn(object)">Actualizar</button>
+          			 <button type="button" class="btn btn-default" ng-click="updateFn()(item.object)">Actualizar</button>
                 </td>
             </tr>
          </tbody>

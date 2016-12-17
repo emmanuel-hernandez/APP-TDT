@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.efe13.mvc.commons.api.enums.ActiveEnum;
+import com.efe13.mvc.model.api.impl.helper.QueryHelper;
 import com.efe13.tdt.enums.StatusResultService;
-import com.efe13.tdt.helper.ServiceRequest;
 import com.efe13.tdt.helper.ServiceResult;
 import com.efe13.tdt.model.dto.ConcessionTypeDTO;
 import com.efe13.tdt.service.impl.ConcessionTypeServiceImpl;
@@ -28,11 +28,15 @@ public class ConcessionTypeController {
 	private final static ConcessionTypeServiceImpl CONCESSION_TYPE_SERVICE = new ConcessionTypeServiceImpl();
 	
 	@RequestMapping( value="/", method=RequestMethod.GET )
-	public ServiceResult<ConcessionTypeDTO> getConcessionTypes( @RequestParam(name="serviceRequest", required=false) String serviceRequestString ) {
+	public ServiceResult<ConcessionTypeDTO> getConcessionTypes( @RequestParam(name="queryHelper", required=false) String serviceRequestString ) {
 		try {
-			ServiceRequest serviceRequest = new ObjectMapper().readValue( serviceRequestString, ServiceRequest.class );
+			QueryHelper queryHelper = null;
 			
-			return CONCESSION_TYPE_SERVICE.listAll( serviceRequest );
+			if( serviceRequestString != null ) {
+				queryHelper = new ObjectMapper().readValue( serviceRequestString, QueryHelper.class );
+			}
+			
+			return CONCESSION_TYPE_SERVICE.listAll( queryHelper );
 		}
 		catch( Exception ex ) {
 			return new ServiceResult<ConcessionTypeDTO>( ex.getMessage(), StatusResultService.STATUS_FAILED );

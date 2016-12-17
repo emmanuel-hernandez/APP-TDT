@@ -17,7 +17,6 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 			$scope.queryHelper.paginationAPI.pageSize = 15;
 			$scope.queryHelper.filterAPI = null;
 			
-			$scope.channel = new ChannelDTO();
 			$scope.qualities = [new QualityDTO( 1, 'HD' ), new QualityDTO( 2, 'SD' )];
 			$scope.resolutions = [new ResolutionDTO( 1, '1080i' ), new ResolutionDTO( 2, '480i' )];
 			$scope.channels = new Array();
@@ -47,34 +46,34 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 				'Banda'
 			];
 		};
-		
+
 		var reset = function() {
 			isUpdate = false;
-			
+
+			$scope.channel = new ChannelDTO();
 			$scope.channel.setId( 0 );
 			$scope.channel.setDistinctive( null );
 			$scope.channel.setName( null );
 			$scope.channel.setVirtualChannel( 0 );
-			$scope.channel.setPhysicChannel( 0 );
-			$scope.channel.setQuality( -1 );
-			$scope.channel.setResolution( -1 );
+			$scope.channel.setPhysicChannel( 14 );
+			$scope.channel.setQuality( 1 );
+			$scope.channel.setResolution( 1 );
 			$scope.channel.setPower( 0 );
 			$scope.channel.setAcesli( 0 );
 			$scope.channel.setLongitude( 0 );
 			$scope.channel.setLatitude( 0 );
 			$scope.channel.setEffectiveDateStart();
 			$scope.channel.setEffectiveDateEnd();
-			$scope.channel.setChannelBand( -1 );
+			$scope.channel.setChannelBand( 1 );
 			$scope.channel.setPopulation( -1 );
 			$scope.channel.setConcessionaire( -1 );
 			$scope.channel.setConcessionType( -1 );
 		};
-		
+
 		var getChannelBands = function() {
 			$http.get( CHANNEL_BAND_URL ).success( function(data) {
 				if( data.statusResult.value ) {
 					$scope.channelBands = data.collection;
-					defaultChannelBand = $scope.channelBands[0];
 				}
 				else {
 					$scope.alerts.show = true;
@@ -123,15 +122,16 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 					
 					for(var i=0; i<data.collection.length; i++ ) {
 						var channel = data.collection[ i ];
-						var object = new Array();
+						var object = { object: channel,
+									   properties: new Array() };
 						
-						object.push( new KeyValueDTO( i, channel.distinctive ) );
-						object.push( new KeyValueDTO( i, channel.name ) );
-						object.push( new KeyValueDTO( i, channel.virtualChannel ) );
-						object.push( new KeyValueDTO( i, channel.physicChannel ) );
-						object.push( new KeyValueDTO( i, channel.quality ) );
-						object.push( new KeyValueDTO( i, channel.resolution ) );
-						object.push( new KeyValueDTO( i, channel.channelBand.name ) );
+						object.properties.push( new KeyValueDTO( i, channel.distinctive ) );
+						object.properties.push( new KeyValueDTO( i, channel.name ) );
+						object.properties.push( new KeyValueDTO( i, channel.virtualChannel ) );
+						object.properties.push( new KeyValueDTO( i, channel.physicChannel ) );
+						object.properties.push( new KeyValueDTO( i, channel.quality ) );
+						object.properties.push( new KeyValueDTO( i, channel.resolution ) );
+						object.properties.push( new KeyValueDTO( i, channel.channelBand.name ) );
 						
 						$scope.channels.push( object );
 					}			
@@ -179,7 +179,7 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 					$scope.alerts.message = data.message;
 					
 					if( data.statusResult.value ) {
-						$scope.cancell();
+						$scope.cancel();
 						$scope.get();
 					}
 				});
@@ -190,7 +190,7 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 					$scope.alerts.message = data.message;
 					
 					if( data.statusResult.value ) {
-						$scope.cancell();
+						$scope.cancel();
 						$scope.get();
 						isUpdate = false;
 					}
@@ -213,14 +213,28 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 		}
 		
 		$scope.update = function( channel ) {
-			console.log( channel );
-			//$scope.selectedQuality = $scope.channel.;
-			//$scope.selectedPhysicChannel = $scope.channel.concessionType;
-			
+			$scope.channel = new ChannelDTO();
+			$scope.channel.setId( channel.id );
+			$scope.channel.setDistinctive( channel.distinctive );
+			$scope.channel.setName( channel.name );
+			$scope.channel.setVirtualChannel( channel.virtualChannel );
+			$scope.channel.setPhysicChannel( channel.physicChannel - 13 );
+			$scope.channel.setQuality( (channel.quality === 'HD') ? 1 : 2 );
+			$scope.channel.setResolution( (channel.resolution === '1080i') ? 1 : 2 );
+			$scope.channel.setPower( channel.power );
+			$scope.channel.setAcesli( channel.acesli );
+			$scope.channel.setLongitude( channel.longitud );
+			$scope.channel.setLatitude( channel.latitude );
+			$scope.channel.setEffectiveDateStart( channel.effectiveDayStart );
+			$scope.channel.setEffectiveDateEnd( channel.effectiveDayEnd );
+			$scope.channel.setChannelBand( channel.channelBand.id );
+			$scope.channel.setPopulation( channel.population.id );
+			$scope.channel.setConcessionaire( channel.concessionaire.id );
+			$scope.channel.setConcessionType( channel.concessionType.id );
 			isUpdate = true;
 		}
 		
-		$scope.cancell = function() {
+		$scope.cancel = function() {
 			reset();
 		}
 

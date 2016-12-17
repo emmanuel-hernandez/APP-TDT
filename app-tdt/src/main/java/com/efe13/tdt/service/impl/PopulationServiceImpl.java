@@ -7,6 +7,7 @@ import javax.validation.ValidationException;
 import org.apache.log4j.Logger;
 
 import com.efe13.mvc.model.api.impl.dto.DTOAPI;
+import com.efe13.mvc.model.api.impl.helper.QueryHelper;
 import com.efe13.tdt.enums.StatusResultService;
 import com.efe13.tdt.helper.ServiceRequest;
 import com.efe13.tdt.helper.ServiceResult;
@@ -47,7 +48,7 @@ public class PopulationServiceImpl extends PopulationService {
 		return serviceResult;
 	}
 
-	public ServiceResult<PopulationDTO> listAll( ServiceRequest serviceRequest ) {
+	public ServiceResult<PopulationDTO> listAll( QueryHelper serviceRequest ) {
 		try {
 			serviceResult = new ServiceResult<>();
 			

@@ -7,8 +7,8 @@ import javax.validation.ValidationException;
 import org.apache.log4j.Logger;
 
 import com.efe13.mvc.model.api.impl.dto.DTOAPI;
+import com.efe13.mvc.model.api.impl.helper.QueryHelper;
 import com.efe13.tdt.enums.StatusResultService;
-import com.efe13.tdt.helper.ServiceRequest;
 import com.efe13.tdt.helper.ServiceResult;
 import com.efe13.tdt.model.dto.StateDTO;
 import com.efe13.tdt.service.StateService;
@@ -47,7 +47,7 @@ public class StateServiceImpl extends StateService {
 		return serviceResult;
 	}
 
-	public ServiceResult<StateDTO> listAll( ServiceRequest serviceRequest ) {
+	public ServiceResult<StateDTO> listAll( QueryHelper serviceRequest ) {
 		try {
 			serviceResult = new ServiceResult<>();
 			
