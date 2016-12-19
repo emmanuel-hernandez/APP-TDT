@@ -13,9 +13,10 @@ import com.efe13.tdt.model.entity.State;
 
 public class StateDAO extends DAOAPI<State> {
 	
-	private final static String ACTIVE_CONDITION = "AND active = " + ActiveEnum.ACTIVE.getValue();
-	private final static String QUERY_GET_ALL = "FROM State WHERE 1=1 " + ACTIVE_CONDITION;
-	private final static String QUERY_GET_BY_ID = "FROM State s WHERE stateId = :stateId " + ACTIVE_CONDITION + " ORDER BY s.name";
+	private final static String ORDER_BY = " ORDER BY s.name";
+	private final static String ACTIVE_CONDITION = "AND s.active = " + ActiveEnum.ACTIVE.getValue();
+	private final static String QUERY_GET_BY_ID = "FROM State s WHERE s.id = :stateId " + ACTIVE_CONDITION + ORDER_BY;
+	private final static String QUERY_GET_ALL = "FROM State s WHERE 1=1 " + ACTIVE_CONDITION + ORDER_BY;
 
 	@Override
 	public State getById( EntityAPI object ) throws HibernateException, DAOException {

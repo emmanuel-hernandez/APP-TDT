@@ -3,5 +3,9 @@
  */
 
 var FilterAPI = {
-	fields : []
+	build: function( f ) {
+		return {
+			filter: f
+		}
+	}
 }

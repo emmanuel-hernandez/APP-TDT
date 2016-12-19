@@ -56,6 +56,11 @@ public class StateServiceImpl extends StateService {
 				dtos.add( (StateDTO) dto );
 			}
 			
+			StateDTO defaultState = new StateDTO();
+			defaultState.setId( -1 );
+			defaultState.setName( "Seleccionar..." );
+			dtos.add( 0, defaultState );
+			
 			serviceResult.setCollection( dtos );
 			statusResultService = StatusResultService.STATUS_SUCCESS;
 		}

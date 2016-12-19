@@ -13,9 +13,10 @@ import com.efe13.tdt.model.entity.Population;
 
 public class PopulationDAO extends DAOAPI<Population> {
 	
-	private final static String ACTIVE_CONDITION = "AND active = " + ActiveEnum.ACTIVE.getValue();
-	private final static String QUERY_GET_BY_ID = "FROM Population WHERE populationId = :populationId " + ACTIVE_CONDITION;
-	private final static String QUERY_GET_ALL = "FROM Population p WHERE 1=1 " + ACTIVE_CONDITION + " ORDER BY p.name";;
+	private final static String ORDER_BY = " ORDER BY p.type";
+	private final static String ACTIVE_CONDITION = "AND p.active = " + ActiveEnum.ACTIVE.getValue();
+	private final static String QUERY_GET_BY_ID = "FROM Population p WHERE p.id = :populationId " + ACTIVE_CONDITION + ORDER_BY;
+	private final static String QUERY_GET_ALL = "FROM Population p WHERE 1=1 " + ACTIVE_CONDITION + ORDER_BY;
 
 	@Override
 	public Population getById( EntityAPI object ) throws HibernateException, DAOException {

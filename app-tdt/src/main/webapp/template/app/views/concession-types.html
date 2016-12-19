@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Concesionarias</h1>
+        <h1 class="page-header">Tipo de Concesión</h1>
     </div>
     <!-- /.col-lg-12 -->
 </div>
@@ -18,8 +18,12 @@
                     <div class="col-lg-12">
                         <form role="form">
                             <div class="form-group">
-                                <label for="concessionaireName">Nombre:</label>
-                                <input class="form-control" id="concessionaireName" placeholder="Nombre de la concesionaria" ng-model="concessionaire.name">
+                                <label for="concessionType">Tipo:</label>
+                                <input class="form-control" id="concessionType" placeholder="Tipo de concesión" ng-model="concessionType.type">
+                            </div>
+                            <div class="form-group">
+                                <label for="concessionTypeDescription">Descripción:</label>
+                                <input class="form-control" id="concessionTypeDescription" placeholder="Descripción" ng-model="concessionType.description">
                             </div>
                             <button type="reset" class="btn btn-default" ng-click="cancel()">Cancelar</button>
                             <button type="submit" class="btn btn-primary" ng-click="save()">Guardar</button>
@@ -34,7 +38,7 @@
             <div class="panel-heading">Listado</div>
             <div class="panel-body">
             	<div class="dataTable_wrapper">
-            		<list-table collection="concessionaires" columns="columns" update-fn="update" delete-fn="delete"/>
+            		<list-table collection="concessionTypes" columns="columns" update-fn="update" delete-fn="delete"/>
                 </div><!-- /.table-responsive -->
             </div>
         </div>

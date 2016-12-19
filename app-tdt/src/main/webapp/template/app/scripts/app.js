@@ -32,23 +32,28 @@ angular
             loadMyDirectives:function($ocLazyLoad){
                 return $ocLazyLoad.load(
                 {
-                    name:'sbAdminApp',
+                    name:APP_NAME,
                     files:[
                     'scripts/directives/header/header.js',
                     'scripts/directives/header/header-notification/header-notification.js',
                     'scripts/directives/sidebar/sidebar.js',
                     'scripts/directives/sidebar/sidebar-search/sidebar-search.js',
                     'scripts/directives/dashboard/list-table/list-table.js',
+                    'scripts/directives/alerts/alerts.js',
                     
-
                     'scripts/utils/Utils.js',
+                    'scripts/model/AlertDTO.js',
                     'scripts/model/QualityDTO.js',
                     'scripts/model/ResolutionDTO.js',
+                    'scripts/model/StateDTO.js',
+                    'scripts/model/PopulationDTO.js',
+                    'scripts/model/ConcessionaireDTO.js',
+                    'scripts/model/ConcessionTypeDTO.js',
                     'scripts/model/ChannelDTO.js',
                     'scripts/model/PaginationAPI.js',
                     'scripts/model/FilterAPI.js',
                     'scripts/model/QueryHelper.js',
-                    'scripts/model/KeyValueDTO.js'
+                    'scripts/model/ValueDTO.js'
                     ]
                 }),
                 $ocLazyLoad.load(
@@ -93,19 +98,17 @@ angular
         resolve: {
           loadMyFiles:function($ocLazyLoad) {
             return $ocLazyLoad.load({
-              name:'sbAdminApp',
+              name:APP_NAME,
               files:[
               'scripts/controllers/main.js',
               'scripts/directives/timeline/timeline.js',
               'scripts/directives/notifications/notifications.js',
-              'scripts/directives/chat/chat.js',
               'scripts/directives/dashboard/stats/stats.js'
               ]
             })
           }
         }
       })
-      //.state('dashboard.form',{
       .state('dashboard.state',{
         url:'/estados',
         controller: 'StateController',
@@ -113,11 +116,8 @@ angular
         resolve: {
             loadMyFiles:function($ocLazyLoad) {
               return $ocLazyLoad.load({
-                name:'sbAdminApp',
-                files:[
-                'scripts/controllers/StateController.js',
-                'scripts/directives/alerts/alerts.js'
-                ]
+                name:APP_NAME,
+                files:['scripts/controllers/StateController.js']
               })
             }
           }
@@ -129,11 +129,8 @@ angular
         resolve: {
 	        loadMyFiles:function($ocLazyLoad) {
 	          return $ocLazyLoad.load({
-	            name:'sbAdminApp',
-	            files:[
-	            'scripts/controllers/PopulationController.js',
-	            'scripts/directives/alerts/alerts.js'
-	            ]
+	            name:APP_NAME,
+	            files:['scripts/controllers/PopulationController.js']
 	          })
 	        }
 	      }
@@ -145,14 +142,24 @@ angular
         resolve: {
             loadMyFiles:function($ocLazyLoad) {
               return $ocLazyLoad.load({
-                name:'sbAdminApp',
-                files:[
-                'scripts/controllers/ConcessionaireController.js',
-                'scripts/directives/alerts/alerts.js'
-                ]
+                name:APP_NAME,
+                files:['scripts/controllers/ConcessionaireController.js']
               })
             }
           }
+    })
+	.state('dashboard.concessionType',{
+	    url:'/concesiones',
+	    controller: 'ConcessionTypeController',
+	    templateUrl:'views/concession-types.html',
+	    resolve: {
+	        loadMyFiles:function($ocLazyLoad) {
+	          return $ocLazyLoad.load({
+	            name:APP_NAME,
+	            files:['scripts/controllers/ConcessionTypeController.js']
+	          })
+	        }
+	      }
     })
       .state('dashboard.channel',{
         url:'/canales',
@@ -161,63 +168,12 @@ angular
         resolve: {
             loadMyFiles:function($ocLazyLoad) {
               return $ocLazyLoad.load({
-                name:'sbAdminApp',
-                files:[
-                'scripts/controllers/ChannelController.js',
-                'scripts/directives/alerts/alerts.js'
-                ]
+                name:APP_NAME,
+                files:['scripts/controllers/ChannelController.js']
               })
             }
           }
       })
-      .state('dashboard.chart',{
-        templateUrl:'views/chart.html',
-        url:'/chart',
-        controller:'ChartCtrl',
-        resolve: {
-          loadMyFile:function($ocLazyLoad) {
-            return $ocLazyLoad.load({
-              name:'chart.js',
-              files:[
-                'bower_components/angular-chart.js/dist/angular-chart.min.js',
-                'bower_components/angular-chart.js/dist/angular-chart.css'
-              ]
-            }),
-            $ocLazyLoad.load({
-                name:'sbAdminApp',
-                files:['scripts/controllers/chartContoller.js']
-            })
-          }
-        }
-    })
-      .state('dashboard.table',{
-        templateUrl:'views/table.html',
-        url:'/table'
-    })
-      .state('dashboard.panels-wells',{
-          templateUrl:'views/ui-elements/panels-wells.html',
-          url:'/panels-wells'
-      })
-      .state('dashboard.buttons',{
-        templateUrl:'views/ui-elements/buttons.html',
-        url:'/buttons'
-    })
-      .state('dashboard.notifications',{
-        templateUrl:'views/ui-elements/notifications.html',
-        url:'/notifications'
-    })
-      .state('dashboard.typography',{
-       templateUrl:'views/ui-elements/typography.html',
-       url:'/typography'
-   })
-      .state('dashboard.icons',{
-       templateUrl:'views/ui-elements/icons.html',
-       url:'/icons'
-   })
-      .state('dashboard.grid',{
-       templateUrl:'views/ui-elements/grid.html',
-       url:'/grid'
-   })
   }]);
 
     

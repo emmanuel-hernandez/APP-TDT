@@ -10,13 +10,13 @@
 	        <tr ng-repeat="item in collection">
 	        	<td ng-repeat="(key, value) in item.properties">{{ value.value }}</td>
                 <td class="center">
-                	 <button type="button" class="btn btn-primary" ng-click="details(item.object)">Detalles</button>
+                	 <button type="button" class="btn btn-primary" ng-click="showDetails( item.object )">Detalles</button>
                 </td>
                 <td class="center">
-                	 <button type="button" class="btn btn-danger" ng-click="deleteFn()(item.object)">Eliminar</button>
+                	 <button type="button" class="btn btn-danger" ng-click="delete( item.object )">Eliminar</button>
                 </td>
                 <td class="center">
-          			 <button type="button" class="btn btn-default" ng-click="updateFn()(item.object)">Actualizar</button>
+          			 <button type="button" class="btn btn-default" ng-click="update( item.object )">Actualizar</button>
                 </td>
             </tr>
          </tbody>

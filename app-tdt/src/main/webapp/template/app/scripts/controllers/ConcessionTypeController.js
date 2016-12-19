@@ -1,49 +1,49 @@
 'use strict';
 /**
  * @ngdoc function
- * @name app-tdt.controller:StateController
+ * @name app-tdt.controller:ConcessionTypeController
  * @description
- * # StateController
- * Controller of the state.html view
+ * # ConcessionTypeController
+ * Controller of the concession-type.html view
  */
-angular.module( APP_NAME ).controller( 'StateController',
-	function($scope, $http) {
+angular.module( APP_NAME ).controller( 'ConcessionTypeController',
+	function($scope, $position, $http) {
 		var isUpdate;
-				
+		
 		var init = function() {
 			$scope.alert = AlertDTO.build( null, ERROR_MESSAGE, false );
 			$scope.queryHelper = QueryHelper.build( PaginationAPI.build( 1, 15, 0 ), FilterAPI.build( null ) );			
 			$scope.columns = [
-  				'Nombre',
-  				'Abreviatura'
+  				'Tipo',
+  				'Descripción'
   			];
-			$scope.states = new Array();
+			
+			$scope.concessionTypes = new Array();			
 		};
-		
+
 		var reset = function() {
 			isUpdate = false;
 			$scope.alert.show = false;
 			
-			$scope.state = StateDTO.build();
-			$scope.state.id = 0;
-			$scope.state.name = null;
-			$scope.state.shortName = null;
+			$scope.concessionType = ConcessionTypeDTO.build();
+			$scope.concessionType.id = 0;
+			$scope.concessionType.name = null;
 		};
 		
 		$scope.get = function() {
-			$http.get( STATE_URL +'?'+ GET_PARAMETER_NAME +'='+ JSON.stringify($scope.queryHelper) ).success( function(data) {
+			$http.get( CONCESSION_TYPE_URL +'?'+ GET_PARAMETER_NAME +'='+ JSON.stringify($scope.queryHelper) ).success( function(data) {
 				if( data.statusResult.value ) {
-					$scope.states = new Array();
+					$scope.concessionTypes = new Array();
 					
 					for(var i=0; i<data.collection.length; i++ ) {
-						var state = data.collection[ i ];
-						var object = { object: state, properties: new Array() };
+						var concessionType = data.collection[ i ];
+						var object = { object: concessionType, properties: new Array() };
 
-						if( state.active ) {
-							object.properties.push( ValueDTO.build( state.name ) );
-							object.properties.push( ValueDTO.build( state.shortName ) );
+						if( concessionType.active ) {
+							object.properties.push( ValueDTO.build( concessionType.type ) );
+							object.properties.push( ValueDTO.build( concessionType.description ) );
 							
-							$scope.states.push( object );
+							$scope.concessionTypes.push( object );
 						}
 					}
 				}
@@ -58,7 +58,7 @@ angular.module( APP_NAME ).controller( 'StateController',
 			$scope.alert.show = true;
 			
 			if( !isUpdate ) {
-				$http.post( STATE_URL, JSON.stringify($scope.state) ).success( function(data) {
+				$http.post( CONCESSION_TYPE_URL, JSON.stringify($scope.concessionType) ).success( function(data) {
 					$scope.alert.type = ( data.statusResult.value ) ? SUCCESS_MESSAGE : ERROR_MESSAGE;
 					$scope.alert.message = data.message;
 					
@@ -69,7 +69,7 @@ angular.module( APP_NAME ).controller( 'StateController',
 				});
 			}
 			else {
-				$http.put( STATE_URL + $scope.state.id, JSON.stringify($scope.state) ).success( function(data) {
+				$http.put( CONCESSION_TYPE_URL + $scope.concessionType.id, JSON.stringify($scope.concessionType) ).success( function(data) {
 					$scope.alert.type = ( data.statusResult.value ) ? SUCCESS_MESSAGE : ERROR_MESSAGE;
 					$scope.alert.message = data.message;
 					
@@ -82,10 +82,10 @@ angular.module( APP_NAME ).controller( 'StateController',
 			}
 		}
 		
-		$scope.delete = function( state ) {
+		$scope.delete = function( concessionType ) {
 			var response = confirm( DEFAULT_DELETE_MESSAGE );
 			if( response ) {
-				$http.delete( STATE_URL + state.id ).success( function(data) {
+				$http.delete( CONCESSION_TYPE_URL + concessionType.id ).success( function(data) {
 					if( data.statusResult.value ) {
 						$scope.alert.type = ( data.statusResult.value ) ? SUCCESS_MESSAGE : ERROR_MESSAGE;
 						$scope.alert.message = data.message;
@@ -96,12 +96,11 @@ angular.module( APP_NAME ).controller( 'StateController',
 			}
 		}
 		
-		$scope.update = function( state ) {
-			$scope.state = new StateDTO.build();
-			$scope.state.id = state.id;
-			$scope.state.name = state.name;
-			$scope.state.shortName = state.shortName;
-			$scope.state.active = state.active;
+		$scope.update = function( concessionType ) {
+			$scope.concessionType.id = concessionType.id;
+			$scope.concessionType.type = concessionType.type;
+			$scope.concessionType.description = concessionType.description;
+			$scope.concessionType.active = concessionType.active;
 			isUpdate = true;
 		}
 		

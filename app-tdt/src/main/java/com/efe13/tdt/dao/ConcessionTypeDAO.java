@@ -13,9 +13,10 @@ import com.efe13.tdt.model.entity.ConcessionType;
 
 public class ConcessionTypeDAO extends DAOAPI<ConcessionType> {
 
-	private final static String ACTIVE_CONDITION = "AND active = " + ActiveEnum.ACTIVE.getValue();
-	private final static String QUERY_GET_BY_ID = "FROM ConcessionType WHERE concessionTypeId = :concessionTypeId " + ACTIVE_CONDITION;
-	private final static String QUERY_GET_ALL = "FROM ConcessionType ct WHERE 1=1 " + ACTIVE_CONDITION + " ORDER BY ct.type";
+	private final static String ORDER_BY = " ORDER BY ct.name";
+	private final static String ACTIVE_CONDITION = "AND ct.active = " + ActiveEnum.ACTIVE.getValue();
+	private final static String QUERY_GET_BY_ID = "FROM ConcessionType ct WHERE ct.id = :concessionTypeId " + ACTIVE_CONDITION + ORDER_BY;
+	private final static String QUERY_GET_ALL = "FROM ConcessionType ct WHERE 1=1 " + ACTIVE_CONDITION + ORDER_BY;
 	
 	@Override
 	public ConcessionType getById( EntityAPI object ) throws HibernateException, DAOException {

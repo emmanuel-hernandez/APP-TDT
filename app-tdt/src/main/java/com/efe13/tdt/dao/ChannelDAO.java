@@ -14,9 +14,10 @@ import com.efe13.tdt.model.entity.Channel;
 
 public class ChannelDAO extends DAOAPI<Channel> {
 
-	private final static String ACTIVE_CONDITION = "AND active = " + ActiveEnum.ACTIVE.getValue();
-	private final static String QUERY_GET_BY_ID = "FROM Channel WHERE channelId = :channelId " + ACTIVE_CONDITION;
-	private final static String QUERY_GET_ALL = "FROM Channel c WHERE 1=1 " + ACTIVE_CONDITION + " ORDER BY c.name";
+	private final static String ORDER_BY = " ORDER BY c.name";
+	private final static String ACTIVE_CONDITION = "AND c.active = " + ActiveEnum.ACTIVE.getValue();
+	private final static String QUERY_GET_BY_ID = "FROM Channel c WHERE c.id = :channelId " + ACTIVE_CONDITION + ORDER_BY;
+	private final static String QUERY_GET_ALL = "FROM Channel c WHERE 1=1 " + ACTIVE_CONDITION + ORDER_BY;
 	
 	@Override
 	public Channel getById( EntityAPI object ) throws HibernateException, DAOException {

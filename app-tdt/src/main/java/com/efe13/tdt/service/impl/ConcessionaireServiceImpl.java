@@ -56,6 +56,11 @@ public class ConcessionaireServiceImpl extends ConcessionaireService {
 				dtos.add( (ConcessionaireDTO) dto );
 			}
 			
+			ConcessionaireDTO defaultConcessionaire = new ConcessionaireDTO();
+			defaultConcessionaire.setId( -1 );
+			defaultConcessionaire.setName( "Seleccionar..." );
+			dtos.add( 0, defaultConcessionaire );
+			
 			serviceResult.setCollection( dtos );
 			statusResultService = StatusResultService.STATUS_SUCCESS;
 		}

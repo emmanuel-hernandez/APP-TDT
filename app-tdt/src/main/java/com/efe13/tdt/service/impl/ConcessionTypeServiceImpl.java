@@ -56,6 +56,11 @@ public class ConcessionTypeServiceImpl extends ConcessionTypeService {
 				dtos.add( (ConcessionTypeDTO) dto );
 			}
 			
+			ConcessionTypeDTO defaultConcessionType = new ConcessionTypeDTO();
+			defaultConcessionType.setId( -1 );
+			defaultConcessionType.setType( "Seleccionar..." );
+			dtos.add( 0, defaultConcessionType );
+			
 			serviceResult.setCollection( dtos );
 			statusResultService = StatusResultService.STATUS_SUCCESS;
 		}

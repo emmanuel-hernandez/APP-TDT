@@ -3,7 +3,11 @@
  */
 
 var PaginationAPI = {
-	page : 0,
-	pageSize : 0,
-	total : 0
+	build: function(p, size, t) {
+		return {
+			page: p,
+			pageSize: size,
+			total: t
+		}
+	}
 }

@@ -3,6 +3,10 @@
  */
 
 var QueryHelper = {
-		paginationAPI: getInstance( PaginationAPI ),
-		filterAPI: getInstance( FilterAPI )
+		build: function(pagination, filter) {
+			return {
+				paginationAPI: pagination,
+				filterAPI: filter
+			}
+		}
 }

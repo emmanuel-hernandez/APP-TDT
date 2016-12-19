@@ -8,50 +8,71 @@
  */
 angular.module( APP_NAME ).controller( 'ConcessionaireController',
 	function($scope, $position, $http) {
-		$scope.concessionaire = {
-			id: 0,
-			name: null
+		var isUpdate;
+		
+		var init = function() {
+			$scope.alert = AlertDTO.build( null, ERROR_MESSAGE, false );
+			$scope.queryHelper = QueryHelper.build( PaginationAPI.build( 1, 15, 0 ), FilterAPI.build( null ) );			
+			$scope.columns = [
+  				'Nombre',
+  			];
+			
+			$scope.concessionaires = new Array();
 		};
-		var isUpdate = false;
-		$scope.concessionaires = new Array();
-		$scope.alerts = {
-			message: '',
-			type: '',
-			show: false
+
+		var reset = function() {
+			isUpdate = false;
+			$scope.alert.show = false;
+			
+			$scope.concessionaire = ConcessionaireDTO.build();
+			$scope.concessionaire.id = 0;
+			$scope.concessionaire.name = null;
 		};
 		
 		$scope.get = function() {
-			$http.get( 'http://localhost:8181/concessionaire/' ).success( function(data) {
+			$http.get( CONCESSIONAIRE_URL +'?'+ GET_PARAMETER_NAME +'='+ JSON.stringify($scope.queryHelper) ).success( function(data) {
 				if( data.statusResult.value ) {
-					$scope.concessionaires = data.collection;
+					$scope.concessionaires = new Array();
+					
+					for(var i=0; i<data.collection.length; i++ ) {
+						var concessionaire = data.collection[ i ];
+						var object = { object: concessionaire, properties: new Array() };
+
+						if( concessionaire.active ) {
+							object.properties.push( ValueDTO.build( concessionaire.name ) );
+							
+							$scope.concessionaires.push( object );
+						}
+					}
 				}
 				else {
-					$scope.alerts.show = true;
-					$scope.alerts.resultMessage = data.message;
+					$scope.alert.message = data.message;
+					$scope.alert.show = true;
 				}
 			});
 		}
 		
 		$scope.save = function() {
-			$scope.alerts.show = true;
+			$scope.alert.show = true;
+			
 			if( !isUpdate ) {
-				$http.post( 'http://localhost:8181/concessionaire/', JSON.stringify($scope.concessionaire) ).success( function(data) {
-					$scope.alerts.type = ( data.statusResult.value ) ? 'success' : 'danger';
-					$scope.alerts.message = data.message;
+				$http.post( CONCESSIONAIRE_URL, JSON.stringify($scope.concessionaire) ).success( function(data) {
+					$scope.alert.type = ( data.statusResult.value ) ? SUCCESS_MESSAGE : ERROR_MESSAGE;
+					$scope.alert.message = data.message;
 					
 					if( data.statusResult.value ) {
-						$scope.cancell();
+						$scope.cancel();
 						$scope.get();
 					}
 				});
 			}
 			else {
-				$http.put( 'http://localhost:8181/concessionaire/' + $scope.concessionaire.id, JSON.stringify($scope.concessionaire) ).success( function(data) {
-					$scope.alerts.type = ( data.statusResult.value ) ? 'success' : 'danger';
-					$scope.alerts.message = data.message;
+				$http.put( CONCESSIONAIRE_URL + $scope.concessionaire.id, JSON.stringify($scope.concessionaire) ).success( function(data) {
+					$scope.alert.type = ( data.statusResult.value ) ? SUCCESS_MESSAGE : ERROR_MESSAGE;
+					$scope.alert.message = data.message;
 					
 					if( data.statusResult.value ) {
-						$scope.cancell();
+						$scope.cancel();
 						$scope.get();
 						isUpdate = false;
 					}
@@ -60,13 +81,13 @@ angular.module( APP_NAME ).controller( 'ConcessionaireController',
 		}
 		
 		$scope.delete = function( concessionaire ) {
-			var response = confirm( "¿Estas seguro que deseas eliminar este registro?" );
+			var response = confirm( DEFAULT_DELETE_MESSAGE );
 			if( response ) {
-				$http.delete( 'http://localhost:8181/concessionaire/' + concessionaire.id ).success( function(data) {
+				$http.delete( CONCESSIONAIRE_URL + concessionaire.id ).success( function(data) {
 					if( data.statusResult.value ) {
-						$scope.alerts.type = ( data.statusResult.value ) ? 'success' : 'danger';
-						$scope.alerts.message = data.message;
-						$scope.alerts.show = true;
+						$scope.alert.type = ( data.statusResult.value ) ? SUCCESS_MESSAGE : ERROR_MESSAGE;
+						$scope.alert.message = data.message;
+						$scope.alert.show = true;
 						$scope.get();
 					}
 				});
@@ -74,15 +95,18 @@ angular.module( APP_NAME ).controller( 'ConcessionaireController',
 		}
 		
 		$scope.update = function( concessionaire ) {
-			$scope.concessionaire = JSON.parse( JSON.stringify( concessionaire ) );
+			$scope.concessionaire.id = concessionaire.id;
+			$scope.concessionaire.name = concessionaire.name;
+			$scope.concessionaire.active = concessionaire.active;
 			isUpdate = true;
 		}
 		
-		$scope.cancell = function() {
-			$scope.concessionaire.name = "";
-			isUpdate = false;
+		$scope.cancel = function() {
+			reset();
 		}
 		
+		init();
+		reset();
 		$scope.get();
 	}	
 );

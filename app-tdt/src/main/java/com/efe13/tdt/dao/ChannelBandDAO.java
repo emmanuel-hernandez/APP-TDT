@@ -13,10 +13,10 @@ import com.efe13.tdt.model.entity.ChannelBand;
 
 public class ChannelBandDAO extends DAOAPI<ChannelBand> {
 	
-	private final static String ACTIVE_CONDITION = "AND active = " + ActiveEnum.ACTIVE.getValue();
-	private final static String QUERY_GET_BY_ID = "FROM ChannelBand WHERE channelBandId = :channelBandId " + ACTIVE_CONDITION;
-	private final static String QUERY_GET_ALL = "FROM ChannelBand cb WHERE 1=1 " + ACTIVE_CONDITION + " ORDER BY cb.name";;
-
+	private final static String ORDER_BY = " ORDER BY cb.name";
+	private final static String ACTIVE_CONDITION = "AND cb.active = " + ActiveEnum.ACTIVE.getValue();
+	private final static String QUERY_GET_BY_ID = "FROM ChannelBand cb WHERE cb.id = :channelBandId " + ACTIVE_CONDITION + ORDER_BY;
+	private final static String QUERY_GET_ALL = "FROM ChannelBand cb WHERE 1=1 " + ACTIVE_CONDITION + ORDER_BY;
 	
 	@Override
 	public ChannelBand getById( EntityAPI object ) throws HibernateException, DAOException {

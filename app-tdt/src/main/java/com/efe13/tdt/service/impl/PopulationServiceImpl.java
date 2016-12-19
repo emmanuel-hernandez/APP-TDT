@@ -57,6 +57,11 @@ public class PopulationServiceImpl extends PopulationService {
 				dtos.add( (PopulationDTO) dto );
 			}
 			
+			PopulationDTO defaultPopulation = new PopulationDTO();
+			defaultPopulation.setId( -1 );
+			defaultPopulation.setName( "Seleccionar..." );
+			dtos.add( 0, defaultPopulation );
+			
 			serviceResult.setCollection( dtos );
 			statusResultService = StatusResultService.STATUS_SUCCESS;
 		}

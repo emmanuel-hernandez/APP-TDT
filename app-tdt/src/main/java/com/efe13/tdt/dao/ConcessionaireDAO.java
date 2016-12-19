@@ -13,9 +13,10 @@ import com.efe13.tdt.model.entity.Concessionaire;
 
 public class ConcessionaireDAO extends DAOAPI<Concessionaire> {
 	
-	private final static String ACTIVE_CONDITION = "AND active = " + ActiveEnum.ACTIVE.getValue();
-	private final static String QUERY_GET_BY_ID = "FROM Concessionaire WHERE concessionaireId = :concessionaireId " + ACTIVE_CONDITION;
-	private final static String QUERY_GET_ALL = "FROM Concessionaire WHERE 1=1 " + ACTIVE_CONDITION;
+	private final static String ORDER_BY = " ORDER BY c.name";
+	private final static String ACTIVE_CONDITION = "AND c.active = " + ActiveEnum.ACTIVE.getValue();
+	private final static String QUERY_GET_BY_ID = "FROM Concessionaire c WHERE c.id = :concessionaireId " + ACTIVE_CONDITION + ORDER_BY;
+	private final static String QUERY_GET_ALL = "FROM Concessionaire c WHERE 1=1 " + ACTIVE_CONDITION + ORDER_BY;
 
 	@Override
 	public Concessionaire getById( EntityAPI object ) throws HibernateException, DAOException {
