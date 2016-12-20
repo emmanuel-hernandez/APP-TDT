@@ -22,7 +22,6 @@ angular.module( APP_NAME ).controller( 'ConcessionaireController',
 
 		var reset = function() {
 			isUpdate = false;
-			$scope.alert.show = false;
 			
 			$scope.concessionaire = ConcessionaireDTO.build();
 			$scope.concessionaire.id = 0;
@@ -53,8 +52,6 @@ angular.module( APP_NAME ).controller( 'ConcessionaireController',
 		}
 		
 		$scope.save = function() {
-			$scope.alert.show = true;
-			
 			if( !isUpdate ) {
 				$http.post( CONCESSIONAIRE_URL, JSON.stringify($scope.concessionaire) ).success( function(data) {
 					$scope.alert.type = ( data.statusResult.value ) ? SUCCESS_MESSAGE : ERROR_MESSAGE;
@@ -78,6 +75,8 @@ angular.module( APP_NAME ).controller( 'ConcessionaireController',
 					}
 				});
 			}
+			
+			$scope.alert.show = true;
 		}
 		
 		$scope.delete = function( concessionaire ) {

@@ -23,11 +23,11 @@ angular.module( APP_NAME ).controller( 'ConcessionTypeController',
 
 		var reset = function() {
 			isUpdate = false;
-			$scope.alert.show = false;
 			
 			$scope.concessionType = ConcessionTypeDTO.build();
 			$scope.concessionType.id = 0;
-			$scope.concessionType.name = null;
+			$scope.concessionType.type = null;
+			$scope.concessionType.description = null;
 		};
 		
 		$scope.get = function() {
@@ -55,8 +55,6 @@ angular.module( APP_NAME ).controller( 'ConcessionTypeController',
 		}
 		
 		$scope.save = function() {
-			$scope.alert.show = true;
-			
 			if( !isUpdate ) {
 				$http.post( CONCESSION_TYPE_URL, JSON.stringify($scope.concessionType) ).success( function(data) {
 					$scope.alert.type = ( data.statusResult.value ) ? SUCCESS_MESSAGE : ERROR_MESSAGE;
@@ -80,6 +78,8 @@ angular.module( APP_NAME ).controller( 'ConcessionTypeController',
 					}
 				});
 			}
+			
+			$scope.alert.show = true;
 		}
 		
 		$scope.delete = function( concessionType ) {

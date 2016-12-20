@@ -40,7 +40,6 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 
 		var reset = function() {
 			isUpdate = false;
-			$scope.alert.show = false;
 			
 			$scope.channel = ChannelDTO.build();
 			$scope.channel.id = 0;
@@ -57,9 +56,13 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 			$scope.channel.effectiveDateStart = null;
 			$scope.channel.effectiveDateEnd = null;
 			$scope.channel.channelBand = 1;
-			$scope.channel.population = DEFAULT_SELECTED_VALUE;
-			$scope.channel.concessionaire = DEFAULT_SELECTED_VALUE;
-			$scope.channel.concessionType = DEFAULT_SELECTED_VALUE;
+			$scope.channel.population = null;
+			$scope.channel.concessionaire = null;
+			$scope.channel.concessionType = null;
+			$scope.selectedChannelBand = 1;
+			$scope.selectedPopulation = DEFAULT_SELECTED_VALUE;
+			$scope.selectedConcessionaire = DEFAULT_SELECTED_VALUE;
+			$scope.selectedConcessionType = DEFAULT_SELECTED_VALUE;
 		};
 
 		var getChannelBands = function() {
@@ -137,8 +140,6 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 		}
 		
 		$scope.save = function() {
-			$scope.alert.show = true;
-			
 			for( var i=0; i<$scope.channelBands.length; i++ ) {
 				if( $scope.channelBands[i].id == $scope.channel.channelBand ) {
 					$scope.channel.channelBand = $scope.channelBands[i];
@@ -187,6 +188,8 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 					}
 				});
 			}
+			
+			$scope.alert.show = true;
 		}
 
 		$scope.delete = function( channel ) {
@@ -214,14 +217,20 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 			$scope.channel.resolution = (channel.resolution === CHANNEL_RESOLUTION.FULL.VALUE) ? CHANNEL_RESOLUTION.FULL.ID : CHANNEL_RESOLUTION.SD.ID;
 			$scope.channel.power = channel.power;
 			$scope.channel.acesli = channel.acesli;
-			$scope.channel.longitude = channel.longitud;
+			$scope.channel.longitude = channel.longitude;
 			$scope.channel.latitude = channel.latitude;
 			$scope.channel.effectiveDateStart = channel.effectiveDayStart;
 			$scope.channel.effectiveDateEnd = channel.effectiveDayEnd;
-			$scope.channel.channelBand = channel.channelBand.id;
-			$scope.channel.population = channel.population.id;
-			$scope.channel.concessionaire = channel.concessionaire.id;
-			$scope.channel.concessionType = channel.concessionType.id;
+			$scope.channel.channelBand = channel.channelBand;
+			$scope.channel.population = channel.population;
+			$scope.channel.concessionaire = channel.concessionaire;
+			$scope.channel.concessionType = channel.concessionType;
+			
+			$scope.selectedChannelBand = channel.channelBand.id;
+			$scope.selectedPopulation = channel.population.id;
+			$scope.selectedConcessionaire = channel.concessionaire.id;
+			$scope.selectedConcessionType = channel.concessionType.id;
+			
 			$scope.channel.active = channel.active;
 			isUpdate = true;
 		}

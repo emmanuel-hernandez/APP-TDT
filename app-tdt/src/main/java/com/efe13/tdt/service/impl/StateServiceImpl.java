@@ -1,11 +1,14 @@
 package com.efe13.tdt.service.impl;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.ValidationException;
 
 import org.apache.log4j.Logger;
 
+import com.efe13.mvc.commons.api.enums.UpdateEnum;
+import com.efe13.mvc.commons.api.util.Utils;
 import com.efe13.mvc.model.api.impl.dto.DTOAPI;
 import com.efe13.mvc.model.api.impl.helper.QueryHelper;
 import com.efe13.tdt.enums.StatusResultService;
@@ -20,6 +23,10 @@ public class StateServiceImpl extends StateService {
 	private ServiceResult<StateDTO> serviceResult = null;
 	private String resultMessage;
 	private StatusResultService statusResultService;
+
+	private static final int FIELD_MIN_LENGTH = 3;
+	private static final int NAME_FIELD_MAX_LENGTH = 25;
+	private static final int SHORT_NAME_FIELD_MAX_LENGTH = 5;
 	
 	public ServiceResult<StateDTO> getById( StateDTO stateDTO ) {
 		try {
@@ -79,7 +86,7 @@ public class StateServiceImpl extends StateService {
 		try {
 			serviceResult = new ServiceResult<>();
 			
-			validateDTO( stateDTO );
+			validateDTO( stateDTO, UpdateEnum.IS_NOT_UPDATE );
 			if( super.save( stateDTO ) > 0 ) {
 				resultMessage = "El estado se ha guardado correctamente";
 				statusResultService = StatusResultService.STATUS_SUCCESS;
@@ -104,7 +111,7 @@ public class StateServiceImpl extends StateService {
 		try {
 			serviceResult = new ServiceResult<>();
 			
-			validateDTO( stateDTO );
+			validateDTO( stateDTO, UpdateEnum.IS_UPDATE );
 			if( super.update( stateDTO ) ) {
 				resultMessage = "El estado se ha actualizado correctamente";
 				statusResultService = StatusResultService.STATUS_SUCCESS;
@@ -150,14 +157,54 @@ public class StateServiceImpl extends StateService {
 	}
 	
 	@Override
-	public void validateDTO( DTOAPI dto ) {
-		StateDTO stateDto = (StateDTO) dto;
+	public void validateDTO( DTOAPI dto, UpdateEnum update ) {
+		StateDTO stateDto = (StateDTO) sanitizeDTO( dto );
 		
-		if( stateDto.getName() == null || stateDto.getName().trim().isEmpty() ) {
+		//Validate empty fields
+		if( Utils.isEmpty( stateDto.getName() ) ) {
 			throw new ValidationException( "El campo nombre es requerido" );
 		}
-		if( stateDto.getShortName() == null || stateDto.getShortName().trim().isEmpty() ) {
+		if( stateDto.getShortName() == null || stateDto.getShortName().isEmpty() ) {
 			throw new ValidationException( "El campo abreviatura es requerido" );
 		}
+
+		//Validate fields length
+		int lengthCheck = Utils.lengthCheck( stateDto.getName(), FIELD_MIN_LENGTH,  NAME_FIELD_MAX_LENGTH ); 
+		String exceptionMessage = "El campo nombre es demasiado" + (( lengthCheck < 0 ) ? " corto" : " largo");
+		if( lengthCheck != 0 ) {
+			throw new ValidationException( exceptionMessage );
+		}
+		
+		lengthCheck = Utils.lengthCheck( stateDto.getShortName(), FIELD_MIN_LENGTH, SHORT_NAME_FIELD_MAX_LENGTH );
+		exceptionMessage = "El campo abreviatura es demasiado" + (( lengthCheck < 0 ) ? " corto" : " largo");
+		if( lengthCheck != 0 ) {
+			throw new ValidationException( exceptionMessage );
+		}
+		
+		//Validate repeated
+		List<StateDTO> stateDTOs = listAll(null).getCollection();
+		for( StateDTO state : stateDTOs ) {
+			if( state.isActive() ) {
+				if( update.getValue() && state.getId() == stateDto.getId() ) {
+					continue;
+				}
+				if( state.getName().compareToIgnoreCase( stateDto.getName() ) == 0 ) {
+					throw new ValidationException( "Ya existe un estado con el mismo nombre" );
+				}
+				if( state.getShortName().compareToIgnoreCase( stateDto.getShortName() ) == 0 ) {
+					throw new ValidationException( "Ya existe un estado con la misma abreviatura" );
+				}
+			}
+		}
+	}
+	
+	@Override
+	public DTOAPI sanitizeDTO(DTOAPI dto) {
+		StateDTO stateDto = (StateDTO) dto;
+
+		stateDto.setName( Utils.toUpperCase( stateDto.getName() ) );
+		stateDto.setShortName( Utils.toUpperCase( stateDto.getShortName() ) );
+		
+		return stateDto;
 	}
 }

@@ -6,7 +6,7 @@
  * @description
  * # alerts
  */
-angular.module( APP_NAME ).directive( 'alertInfo', function() {
+angular.module( APP_NAME ).directive( 'alertInfo', function($timeout) {
 	return {
         templateUrl:'scripts/directives/alerts/alerts.html',
         restrict: 'E',
@@ -14,14 +14,10 @@ angular.module( APP_NAME ).directive( 'alertInfo', function() {
         scope: {
         	message: "@",
             type: "@",
-            show: "@"
+            show: "="
         },
         link: function($scope) {
-        	$scope.close = function() {
-        		console.log( $scope.show );
-        		$scope.show = false;
-        	}
+        	console.log( $scope.show );
         }
 	}
 });
-

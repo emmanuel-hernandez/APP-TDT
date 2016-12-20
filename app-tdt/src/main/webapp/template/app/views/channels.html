@@ -80,7 +80,7 @@
 		                	<div class="col-lg-2">
 		                		<div class="form-group">
 			                		<label for="channelBand">Banda:</label>
-			                		<select id="channelBand" class="form-control" ng-model="channel.channelBand">
+			                		<select id="channelBand" class="form-control" ng-model="selectedChannelBand">
 			                			<option ng-repeat="channelBand in channelBands" value="{{channelBand.id}}">{{channelBand.name}}</option>
 			                		</select>
 	                            </div>
@@ -90,7 +90,7 @@
 		                	<div class="col-lg-4">
 		                		<div class="form-group">
 			                		<label for="population">Población:</label>
-			                		<select id="population" class="form-control" ng-model="channel.population">
+			                		<select id="population" class="form-control" ng-model="selectedPopulation">
 			                			<option ng-repeat="population in populations" value="{{population.id}}">{{population.name}}</option>
 			                		</select>
 	                            </div>
@@ -98,7 +98,7 @@
 		                	<div class="col-lg-4">
 		                		<div class="form-group">
 			                		<label for="concessionaire">Concesionaria:</label>
-			                		<select id="concessionaire" class="form-control" ng-model="channel.concessionaire">
+			                		<select id="concessionaire" class="form-control" ng-model="selectedConcessionaire">
 			                			<option ng-repeat="concessionaire in concessionaires" value="{{concessionaire.id}}">{{concessionaire.name}}</option>
 			                		</select>
 	                            </div>
@@ -106,8 +106,8 @@
 		                	<div class="col-lg-4">
 		                		<div class="form-group">
 			                		<label for="concessionType">Tipo de concesi&oacute;n:</label>
-			                		<select id="concessionType" class="form-control" ng-model="channel.concessionType">
-			                			<option value="-1" selected="selected">Seleccionar...</option>
+			                		<select id="concessionType" class="form-control" ng-model="selectedConcessionType">
+										<option ng-repeat="concessionType in concessionTypes" value="{{concessionType.id}}">{{concessionType.type}}</option>
 			                		</select>
 	                            </div>
 		                	</div>

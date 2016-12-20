@@ -1,11 +1,14 @@
 package com.efe13.tdt.service.impl;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.ValidationException;
 
 import org.apache.log4j.Logger;
 
+import com.efe13.mvc.commons.api.enums.UpdateEnum;
+import com.efe13.mvc.commons.api.util.Utils;
 import com.efe13.mvc.model.api.impl.dto.DTOAPI;
 import com.efe13.mvc.model.api.impl.helper.QueryHelper;
 import com.efe13.tdt.enums.StatusResultService;
@@ -20,6 +23,10 @@ public class ConcessionTypeServiceImpl extends ConcessionTypeService {
 	private ServiceResult<ConcessionTypeDTO> serviceResult = null;
 	private String resultMessage;
 	private StatusResultService statusResultService;
+	
+	private static final int FIELD_MIN_LENGTH = 3;
+	private static final int TYPE_FIELD_MAX_LENGTH = 25;
+	private static final int DESCRIPTION_FIELD_MAX_LENGTH = 40;
 	
 	public ServiceResult<ConcessionTypeDTO> getById( ConcessionTypeDTO concessionTypeDTO ) {
 		try {
@@ -50,6 +57,7 @@ public class ConcessionTypeServiceImpl extends ConcessionTypeService {
 	public ServiceResult<ConcessionTypeDTO> listAll( QueryHelper serviceRequest ) {
 		try {
 			serviceResult = new ServiceResult<>();
+			resultMessage = null;
 			
 			ArrayList<ConcessionTypeDTO> dtos = new ArrayList<>();
 			for( DTOAPI dto : super.getAll( serviceRequest ) ) {
@@ -79,7 +87,7 @@ public class ConcessionTypeServiceImpl extends ConcessionTypeService {
 		try {
 			serviceResult = new ServiceResult<>();
 			
-			validateDTO( concessionTypeDTO );
+			validateDTO( concessionTypeDTO, UpdateEnum.IS_NOT_UPDATE );
 			if( super.save( concessionTypeDTO ) > 0 ) {
 				resultMessage = "La concesión se ha guardado correctamente";
 				statusResultService = StatusResultService.STATUS_SUCCESS;
@@ -104,7 +112,7 @@ public class ConcessionTypeServiceImpl extends ConcessionTypeService {
 		try {
 			serviceResult = new ServiceResult<>();
 			
-			validateDTO( concessionTypeDTO );
+			validateDTO( concessionTypeDTO, UpdateEnum.IS_UPDATE );
 			if( super.update( concessionTypeDTO ) ) {
 				resultMessage = "La concesión se ha actualizado correctamente";
 				statusResultService = StatusResultService.STATUS_SUCCESS;
@@ -148,16 +156,53 @@ public class ConcessionTypeServiceImpl extends ConcessionTypeService {
 		serviceResult.setStatusResult( statusResultService );
 		return serviceResult;
 	}
-	
-	@Override
-	public void validateDTO( DTOAPI dto ) {
-		ConcessionTypeDTO concessionTypeDto = (ConcessionTypeDTO) dto;
 
-		if( concessionTypeDto.getType() == null || concessionTypeDto.getType().trim().isEmpty() ) {
+	@Override
+	public void validateDTO( DTOAPI dto, UpdateEnum update ) {
+		ConcessionTypeDTO concessionTypeDto = (ConcessionTypeDTO) sanitizeDTO( dto );
+
+		//Validate empty fields
+		if( Utils.isEmpty( concessionTypeDto.getType() ) ) {
 			throw new ValidationException( "El campo tipo es requerido" );
 		}
-		if( concessionTypeDto.getDescription() == null || concessionTypeDto.getDescription().trim().isEmpty() ) {
+		if( Utils.isEmpty( concessionTypeDto.getDescription() ) ) {
 			throw new ValidationException( "El campo descripción es requerido" );
 		}
+		
+		//Validate fields length
+		int lengthCheck = Utils.lengthCheck( concessionTypeDto.getType(), FIELD_MIN_LENGTH,  TYPE_FIELD_MAX_LENGTH ); 
+		String exceptionMessage = "El campo nombre es demasiado" + (( lengthCheck < 0 ) ? " corto" : " largo");
+		if( lengthCheck != 0 ) {
+			throw new ValidationException( exceptionMessage );
+		}
+		
+		lengthCheck = Utils.lengthCheck( concessionTypeDto.getDescription(), FIELD_MIN_LENGTH, DESCRIPTION_FIELD_MAX_LENGTH );
+		exceptionMessage = "El campo descripción es demasiado" + (( lengthCheck < 0 ) ? " corto" : " largo");
+		if( lengthCheck != 0 ) {
+			throw new ValidationException( exceptionMessage );
+		}
+		
+		//Validate repeated
+		List<ConcessionTypeDTO> concessionTypeDTOs = listAll(null).getCollection();
+		for( ConcessionTypeDTO concessionType : concessionTypeDTOs ) {
+			if( concessionType.isActive() ) {
+				if( update.getValue() && concessionType.getId() == concessionTypeDto.getId() ) {
+					continue;
+				}
+				if( concessionType.getType().compareToIgnoreCase( concessionTypeDto.getType() ) == 0 ) {
+					throw new ValidationException( "Ya existe un tipo de concesión con el mismo nombre" );
+				}
+			}
+		}
+	}
+
+	@Override
+	public DTOAPI sanitizeDTO(DTOAPI dto) {
+		ConcessionTypeDTO concessionTypeDTO = (ConcessionTypeDTO) dto;
+
+		concessionTypeDTO.setType( Utils.toUpperCase( concessionTypeDTO.getType() ) );
+		concessionTypeDTO.setDescription( Utils.toUpperCase( concessionTypeDTO.getDescription() ) );
+		
+		return concessionTypeDTO;
 	}
 }

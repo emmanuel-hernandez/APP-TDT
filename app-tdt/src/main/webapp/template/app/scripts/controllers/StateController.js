@@ -22,7 +22,6 @@ angular.module( APP_NAME ).controller( 'StateController',
 		
 		var reset = function() {
 			isUpdate = false;
-			$scope.alert.show = false;
 			
 			$scope.state = StateDTO.build();
 			$scope.state.id = 0;
@@ -55,8 +54,6 @@ angular.module( APP_NAME ).controller( 'StateController',
 		}
 		
 		$scope.save = function() {
-			$scope.alert.show = true;
-			
 			if( !isUpdate ) {
 				$http.post( STATE_URL, JSON.stringify($scope.state) ).success( function(data) {
 					$scope.alert.type = ( data.statusResult.value ) ? SUCCESS_MESSAGE : ERROR_MESSAGE;
@@ -80,6 +77,8 @@ angular.module( APP_NAME ).controller( 'StateController',
 					}
 				});
 			}
+			
+			$scope.alert.show = true;
 		}
 		
 		$scope.delete = function( state ) {

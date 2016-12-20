@@ -24,12 +24,12 @@ angular.module( APP_NAME ).controller( 'PopulationController',
 		
 		var reset = function() {
 			isUpdate = false;
-			$scope.alert.show = false;
 			
 			$scope.population = PopulationDTO.build();
 			$scope.population.id = 0;
 			$scope.population.name = null;
-			$scope.population.state = DEFAULT_SELECTED_VALUE;
+			$scope.population.state = null;
+			$scope.selectedState = DEFAULT_SELECTED_VALUE;
 		};
 
 		var getStates = function() {
@@ -70,10 +70,8 @@ angular.module( APP_NAME ).controller( 'PopulationController',
 		}
 		
 		$scope.save = function() {
-			$scope.alert.show = true;
-			
 			for( var i=0; i<$scope.states.length; i++ ) {
-				if( $scope.states[i].id == $scope.population.state ) {
+				if( $scope.states[i].id == $scope.selectedState ) {
 					$scope.population.state = $scope.states[i];
 					break;
 				}
@@ -101,7 +99,9 @@ angular.module( APP_NAME ).controller( 'PopulationController',
 						isUpdate = false;
 					}
 				});
-			}			
+			}
+
+			$scope.alert.show = true;
 		}
 		
 		$scope.delete = function( population ) {
@@ -121,7 +121,8 @@ angular.module( APP_NAME ).controller( 'PopulationController',
 		$scope.update = function( population ) {
 			$scope.population = PopulationDTO.build();
 			$scope.population.name = population.name;
-			$scope.population.state = population.state.id;
+			$scope.population.state = population.state;
+			$scope.selectedState = population.state.id;
 			$scope.population.active = population.active;
 			isUpdate = true;
 		}

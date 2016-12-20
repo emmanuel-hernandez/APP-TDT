@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.efe13.mvc.commons.api.enums.ActiveEnum;
 import com.efe13.mvc.model.api.impl.helper.QueryHelper;
 import com.efe13.tdt.enums.StatusResultService;
-import com.efe13.tdt.helper.ServiceRequest;
 import com.efe13.tdt.helper.ServiceResult;
 import com.efe13.tdt.model.dto.PopulationDTO;
 import com.efe13.tdt.model.dto.StateDTO;

@@ -37,9 +37,11 @@ public class ChannelDAO extends DAOAPI<Channel> {
 			QueryHelper queryHelper = (QueryHelper) helper;
 			
 			Query query = getSession().createQuery( QUERY_GET_ALL );
-			if( queryHelper.getPaginationAPI() != null ) {
-				query.setFirstResult( queryHelper.getPaginationAPI().getPage() );
-				query.setMaxResults( queryHelper.getPaginationAPI().getPageSize() );
+			if( queryHelper != null ) {
+				if( queryHelper.getPaginationAPI() != null ) {
+					query.setFirstResult( queryHelper.getPaginationAPI().getPage() );
+					query.setMaxResults( queryHelper.getPaginationAPI().getPageSize() );
+				}
 			}
 			
 			return query.list();

@@ -9,6 +9,7 @@ import com.efe13.mvc.commons.api.enums.ActiveEnum;
 import com.efe13.mvc.commons.api.exception.DAOException;
 import com.efe13.mvc.dao.api.impl.DAOAPI;
 import com.efe13.mvc.model.api.impl.entity.EntityAPI;
+import com.efe13.mvc.model.api.impl.helper.QueryHelper;
 import com.efe13.tdt.model.entity.ChannelBand;
 
 public class ChannelBandDAO extends DAOAPI<ChannelBand> {
@@ -29,7 +30,20 @@ public class ChannelBandDAO extends DAOAPI<ChannelBand> {
 	@Override
 	public <E> List<EntityAPI> getAll( E helper ) {
 		try {
+			if( helper != null && !(helper instanceof QueryHelper) ) {
+				throw new RuntimeException( "Query Helper expected!" );
+			}
+			
+			QueryHelper queryHelper = (QueryHelper) helper;
+			
 			Query query = getSession().createQuery( QUERY_GET_ALL );
+			if( queryHelper != null ) {
+				if( queryHelper.getPaginationAPI() != null ) {
+					query.setFirstResult( queryHelper.getPaginationAPI().getPage() );
+					query.setMaxResults( queryHelper.getPaginationAPI().getPageSize() );
+				}
+			}
+			
 			return query.list();
 		}
 		finally {

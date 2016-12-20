@@ -23,8 +23,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="state">Estado:</label>
-                                <select id="state" class="form-control" ng-model="population.state">
-                                	<!-- option value="-1" selected="selected">Seleccionar...</option-->
+                                <select id="state" class="form-control" ng-model="selectedState">
                                 	<option ng-repeat="state in states" value="{{state.id}}">{{state.name}}</option>
                                 </select>
                             </div>

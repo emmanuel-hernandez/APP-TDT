@@ -1,6 +1,6 @@
-<div ng-show="show">
+<div ng-show="{{show}}">
 	<div class="alert alert-{{type}}">
-		<!--button type="button" class="close" aria-hidden="true" ng-click="close()">&times;</button-->
+		<button type="button" class="close" aria-hidden="true" ng-click="close()">&times;</button>
 	    {{message}}	    
 	</div>
 </div>

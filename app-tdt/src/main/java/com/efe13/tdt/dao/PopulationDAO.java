@@ -9,11 +9,12 @@ import com.efe13.mvc.commons.api.enums.ActiveEnum;
 import com.efe13.mvc.commons.api.exception.DAOException;
 import com.efe13.mvc.dao.api.impl.DAOAPI;
 import com.efe13.mvc.model.api.impl.entity.EntityAPI;
+import com.efe13.mvc.model.api.impl.helper.QueryHelper;
 import com.efe13.tdt.model.entity.Population;
 
 public class PopulationDAO extends DAOAPI<Population> {
 	
-	private final static String ORDER_BY = " ORDER BY p.type";
+	private final static String ORDER_BY = " ORDER BY p.name";
 	private final static String ACTIVE_CONDITION = "AND p.active = " + ActiveEnum.ACTIVE.getValue();
 	private final static String QUERY_GET_BY_ID = "FROM Population p WHERE p.id = :populationId " + ACTIVE_CONDITION + ORDER_BY;
 	private final static String QUERY_GET_ALL = "FROM Population p WHERE 1=1 " + ACTIVE_CONDITION + ORDER_BY;
@@ -29,7 +30,20 @@ public class PopulationDAO extends DAOAPI<Population> {
 	@Override
 	public <E> List<EntityAPI> getAll( E helper ) {
 		try {
+			if( helper != null && !(helper instanceof QueryHelper) ) {
+				throw new RuntimeException( "Query Helper expected!" );
+			}
+			
+			QueryHelper queryHelper = (QueryHelper) helper;
+			
 			Query query = getSession().createQuery( QUERY_GET_ALL );
+			if( queryHelper != null ) {
+				if( queryHelper.getPaginationAPI() != null ) {
+					query.setFirstResult( queryHelper.getPaginationAPI().getPage() );
+					query.setMaxResults( queryHelper.getPaginationAPI().getPageSize() );
+				}
+			}
+			
 			return query.list();
 		}
 		finally {
