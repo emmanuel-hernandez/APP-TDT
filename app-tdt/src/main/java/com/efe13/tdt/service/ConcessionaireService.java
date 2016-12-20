@@ -27,7 +27,7 @@ public class ConcessionaireService extends ServiceAPI {
 		
 		try {
 			entity = (Concessionaire) map( dto, entity );
-			entity = CONCESSIONAIRE_DAO.getById( entity );
+			entity = (Concessionaire) CONCESSIONAIRE_DAO.getById( entity );
 		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );

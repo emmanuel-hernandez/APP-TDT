@@ -1,53 +1,34 @@
 package com.efe13.tdt.dao;
 
-import java.util.List;
-
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 
 import com.efe13.mvc.commons.api.enums.ActiveEnum;
-import com.efe13.mvc.commons.api.exception.DAOException;
 import com.efe13.mvc.dao.api.impl.DAOAPI;
-import com.efe13.mvc.model.api.impl.entity.EntityAPI;
-import com.efe13.mvc.model.api.impl.helper.QueryHelper;
 import com.efe13.tdt.model.entity.Population;
+import com.efe13.tdt.utils.AppConstant;
 
 public class PopulationDAO extends DAOAPI<Population> {
-	
-	private final static String ORDER_BY = " ORDER BY p.name";
-	private final static String ACTIVE_CONDITION = "AND p.active = " + ActiveEnum.ACTIVE.getValue();
-	private final static String QUERY_GET_BY_ID = "FROM Population p WHERE p.id = :populationId " + ACTIVE_CONDITION + ORDER_BY;
-	private final static String QUERY_GET_ALL = "FROM Population p WHERE 1=1 " + ACTIVE_CONDITION + ORDER_BY;
 
-	@Override
-	public Population getById( EntityAPI object ) throws HibernateException, DAOException {
-		Query query = getSession().createQuery( QUERY_GET_BY_ID );
-		query.setParameter( "populationId", object.getId() );
-		
-		return (Population) query.uniqueResult();
+	public PopulationDAO() {
+		super( AppConstant.ACTIVE_COLUMN_NAME, ActiveEnum.ACTIVE );
 	}
 
-	@Override
-	public <E> List<EntityAPI> getAll( E helper ) {
+	public int findByNameAndState( Population population ) throws HibernateException {
 		try {
-			if( helper != null && !(helper instanceof QueryHelper) ) {
-				throw new RuntimeException( "Query Helper expected!" );
-			}
+			Criteria criteria = getCriteria( "p" )
+				.setProjection( Projections.rowCount() )
+				.createAlias( "state", "s", JoinType.INNER_JOIN )
+				.add( Restrictions.eq( "p.name", population.getName() ) )
+				.add( Restrictions.eq( "s.id", population.getState().getId() ) );
 			
-			QueryHelper queryHelper = (QueryHelper) helper;
-			
-			Query query = getSession().createQuery( QUERY_GET_ALL );
-			if( queryHelper != null ) {
-				if( queryHelper.getPaginationAPI() != null ) {
-					query.setFirstResult( queryHelper.getPaginationAPI().getPage() );
-					query.setMaxResults( queryHelper.getPaginationAPI().getPageSize() );
-				}
-			}
-			
-			return query.list();
+			return (Integer) criteria.uniqueResult();
 		}
 		finally {
-			super.closeSession();
+			closeSession();
 		}
 	}
 }

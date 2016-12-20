@@ -52,6 +52,7 @@ angular
                     'scripts/model/ChannelDTO.js',
                     'scripts/model/PaginationAPI.js',
                     'scripts/model/FilterAPI.js',
+                    'scripts/model/OrderAPI.js',
                     'scripts/model/QueryHelper.js',
                     'scripts/model/ValueDTO.js'
                     ]

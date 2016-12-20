@@ -27,7 +27,7 @@ public class ChannelBandService extends ServiceAPI {
 		
 		try {
 			entity = (ChannelBand) map( dto, entity );
-			entity = CHANNEL_BAND_DAO.getById( entity );
+			entity = (ChannelBand) CHANNEL_BAND_DAO.getById( entity );
 		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );

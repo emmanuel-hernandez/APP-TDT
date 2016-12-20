@@ -20,6 +20,8 @@ const CONCESSION_TYPE_URL= REST_URL + '/concessionType/';
 
 /* Global Config */
 const GET_PARAMETER_NAME = 'queryHelper';
+const ORDER_ASCENDING = true;
+const ORDER_DESCENDING = true;
 const ERROR_MESSAGE = 'danger';
 const WARNING_MESSAGE = 'warning';
 const SUCCESS_MESSAGE = 'success';

@@ -27,7 +27,7 @@ public class ConcessionTypeService extends ServiceAPI {
 		
 		try {
 			entity = (ConcessionType) map( dto, entity );
-			entity = CONCESSION_TYPE_DAO.getById( entity );
+			entity = (ConcessionType) CONCESSION_TYPE_DAO.getById( entity );
 		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );

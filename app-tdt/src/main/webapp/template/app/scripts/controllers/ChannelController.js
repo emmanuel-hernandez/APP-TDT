@@ -12,7 +12,9 @@ angular.module( APP_NAME ).controller( 'ChannelController', ['$scope', '$http',
 		
 		var init = function() {
 			$scope.alert = AlertDTO.build( null, ERROR_MESSAGE, false );
-			$scope.queryHelper = QueryHelper.build( PaginationAPI.build( 1, 15, 0 ), FilterAPI.build( null ) );			
+			$scope.queryHelper = QueryHelper.build( PaginationAPI.build( 1, 15, 0 ),
+													FilterAPI.build( null ),
+													OrderAPI.build( 'distinctive', ORDER_ASCENDING ) );			
 			$scope.columns = [
   				'Distintivo',
   				'Nombre',

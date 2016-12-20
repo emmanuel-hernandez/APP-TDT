@@ -27,7 +27,7 @@ public class PopulationService extends ServiceAPI {
 		
 		try {
 			entity = (Population) map( populationDTO, entity );
-			entity = POPULATION_DAO.getById( entity );
+			entity = (Population) POPULATION_DAO.getById( entity );
 		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );
@@ -61,6 +61,21 @@ public class PopulationService extends ServiceAPI {
 		return dtos;
 	}
 
+	public int findByNameAndState( DTOAPI populationDTO ) {
+		try {
+			POPULATION_DAO.findByNameAndState( null );
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+			throw ex;
+		}
+		
+		if( entity == null )
+			return null;
+		
+		return (PopulationDTO) map( entity, populationDTO );	
+	}
+	
 	@Override
 	public Short save(DTOAPI populationDTO) {
 		try {
@@ -97,6 +112,8 @@ public class PopulationService extends ServiceAPI {
 		}
 	}
 
+	
+	
 	@Override
 	public void validateDTO(DTOAPI dto, UpdateEnum update) throws ValidationException {
 		throw new ValidationException( "This method has not implementation. It needs to be implemented by the concrete class" );

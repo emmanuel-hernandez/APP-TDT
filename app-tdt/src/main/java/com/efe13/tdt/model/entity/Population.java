@@ -35,8 +35,8 @@ public class Population extends EntityAPI {
 	@JoinColumn( name="stateId" )
 	private State state;
 	
-	@OneToMany( fetch=FetchType.EAGER, mappedBy="population" )
-	private Set<Channel> channels = new HashSet<>();
+	/*@OneToMany( fetch=FetchType.EAGER, mappedBy="population" )
+	private Set<Channel> channels = new HashSet<>();*/
 	
 	@Override
 	public Short getId() {
@@ -73,12 +73,12 @@ public class Population extends EntityAPI {
 	public void setState(State state) {
 		this.state = state;
 	}
-
+/*
 	public Set<Channel> getChannels() {
 		return channels;
 	}
 
 	public void setChannels(Set<Channel> channels) {
 		this.channels = channels;
-	}
+	}*/
 }

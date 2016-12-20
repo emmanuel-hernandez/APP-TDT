@@ -27,7 +27,7 @@ public class StateService extends ServiceAPI {
 		
 		try {
 			entity = (State) map( stateDTO, entity );
-			entity = STATE_DAO.getById( entity );
+			entity = (State) STATE_DAO.getById( entity );
 		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );

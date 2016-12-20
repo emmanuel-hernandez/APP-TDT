@@ -12,7 +12,9 @@ angular.module( APP_NAME ).controller( 'ConcessionTypeController', ['$scope', '$
 		
 		var init = function() {
 			$scope.alert = AlertDTO.build( null, ERROR_MESSAGE, false );
-			$scope.queryHelper = QueryHelper.build( PaginationAPI.build( 1, 15, 0 ), FilterAPI.build( null ) );			
+			$scope.queryHelper = QueryHelper.build( PaginationAPI.build( 1, 15, 0 ),
+													FilterAPI.build( null ),
+													OrderAPI.build( 'type', ORDER_ASCENDING ) );
 			$scope.columns = [
   				'Tipo',
   				'Descripción'

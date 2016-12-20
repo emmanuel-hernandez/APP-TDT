@@ -28,7 +28,7 @@ public class ChannelService extends ServiceAPI {
 		
 		try {
 			entity = (Channel) map( dto, entity );
-			entity = CHANNEL_DAO.getById( entity );
+			entity = (Channel) CHANNEL_DAO.getById( entity );
 		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );

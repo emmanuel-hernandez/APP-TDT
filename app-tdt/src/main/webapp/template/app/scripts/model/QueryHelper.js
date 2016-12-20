@@ -3,10 +3,11 @@
  */
 
 var QueryHelper = {
-		build: function(pagination, filter) {
-			return {
-				paginationAPI: pagination,
-				filterAPI: filter
-			}
+	build: function(pagination, filter, order) {
+		return {
+			paginationAPI: pagination,
+			filterAPI: filter,
+			orderAPI: order
 		}
+	}
 }
