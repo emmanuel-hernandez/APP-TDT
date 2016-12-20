@@ -6,8 +6,8 @@
  * # ConcessionTypeController
  * Controller of the concession-type.html view
  */
-angular.module( APP_NAME ).controller( 'ConcessionTypeController',
-	function($scope, $position, $http) {
+angular.module( APP_NAME ).controller( 'ConcessionTypeController', ['$scope', '$http',
+	function($scope, $http) {
 		var isUpdate;
 		
 		var init = function() {
@@ -111,5 +111,5 @@ angular.module( APP_NAME ).controller( 'ConcessionTypeController',
 		init();
 		reset();
 		$scope.get();
-	}	
+	}]
 );

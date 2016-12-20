@@ -6,7 +6,7 @@
  * # StateController
  * Controller of the state.html view
  */
-angular.module( APP_NAME ).controller( 'StateController',
+angular.module( APP_NAME ).controller( 'StateController', ['$scope', '$http',
 	function($scope, $http) {
 		var isUpdate;
 				
@@ -111,5 +111,5 @@ angular.module( APP_NAME ).controller( 'StateController',
 		init();
 		reset();
 		$scope.get();
-	}	
+	}]	
 );

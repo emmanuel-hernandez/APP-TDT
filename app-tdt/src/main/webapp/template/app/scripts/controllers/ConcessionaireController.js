@@ -6,8 +6,8 @@
  * # ConcessionaireController
  * Controller of the concessionaire.html view
  */
-angular.module( APP_NAME ).controller( 'ConcessionaireController',
-	function($scope, $position, $http) {
+angular.module( APP_NAME ).controller( 'ConcessionaireController', ['$scope', '$http',
+	function($scope, $http) {
 		var isUpdate;
 		
 		var init = function() {
@@ -107,5 +107,5 @@ angular.module( APP_NAME ).controller( 'ConcessionaireController',
 		init();
 		reset();
 		$scope.get();
-	}	
+	}]
 );

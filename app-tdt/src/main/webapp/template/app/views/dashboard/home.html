@@ -5,10 +5,7 @@
         </div><!-- /.col-lg-12 -->
     </div><!-- /.row -->
     <div class="row">
-        <stats number="32" comments="Estados" colour="primary" type="bank" goto="dashboard.state"></stats>
-        <stats number="326" comments="Poblaciones" colour=red type="users" goto="dashboard.population"></stats>
-        <stats number="107" comments="Concesionarias" colour="yellow" type="wifi" goto="dashboard.concessionaire"></stats>
-        <stats number="25" comments="Canales" colour="green" type="video-camera" goto="dashboard.channel"></stats>
+    	<stats ng-repeat="stat in stats" number="{{stat.total}}" comments="{{stat.comment}}" colour="{{stat.color}}" type="{{stat.icon}}" goto="{{stat.url}}"/>
     </div>
     
     <!-- /.panel -->

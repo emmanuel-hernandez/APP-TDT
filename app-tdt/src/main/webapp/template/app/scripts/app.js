@@ -93,18 +93,17 @@ angular
     })
       .state('dashboard.home',{
         url:'/home',
-        controller: 'MainCtrl',
+        controller: 'HomeController',
         templateUrl:'views/dashboard/home.html',
         resolve: {
           loadMyFiles:function($ocLazyLoad) {
             return $ocLazyLoad.load({
-              name:APP_NAME,
-              files:[
-              'scripts/controllers/main.js',
-              'scripts/directives/timeline/timeline.js',
-              'scripts/directives/notifications/notifications.js',
-              'scripts/directives/dashboard/stats/stats.js'
-              ]
+              name: APP_NAME,
+              files: [ 'scripts/controllers/HomeController.js',
+		              'scripts/directives/timeline/timeline.js',
+		              'scripts/directives/notifications/notifications.js',
+		              'scripts/directives/dashboard/stats/stats.js',
+		              'scripts/model/StatDTO.js']
             })
           }
         }

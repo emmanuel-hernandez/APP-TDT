@@ -6,7 +6,7 @@
  * # ChannelController
  * Controller of the channels.html view
  */
-angular.module( APP_NAME ).controller( 'ChannelController',
+angular.module( APP_NAME ).controller( 'ChannelController', ['$scope', '$http',
 	function($scope, $http) {
 		var isUpdate;
 		
@@ -248,5 +248,5 @@ angular.module( APP_NAME ).controller( 'ChannelController',
 		getConcessionTypes();
 		
 		$scope.get();
-	}
+	}]
 );

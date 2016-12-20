@@ -27,6 +27,11 @@ const DEFAULT_SELECTED_VALUE = -1;
 const DEFAULT_DELETE_MESSAGE = '¿Estas seguro que deseas eliminar este registro?';
 
 /* Utilities Constants */
+
+//Home
+const STATS_NUMBER = 4;
+
+//Channels
 const FIRST_PHYSIC_CHANNEL = 14;
 const LAST_PHYSIC_CHANNEL = 84;
 const CHANNEL_QUALITY = {

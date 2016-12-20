@@ -6,7 +6,7 @@
  * # PopulationController
  * Controller of the population.html view
  */
-angular.module( APP_NAME ).controller( 'PopulationController',
+angular.module( APP_NAME ).controller( 'PopulationController', ['$scope', '$http',
 	function($scope, $http) {
 		var isUpdate;
 		
@@ -136,5 +136,5 @@ angular.module( APP_NAME ).controller( 'PopulationController',
 		reset();
 		getStates();
 		$scope.get();
-	}
+	}]
 );
