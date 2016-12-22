@@ -15,11 +15,12 @@ angular.module( APP_NAME ).directive( 'listTable', function( $window ) {
 	        collection: '=',
 	        columns: '=',
 	        updateFn: '&',
-	        deleteFn: '&'
+	        deleteFn: '&',
+	        detailsFn: '&'
   		},
   		link: function( $scope, element, attrs ) {
-  			$scope.showDetails = function( object ) {
-  				$scope.updateFn()(object);
+  			$scope.details = function( object ) {
+  				$scope.detailsFn()( object );
   			};
   			
   			$scope.delete = function( object ) {

@@ -6,8 +6,7 @@
  * # ConcessionTypeController
  * Controller of the concession-type.html view
  */
-angular.module( APP_NAME ).controller( 'ConcessionTypeController', ['$scope', '$http',
-	function($scope, $http) {
+angular.module( APP_NAME ).controller( 'ConcessionTypeController', ['$scope', '$http', 'httpService', function( $scope, $http, httpService ) {
 		var isUpdate;
 		
 		var init = function() {
@@ -33,7 +32,7 @@ angular.module( APP_NAME ).controller( 'ConcessionTypeController', ['$scope', '$
 		};
 		
 		$scope.get = function() {
-			$http.get( CONCESSION_TYPE_URL +'?'+ GET_PARAMETER_NAME +'='+ JSON.stringify($scope.queryHelper) ).success( function(data) {
+			httpService.get( CONCESSION_TYPE_URL +'?'+ GET_PARAMETER_NAME +'='+ JSON.stringify($scope.queryHelper) ).success( function(data) {
 				if( data.statusResult.value ) {
 					$scope.concessionTypes = new Array();
 					
@@ -58,7 +57,7 @@ angular.module( APP_NAME ).controller( 'ConcessionTypeController', ['$scope', '$
 		
 		$scope.save = function() {
 			if( !isUpdate ) {
-				$http.post( CONCESSION_TYPE_URL, JSON.stringify($scope.concessionType) ).success( function(data) {
+				httpService.post( CONCESSION_TYPE_URL, JSON.stringify($scope.concessionType) ).success( function(data) {
 					$scope.alert.type = ( data.statusResult.value ) ? SUCCESS_MESSAGE : ERROR_MESSAGE;
 					$scope.alert.message = data.message;
 					
@@ -69,7 +68,7 @@ angular.module( APP_NAME ).controller( 'ConcessionTypeController', ['$scope', '$
 				});
 			}
 			else {
-				$http.put( CONCESSION_TYPE_URL + $scope.concessionType.id, JSON.stringify($scope.concessionType) ).success( function(data) {
+				httpService.put( CONCESSION_TYPE_URL + $scope.concessionType.id, JSON.stringify($scope.concessionType) ).success( function(data) {
 					$scope.alert.type = ( data.statusResult.value ) ? SUCCESS_MESSAGE : ERROR_MESSAGE;
 					$scope.alert.message = data.message;
 					
@@ -87,7 +86,7 @@ angular.module( APP_NAME ).controller( 'ConcessionTypeController', ['$scope', '$
 		$scope.delete = function( concessionType ) {
 			var response = confirm( DEFAULT_DELETE_MESSAGE );
 			if( response ) {
-				$http.delete( CONCESSION_TYPE_URL + concessionType.id ).success( function(data) {
+				httpService.delete( CONCESSION_TYPE_URL + concessionType.id ).success( function(data) {
 					if( data.statusResult.value ) {
 						$scope.alert.type = ( data.statusResult.value ) ? SUCCESS_MESSAGE : ERROR_MESSAGE;
 						$scope.alert.message = data.message;

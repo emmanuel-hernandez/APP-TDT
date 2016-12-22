@@ -6,7 +6,7 @@
  * # HomeController
  * Controller of the sbAdminApp
  */
-angular.module( APP_NAME ).controller( 'HomeController', ['$scope', '$http', function( $scope, $http ) {
+angular.module( APP_NAME ).controller( 'HomeController', ['$scope', '$http', 'httpService', function( $scope, $http, httpService ) {
 	
 	var init = function() {
 		$scope.alert = AlertDTO.build( null, ERROR_MESSAGE, false );
@@ -15,7 +15,7 @@ angular.module( APP_NAME ).controller( 'HomeController', ['$scope', '$http', fun
 	}
 	
 	var getStates = function() {
-		$http.get( STATE_URL ).success( function(data) {
+		httpService.get( STATE_URL ).success( function(data) {
 			if( data.statusResult.value ) {
 				$scope.states = getSize( data.collection );
 				$scope.stats.push( StatDTO.build( $scope.states, 'Estados', 'primary', 'bank', 'dashboard.state' ) );
@@ -31,7 +31,7 @@ angular.module( APP_NAME ).controller( 'HomeController', ['$scope', '$http', fun
 	};
 	
 	var getPopulations = function() {
-		$http.get( POPULATION_URL ).success( function(data) {
+		httpService.get( POPULATION_URL ).success( function(data) {
 			if( data.statusResult.value ) {
 				$scope.populations = getSize( data.collection );
 				$scope.stats.push( StatDTO.build( $scope.populations, 'Poblaciones', 'red', 'users', 'dashboard.population' ) );
@@ -47,7 +47,7 @@ angular.module( APP_NAME ).controller( 'HomeController', ['$scope', '$http', fun
 	};
 	
 	var getConcessionaires = function() {
-		$http.get( CONCESSIONAIRE_URL ).success( function(data) {
+		httpService.get( CONCESSIONAIRE_URL ).success( function(data) {
 			if( data.statusResult.value ) {
 				$scope.concessionaires = getSize( data.collection );
 				$scope.stats.push( StatDTO.build( $scope.concessionaires, 'Concesionarias', 'yellow', 'wifi', 'dashboard.concessionaire' ) );
@@ -63,7 +63,7 @@ angular.module( APP_NAME ).controller( 'HomeController', ['$scope', '$http', fun
 	};
 
 	var getChannels = function() {
-		$http.get( CHANNEL_URL ).success( function(data) {
+		httpService.get( CHANNEL_URL ).success( function(data) {
 			if( data.statusResult.value ) {
 				$scope.channels = getSize( data.collection );
 				$scope.stats.push( StatDTO.build( $scope.channels, 'Canales', 'green', 'video-camera', 'dashboard.channel' ) );

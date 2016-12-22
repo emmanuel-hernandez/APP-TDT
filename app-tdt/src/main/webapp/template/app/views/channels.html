@@ -19,11 +19,11 @@
 		            	<div class="row">
 		                    <div class="col-lg-2">
                                 <label for="distinctive">Distintivo:</label>
-                                <input class="form-control" id="distinctive" placeholder="Distintivo del canal" ng-model="channel.distinctive">
+                                <input class="form-control" id="distinctive" placeholder="Distintivo" ng-model="channel.distinctive">
 		                    </div>
 		                    <div class="col-lg-4">
                                 <label for="name">Nombre:</label>
-                                <input class="form-control" id="name" placeholder="Nombre del canal" ng-model="channel.name">
+                                <input class="form-control" id="name" placeholder="Nombre" ng-model="channel.name">
 		                    </div>
 		                    <div class="col-lg-2">
                                 <label for="virtualChannel">Canal Virtual:</label>
@@ -61,20 +61,20 @@
 		                	</div>
 		                	<div class="col-lg-2">
 		                		<div class="form-group">
-			                		<label for="acesli">ACESLI:</label>
+			                		<label for="acesli">ACESLI: <i class="fa fa-question-circle" tooltip="{{acesliTooltip}}"></i></label>
 	                                <input class="form-control" id="acesli" placeholder="ACESLI" ng-model="channel.acesli">
-	                            </div>
-		                	</div>
-		                	<div class="col-lg-2">
-		                		<div class="form-group">
-			                		<label for="longitude">Longitud:</label>
-	                                <input class="form-control" id="longitude" placeholder="Longitud" ng-model="channel.longitude">
 	                            </div>
 		                	</div>
 		                	<div class="col-lg-2">
 		                		<div class="form-group">
 			                		<label for="latitude">Latitud:</label>
 	                                <input class="form-control" id="latitude" placeholder="Latitud" ng-model="channel.latitude">
+	                            </div>
+		                	</div>
+		                	<div class="col-lg-2">
+		                		<div class="form-group">
+			                		<label for="longitude">Longitud:</label>
+	                                <input class="form-control" id="longitude" placeholder="Longitud" ng-model="channel.longitude">
 	                            </div>
 		                	</div>
 		                	<div class="col-lg-2">
@@ -129,10 +129,79 @@
 	            <div class="panel-heading">Listado</div>
 	            <div class="panel-body">
 	            	<div class="dataTable_wrapper">
-	            		<list-table collection="channels" columns="columns" update-fn="update" delete-fn="delete"/>
+	            		<list-table collection="channels" columns="columns" update-fn="update" delete-fn="delete" details-fn="details"/>
 	                </div><!-- /.table-responsive -->
 	            </div>
 	        </div>
+	        
+	        <!-- Modal -->
+		    <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="channelDetail" aria-hidden="true" width="80%">
+		        <div class="modal-dialog modal-lg">
+		            <div class="modal-content">
+		                <div class="modal-header">
+		                    <h4 class="modal-title" id="channelDetail">Detalles</h4>
+		                </div>
+		                <div class="modal-body">
+		                	<table class="table table-striped">
+		               			<tr>
+		               				<td width="25%"><b>Distintivo:</b></td>
+		               				<td width="25%">{{selectedChannel.distinctive}}</td>
+		               				<td width="25%"><b>Nombre:</b></td>
+		               				<td width="25%">{{selectedChannel.name}}</td>
+		               			</tr>
+		               			<tr>
+		               				<td><b>Canal Virtual:</b></td>
+		               				<td>{{selectedChannel.virtualChannel}}</td>
+		               				<td><b>Canal Físico:</b></td>
+		               				<td>{{selectedChannel.physicChannel}}</td>
+		               			</tr>
+		               			<tr>
+		               				<td><b>Calidad:</b></td>
+		               				<td>{{selectedChannel.quality}}</td>
+		               				<td><b>Resolución:</b></td>
+		               				<td>{{selectedChannel.resolution}}</td>
+		               			</tr>
+		               			<tr>
+		               				<td><b>Potencia:</b></td>
+		               				<td>{{selectedChannel.power}}</td>
+		               				<td><b>ACESLI: <i class="fa fa-question-circle" tooltip="{{acesliTooltip}}"></i></b></td>
+		               				<td>{{selectedChannel.acesli}}</td>
+		               			</tr>
+		               			<tr>
+		               				<td><b>Latitud:</b></td>
+		               				<td>{{selectedChannel.latitude}}</td>
+		               				<td><b>Longitud:</b></td>
+		               				<td>{{selectedChannel.longitude}}</td>
+		               			</tr>
+		               			<tr>
+		               				<td><b>Banda:</b></td>
+		               				<td>{{selectedChannel.channelBand.name}}</td>
+		               				<td><b>Población:</b></td>
+		               				<td>{{selectedChannel.population.name}}</td>
+		               			</tr>
+		               			<tr>
+		               				<td><b>Concesionaria:</b></td>
+		               				<td>{{selectedChannel.concessionaire.name}}</td>
+		               				<td><b>Tipo de Concesión:</b></td>
+		               				<td>{{selectedChannel.concessionType.type}} <i class="fa fa-question-circle" tooltip="{{selectedChannel.concessionType.description}}"></i></td>
+		               			</tr>
+		               			<tr>
+		               				<td><b>Vigencia (fecha de inicio):</b></td>
+		               				<td>{{selectedChannel.effectiveDateStart}}</td>
+		               				<td><b>Vigencia (fecha final):</b></td>
+		               				<td>{{selectedChannel.effectiveDateEnd}}</td>
+		               			</tr>
+		                	</table>
+		                </div>
+		                <div class="modal-footer">
+		                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+		                </div>
+		            </div>
+		            <!-- /.modal-content -->
+		        </div>
+		        <!-- /.modal-dialog -->
+		    </div>
+		    <!-- /.modal -->
 	    </div>
 	</div>
 </div>

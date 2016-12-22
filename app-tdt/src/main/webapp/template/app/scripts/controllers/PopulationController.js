@@ -6,8 +6,7 @@
  * # PopulationController
  * Controller of the population.html view
  */
-angular.module( APP_NAME ).controller( 'PopulationController', ['$scope', '$http',
-	function($scope, $http) {
+angular.module( APP_NAME ).controller( 'PopulationController', ['$scope', '$http', 'httpService', function( $scope, $http, httpService ) {
 		var isUpdate;
 		
 		var init = function() {
@@ -35,7 +34,7 @@ angular.module( APP_NAME ).controller( 'PopulationController', ['$scope', '$http
 		};
 
 		var getStates = function() {
-			$http.get( STATE_URL ).success( function(data) {
+			httpService.get( STATE_URL ).success( function(data) {
 				if( data.statusResult.value ) {
 					$scope.states = data.collection;
 				}
@@ -47,7 +46,7 @@ angular.module( APP_NAME ).controller( 'PopulationController', ['$scope', '$http
 		};
 		
 		$scope.get = function() {
-			$http.get( POPULATION_URL +'?'+ GET_PARAMETER_NAME +'='+ JSON.stringify($scope.queryHelper) ).success( function(data) {
+			httpService.get( POPULATION_URL +'?'+ GET_PARAMETER_NAME +'='+ JSON.stringify($scope.queryHelper) ).success( function(data) {
 				if( data.statusResult.value ) {
 					$scope.populations = new Array();
 
@@ -80,7 +79,7 @@ angular.module( APP_NAME ).controller( 'PopulationController', ['$scope', '$http
 			}
 			
 			if( !isUpdate ) {
-				$http.post( POPULATION_URL, JSON.stringify($scope.population) ).success( function(data) {
+				httpService.post( POPULATION_URL, JSON.stringify($scope.population) ).success( function(data) {
 					$scope.alert.type = ( data.statusResult.value ) ? SUCCESS_MESSAGE : ERROR_MESSAGE;
 					$scope.alert.message = data.message;
 					
@@ -91,7 +90,7 @@ angular.module( APP_NAME ).controller( 'PopulationController', ['$scope', '$http
 				});
 			}
 			else {
-				$http.put( POPULATION_URL + $scope.population.id, JSON.stringify($scope.population) ).success( function(data) {
+				httpService.put( POPULATION_URL + $scope.population.id, JSON.stringify($scope.population) ).success( function(data) {
 					$scope.alert.type = ( data.statusResult.value ) ? SUCCESS_MESSAGE : ERROR_MESSAGE;
 					$scope.alert.message = data.message;
 					
@@ -109,7 +108,7 @@ angular.module( APP_NAME ).controller( 'PopulationController', ['$scope', '$http
 		$scope.delete = function( population ) {
 			var response = confirm( DEFAULT_DELETE_MESSAGE );
 			if( response ) {
-				$http.delete( POPULATION_URL + population.id ).success( function(data) {
+				httpService.delete( POPULATION_URL + population.id ).success( function(data) {
 					if( data.statusResult.value ) {
 						$scope.alert.type = ( data.statusResult.value ) ? SUCCESS_MESSAGE : ERROR_MESSAGE;
 						$scope.alert.message = data.message;

@@ -6,8 +6,7 @@
  * # ChannelController
  * Controller of the channels.html view
  */
-angular.module( APP_NAME ).controller( 'ChannelController', ['$scope', '$http',
-	function($scope, $http) {
+angular.module( APP_NAME ).controller( 'ChannelController', ['$scope', '$http', 'httpService', function( $scope, $http, httpService ) {
 		var isUpdate;
 		
 		var init = function() {
@@ -28,6 +27,7 @@ angular.module( APP_NAME ).controller( 'ChannelController', ['$scope', '$http',
 			                    QualityDTO.build( CHANNEL_QUALITY.HD.ID, CHANNEL_QUALITY.HD.VALUE )];
 			$scope.resolutions = [ResolutionDTO.build( CHANNEL_RESOLUTION.SD.ID, CHANNEL_RESOLUTION.SD.VALUE ),
 			                      ResolutionDTO.build( CHANNEL_RESOLUTION.FULL.ID, CHANNEL_RESOLUTION.FULL.VALUE )];
+			$scope.acesliTooltip = ACESLI_TOOLTIP;
 			$scope.channels = new Array();
 			$scope.channelBands = new Array();
 			$scope.populations = new Array();
@@ -68,7 +68,7 @@ angular.module( APP_NAME ).controller( 'ChannelController', ['$scope', '$http',
 		};
 
 		var getChannelBands = function() {
-			$http.get( CHANNEL_BAND_URL ).success( function(data) {
+			httpService.get( CHANNEL_BAND_URL ).success( function(data) {
 				if( data.statusResult.value ) {
 					$scope.channelBands = data.collection;
 				}
@@ -79,7 +79,7 @@ angular.module( APP_NAME ).controller( 'ChannelController', ['$scope', '$http',
 			});
 		};
 		var getPopulations = function() {
-			$http.get( POPULATION_URL ).success( function(data) {
+			httpService.get( POPULATION_URL ).success( function(data) {
 				if( data.statusResult.value ) {
 					$scope.populations = data.collection;
 				}
@@ -90,7 +90,7 @@ angular.module( APP_NAME ).controller( 'ChannelController', ['$scope', '$http',
 			});
 		};
 		var getConcessionaires = function() {
-			$http.get( CONCESSIONAIRE_URL ).success( function(data) {
+			httpService.get( CONCESSIONAIRE_URL ).success( function(data) {
 				if( data.statusResult.value ) {
 					$scope.concessionaires = data.collection;
 				}
@@ -101,7 +101,7 @@ angular.module( APP_NAME ).controller( 'ChannelController', ['$scope', '$http',
 			});
 		};
 		var getConcessionTypes = function() {
-			$http.get( CONCESSION_TYPE_URL ).success( function(data) {
+			httpService.get( CONCESSION_TYPE_URL ).success( function(data) {
 				if( data.statusResult.value ) {
 					$scope.concessionTypes = data.collection;
 				}
@@ -113,7 +113,7 @@ angular.module( APP_NAME ).controller( 'ChannelController', ['$scope', '$http',
 		};
 
 		$scope.get = function() {
-			$http.get( CHANNEL_URL +'?'+ GET_PARAMETER_NAME +'='+ JSON.stringify($scope.queryHelper) ).success( function(data) {
+			httpService.get( CHANNEL_URL +'?'+ GET_PARAMETER_NAME +'='+ JSON.stringify($scope.queryHelper) ).success( function(data) {
 				if( data.statusResult.value ) {
 					$scope.channels = new Array();
 
@@ -168,7 +168,7 @@ angular.module( APP_NAME ).controller( 'ChannelController', ['$scope', '$http',
 			}
 			
 			if( !isUpdate ) {
-				$http.post( CHANNEL_URL, JSON.stringify($scope.channel) ).success( function(data) {
+				httpService.post( CHANNEL_URL, JSON.stringify($scope.channel) ).success( function(data) {
 					$scope.alert.type = ( data.statusResult.value ) ? SUCCESS_MESSAGE : ERROR_MESSAGE;
 					$scope.alert.message = data.message;
 					
@@ -181,7 +181,7 @@ angular.module( APP_NAME ).controller( 'ChannelController', ['$scope', '$http',
 				});
 			}
 			else {
-				$http.put( CHANNEL_URL + $scope.channel.id, JSON.stringify($scope.channel) ).success( function(data) {
+				httpService.put( CHANNEL_URL + $scope.channel.id, JSON.stringify($scope.channel) ).success( function(data) {
 					$scope.alert.type = ( data.statusResult.value ) ? SUCCESS_MESSAGE : ERROR_MESSAGE;
 					$scope.alert.message = data.message;
 					
@@ -199,7 +199,7 @@ angular.module( APP_NAME ).controller( 'ChannelController', ['$scope', '$http',
 		$scope.delete = function( channel ) {
 			var response = confirm( DEFAULT_DELETE_MESSAGE );
 			if( response ) {
-				$http.delete( CHANNEL_URL + channel.id ).success( function(data) {
+				httpService.delete( CHANNEL_URL + channel.id ).success( function(data) {
 					if( data.statusResult.value ) {
 						$scope.alert.type = ( data.statusResult.value ) ? SUCCESS_MESSAGE : ERROR_MESSAGE;
 						$scope.alert.message = data.message;
@@ -221,10 +221,10 @@ angular.module( APP_NAME ).controller( 'ChannelController', ['$scope', '$http',
 			$scope.channel.resolution = (channel.resolution === CHANNEL_RESOLUTION.FULL.VALUE) ? CHANNEL_RESOLUTION.FULL.ID : CHANNEL_RESOLUTION.SD.ID;
 			$scope.channel.power = channel.power;
 			$scope.channel.acesli = channel.acesli;
-			$scope.channel.longitude = channel.longitude;
 			$scope.channel.latitude = channel.latitude;
-			$scope.channel.effectiveDateStart = channel.effectiveDayStart;
-			$scope.channel.effectiveDateEnd = channel.effectiveDayEnd;
+			$scope.channel.longitude = channel.longitude;
+			$scope.channel.effectiveDateStart = channel.effectiveDateStart;
+			$scope.channel.effectiveDateEnd = channel.effectiveDateEnd;
 			$scope.channel.channelBand = channel.channelBand;
 			$scope.channel.population = channel.population;
 			$scope.channel.concessionaire = channel.concessionaire;
@@ -237,6 +237,29 @@ angular.module( APP_NAME ).controller( 'ChannelController', ['$scope', '$http',
 			
 			$scope.channel.active = channel.active;
 			isUpdate = true;
+		}
+		
+		$scope.details = function( channel ) {
+			$scope.selectedChannel = ChannelDTO.build();
+			$scope.selectedChannel.id = channel.id;
+			$scope.selectedChannel.distinctive = channel.distinctive;
+			$scope.selectedChannel.name = channel.name;
+			$scope.selectedChannel.virtualChannel = channel.virtualChannel;
+			$scope.selectedChannel.physicChannel = channel.physicChannel - 13;
+			$scope.selectedChannel.quality = (channel.quality === CHANNEL_QUALITY.HD.VALUE) ? CHANNEL_QUALITY.HD.ID : CHANNEL_QUALITY.SD.ID;
+			$scope.selectedChannel.resolution = (channel.resolution === CHANNEL_RESOLUTION.FULL.VALUE) ? CHANNEL_RESOLUTION.FULL.ID : CHANNEL_RESOLUTION.SD.ID;
+			$scope.selectedChannel.power = channel.power;
+			$scope.selectedChannel.acesli = channel.acesli;
+			$scope.selectedChannel.latitude = channel.latitude;
+			$scope.selectedChannel.longitude = '-' + channel.longitude;
+			$scope.selectedChannel.effectiveDateStart = channel.effectiveDateStart;
+			$scope.selectedChannel.effectiveDateEnd = channel.effectiveDateEnd;
+			$scope.selectedChannel.channelBand = channel.channelBand;
+			$scope.selectedChannel.population = channel.population;
+			$scope.selectedChannel.concessionaire = channel.concessionaire;
+			$scope.selectedChannel.concessionType = channel.concessionType;
+			
+			angular.element( "#detailModal" ).modal({show:'true'});
 		}
 		
 		$scope.cancel = function() {

@@ -27,6 +27,7 @@ const WARNING_MESSAGE = 'warning';
 const SUCCESS_MESSAGE = 'success';
 const DEFAULT_SELECTED_VALUE = -1;
 const DEFAULT_DELETE_MESSAGE = '¿Estas seguro que deseas eliminar este registro?';
+const ACESLI_TOOLTIP = 'Altura del Centro Eléctrico Sobre el Lugar de Instalación';
 
 /* Utilities Constants */
 

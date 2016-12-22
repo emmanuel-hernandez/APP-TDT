@@ -6,8 +6,7 @@
  * # StateController
  * Controller of the state.html view
  */
-angular.module( APP_NAME ).controller( 'StateController', ['$scope', '$http', '$httpService',
-	function($scope, $http, $httpService) {
+angular.module( APP_NAME ).controller( 'StateController', ['$scope', '$http', 'httpService', function( $scope, $http, httpService ) {
 		var isUpdate;
 
 		var init = function() {
@@ -32,7 +31,7 @@ angular.module( APP_NAME ).controller( 'StateController', ['$scope', '$http', '$
 		};
 		
 		$scope.get = function() {
-			$httpService.get( STATE_URL +'?'+ GET_PARAMETER_NAME +'='+ JSON.stringify($scope.queryHelper) ).success( function(data) {
+			httpService.get( STATE_URL +'?'+ GET_PARAMETER_NAME +'='+ JSON.stringify($scope.queryHelper) ).success( function(data) {
 				if( data.statusResult.value ) {
 					$scope.states = new Array();
 					
@@ -57,7 +56,7 @@ angular.module( APP_NAME ).controller( 'StateController', ['$scope', '$http', '$
 		
 		$scope.save = function() {
 			if( !isUpdate ) {
-				$httpService.post( STATE_URL, JSON.stringify($scope.state) ).success( function(data) {
+				httpService.post( STATE_URL, JSON.stringify($scope.state) ).success( function(data) {
 					$scope.alert.type = ( data.statusResult.value ) ? SUCCESS_MESSAGE : ERROR_MESSAGE;
 					$scope.alert.message = data.message;
 					
@@ -68,7 +67,7 @@ angular.module( APP_NAME ).controller( 'StateController', ['$scope', '$http', '$
 				});
 			}
 			else {
-				$httpService.put( STATE_URL + $scope.state.id, JSON.stringify($scope.state) ).success( function(data) {
+				httpService.put( STATE_URL + $scope.state.id, JSON.stringify($scope.state) ).success( function(data) {
 					$scope.alert.type = ( data.statusResult.value ) ? SUCCESS_MESSAGE : ERROR_MESSAGE;
 					$scope.alert.message = data.message;
 					
@@ -86,7 +85,7 @@ angular.module( APP_NAME ).controller( 'StateController', ['$scope', '$http', '$
 		$scope.delete = function( state ) {
 			var response = confirm( DEFAULT_DELETE_MESSAGE );
 			if( response ) {
-				$httpService.delete( STATE_URL + state.id ).success( function(data) {
+				httpService.delete( STATE_URL + state.id ).success( function(data) {
 					if( data.statusResult.value ) {
 						$scope.alert.type = ( data.statusResult.value ) ? SUCCESS_MESSAGE : ERROR_MESSAGE;
 						$scope.alert.message = data.message;

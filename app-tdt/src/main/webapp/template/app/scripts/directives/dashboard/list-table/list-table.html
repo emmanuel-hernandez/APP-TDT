@@ -10,7 +10,7 @@
 	        <tr ng-repeat="item in collection">
 	        	<td ng-repeat="(key, value) in item.properties">{{ value.value }}</td>
                 <td class="center">
-                	 <button type="button" class="btn btn-primary" ng-click="showDetails( item.object )">Detalles</button>
+                	 <button type="button" class="btn btn-primary" ng-click="details( item.object )">Detalles</button>
                 </td>
                 <td class="center">
                 	 <button type="button" class="btn btn-danger" ng-click="delete( item.object )">Eliminar</button>
@@ -22,8 +22,27 @@
          </tbody>
 		<tfoot>
 			<tr>
-				<td colspan="5" class="center">
-					<div st-pagination="" st-items-by-page="5" st-displayed-pages="7"></div>
+				<td colspan="10" align="right">
+					<!--div st-pagination="" st-items-by-page="5" st-displayed-pages="7"></div-->
+					<nav aria-label="Page navigation">
+					  <ul class="pagination pagination-lg">
+					    <li>
+					      <a href="#" aria-label="Anterior">
+					        <span aria-hidden="true">&laquo;</span>
+					      </a>
+					    </li>
+					    <li class="disabled"><a href="#">1</a></li>
+					    <li class="active"><a href="#">2</a></li>
+					    <li><a href="#">3</a></li>
+					    <li><a href="#">4</a></li>
+					    <li><a href="#">5</a></li>
+					    <li>
+					      <a href="#" aria-label="Siguiente">
+					        <span aria-hidden="true">&raquo;</span>
+					      </a>
+					    </li>
+					  </ul>
+					</nav>
 				</td>
 			</tr>
 		</tfoot>

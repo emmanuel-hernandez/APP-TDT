@@ -6,8 +6,7 @@
  * # ConcessionaireController
  * Controller of the concessionaire.html view
  */
-angular.module( APP_NAME ).controller( 'ConcessionaireController', ['$scope', '$http',
-	function($scope, $http) {
+angular.module( APP_NAME ).controller( 'ConcessionaireController', ['$scope', '$http', 'httpService', function( $scope, $http, httpService ) {
 		var isUpdate;
 		
 		var init = function() {
@@ -31,7 +30,7 @@ angular.module( APP_NAME ).controller( 'ConcessionaireController', ['$scope', '$
 		};
 		
 		$scope.get = function() {
-			$http.get( CONCESSIONAIRE_URL +'?'+ GET_PARAMETER_NAME +'='+ JSON.stringify($scope.queryHelper) ).success( function(data) {
+			httpService.get( CONCESSIONAIRE_URL +'?'+ GET_PARAMETER_NAME +'='+ JSON.stringify($scope.queryHelper) ).success( function(data) {
 				if( data.statusResult.value ) {
 					$scope.concessionaires = new Array();
 					
@@ -55,7 +54,7 @@ angular.module( APP_NAME ).controller( 'ConcessionaireController', ['$scope', '$
 		
 		$scope.save = function() {
 			if( !isUpdate ) {
-				$http.post( CONCESSIONAIRE_URL, JSON.stringify($scope.concessionaire) ).success( function(data) {
+				httpService.post( CONCESSIONAIRE_URL, JSON.stringify($scope.concessionaire) ).success( function(data) {
 					$scope.alert.type = ( data.statusResult.value ) ? SUCCESS_MESSAGE : ERROR_MESSAGE;
 					$scope.alert.message = data.message;
 					
@@ -66,7 +65,7 @@ angular.module( APP_NAME ).controller( 'ConcessionaireController', ['$scope', '$
 				});
 			}
 			else {
-				$http.put( CONCESSIONAIRE_URL + $scope.concessionaire.id, JSON.stringify($scope.concessionaire) ).success( function(data) {
+				httpService.put( CONCESSIONAIRE_URL + $scope.concessionaire.id, JSON.stringify($scope.concessionaire) ).success( function(data) {
 					$scope.alert.type = ( data.statusResult.value ) ? SUCCESS_MESSAGE : ERROR_MESSAGE;
 					$scope.alert.message = data.message;
 					
@@ -84,7 +83,7 @@ angular.module( APP_NAME ).controller( 'ConcessionaireController', ['$scope', '$
 		$scope.delete = function( concessionaire ) {
 			var response = confirm( DEFAULT_DELETE_MESSAGE );
 			if( response ) {
-				$http.delete( CONCESSIONAIRE_URL + concessionaire.id ).success( function(data) {
+				httpService.delete( CONCESSIONAIRE_URL + concessionaire.id ).success( function(data) {
 					if( data.statusResult.value ) {
 						$scope.alert.type = ( data.statusResult.value ) ? SUCCESS_MESSAGE : ERROR_MESSAGE;
 						$scope.alert.message = data.message;
