@@ -61,19 +61,20 @@ public class PopulationService extends ServiceAPI {
 		return dtos;
 	}
 
-	public int findByNameAndState( DTOAPI populationDTO ) {
+	public short findByNameAndState( DTOAPI populationDTO ) {
+		Population entity = new Population();
+		short id = 0;
+		
 		try {
-			POPULATION_DAO.findByNameAndState( null );
+			entity = (Population) map( populationDTO, entity );
+			id = POPULATION_DAO.findByNameAndState( entity );
 		}
 		catch( Exception ex ) {
 			log.error( ex.getMessage(), ex );
 			throw ex;
 		}
 		
-		if( entity == null )
-			return null;
-		
-		return (PopulationDTO) map( entity, populationDTO );	
+		return id;
 	}
 	
 	@Override
@@ -111,8 +112,6 @@ public class PopulationService extends ServiceAPI {
 			throw ex;
 		}
 	}
-
-	
 	
 	@Override
 	public void validateDTO(DTOAPI dto, UpdateEnum update) throws ValidationException {

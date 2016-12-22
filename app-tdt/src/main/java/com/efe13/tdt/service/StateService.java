@@ -61,6 +61,38 @@ public class StateService extends ServiceAPI {
 		}
 	}
 
+	public short findByName(DTOAPI stateDTO) {
+		State entity = new State();
+		short id = 0;
+		
+		try {
+			entity = (State) map( stateDTO, entity );
+			id = STATE_DAO.findByName( entity );
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+			throw ex;
+		}
+		
+		return id;
+	}
+	
+	public short findByShortName(DTOAPI stateDTO) {
+		State entity = new State();
+		short exists = 0;
+		
+		try {
+			entity = (State) map( stateDTO, entity );
+			exists = STATE_DAO.findByShortName( entity );
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+			throw ex;
+		}
+		
+		return exists;
+	}
+	
 	@Override
 	public Short save(DTOAPI stateDTO) {
 		try {

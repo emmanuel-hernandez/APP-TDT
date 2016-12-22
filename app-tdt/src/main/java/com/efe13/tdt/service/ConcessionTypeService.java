@@ -60,6 +60,22 @@ public class ConcessionTypeService extends ServiceAPI {
 		return dtos;
 	}
 
+	public long findByName( DTOAPI concessionTypeDTO ) {
+		ConcessionType entity = new ConcessionType();
+		long id = 0;
+		
+		try {
+			entity = (ConcessionType) map( concessionTypeDTO, entity );
+			id = CONCESSION_TYPE_DAO.findByName( entity );
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+			throw ex;
+		}
+		
+		return id;
+	}
+	
 	@Override
 	public Short save(DTOAPI concessionTypeDTO) {
 		try {

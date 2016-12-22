@@ -1,7 +1,6 @@
 package com.efe13.tdt.service.impl;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.validation.ValidationException;
 
@@ -182,16 +181,14 @@ public class ConcessionTypeServiceImpl extends ConcessionTypeService {
 			throw new ValidationException( exceptionMessage );
 		}
 		
-		//Validate repeated
-		List<ConcessionTypeDTO> concessionTypeDTOs = listAll(null).getCollection();
-		for( ConcessionTypeDTO concessionType : concessionTypeDTOs ) {
-			if( concessionType.isActive() ) {
-				if( update.getValue() && concessionType.getId() == concessionTypeDto.getId() ) {
-					continue;
-				}
-				if( concessionType.getType().compareToIgnoreCase( concessionTypeDto.getType() ) == 0 ) {
-					throw new ValidationException( "Ya existe un tipo de concesión con el mismo nombre" );
-				}
+		long idFound = super.findByName( concessionTypeDto );
+		if( idFound > 0 ) {
+			exceptionMessage = "Ya existe un tipo de concesión con el mismo nombre";
+			if( update == UpdateEnum.IS_NOT_UPDATE ) {
+				throw new ValidationException( exceptionMessage );
+			}
+			if( update == UpdateEnum.IS_UPDATE && ( idFound != concessionTypeDto.getId() ) ) {
+				throw new ValidationException( exceptionMessage );
 			}
 		}
 	}

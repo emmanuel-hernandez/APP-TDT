@@ -36,7 +36,7 @@ angular.module( APP_NAME ).controller( 'ChannelController', ['$scope', '$http',
 			$scope.physicChannels = new Array();
 			
 			for( var i=FIRST_PHYSIC_CHANNEL; i<=LAST_PHYSIC_CHANNEL; i++ ) {
-				$scope.physicChannels.push({ id: (i-13), name: i });
+				$scope.physicChannels.push({ id: i, name: i });
 			}
 		};
 
@@ -132,7 +132,7 @@ angular.module( APP_NAME ).controller( 'ChannelController', ['$scope', '$http',
 							
 							$scope.channels.push( object );
 						}
-					}			
+					}
 				}
 				else {
 					$scope.alert.message = data.message;
@@ -149,19 +149,19 @@ angular.module( APP_NAME ).controller( 'ChannelController', ['$scope', '$http',
 				}
 			}
 			for( var i=0; i<$scope.populations.length; i++ ) {
-				if( $scope.populations[i].id == $scope.channel.population ) {
+				if( $scope.populations[i].id == $scope.selectedPopulation ) {
 					$scope.channel.population = $scope.populations[i];
 					break;
 				}
 			}
 			for( var i=0; i<$scope.concessionaires.length; i++ ) {
-				if( $scope.concessionaires[i].id == $scope.channel.concessionaire ) {
+				if( $scope.concessionaires[i].id == $scope.selectedConcessionaire ) {
 					$scope.channel.concessionaire = $scope.concessionaires[i];
 					break;
 				}
 			}
 			for( var i=0; i<$scope.concessionTypes.length; i++ ) {
-				if( $scope.concessionTypes[i].id == $scope.channel.concessionType ) {
+				if( $scope.concessionTypes[i].id == $scope.selectedConcessionType ) {
 					$scope.channel.concessionType = $scope.concessionTypes[i];
 					break;
 				}
@@ -176,6 +176,8 @@ angular.module( APP_NAME ).controller( 'ChannelController', ['$scope', '$http',
 						$scope.cancel();
 						$scope.get();
 					}
+				}).finally( function(e) {
+					$scope.alert.show = true;
 				});
 			}
 			else {
@@ -188,10 +190,10 @@ angular.module( APP_NAME ).controller( 'ChannelController', ['$scope', '$http',
 						$scope.get();
 						isUpdate = false;
 					}
+				}).finally( function(e) {
+					$scope.alert.show = true;
 				});
 			}
-			
-			$scope.alert.show = true;
 		}
 
 		$scope.delete = function( channel ) {

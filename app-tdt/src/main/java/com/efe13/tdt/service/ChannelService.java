@@ -21,7 +21,6 @@ public class ChannelService extends ServiceAPI {
 	private static final Logger log = Logger.getLogger( ChannelService.class );
 	private static final ChannelDAO CHANNEL_DAO = new ChannelDAO();
 	
-	
 	@Override
 	public ChannelDTO getById( DTOAPI dto ) {
 		Channel entity = new Channel();
@@ -62,6 +61,70 @@ public class ChannelService extends ServiceAPI {
 		return dtos;
 	}
 
+	public short findByDistinctive( DTOAPI channel ) {
+		Channel entity = new Channel();
+		short id = 0;
+		
+		try {
+			entity = (Channel) map( channel, entity );
+			id = CHANNEL_DAO.findByDistinctive( entity );
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+			throw ex;
+		}
+		
+		return id;
+	}
+	
+	public short findByName( DTOAPI channel ) {
+		Channel entity = new Channel();
+		short id = 0;
+		
+		try {
+			entity = (Channel) map( channel, entity );
+			id = CHANNEL_DAO.findByName( entity );
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+			throw ex;
+		}
+		
+		return id;
+	}
+	
+	public short findByPhysicChannel( DTOAPI channel ) {
+		Channel entity = new Channel();
+		short id = 0;
+		
+		try {
+			entity = (Channel) map( channel, entity );
+			id = CHANNEL_DAO.findByPhysicChannel( entity );
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+			throw ex;
+		}
+		
+		return id;
+	}
+	
+	public short findByVirtualChannel( DTOAPI channel ) {
+		Channel entity = new Channel();
+		short id = 0;
+		
+		try {
+			entity = (Channel) map( channel, entity );
+			id = CHANNEL_DAO.findByVirtualChannel( entity );
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+			throw ex;
+		}
+		
+		return id;
+	}
+	
 	@Override
 	public Short save(DTOAPI channelDTO) {
 		try {

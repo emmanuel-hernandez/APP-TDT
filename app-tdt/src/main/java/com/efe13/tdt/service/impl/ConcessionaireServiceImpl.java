@@ -1,7 +1,6 @@
 package com.efe13.tdt.service.impl;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.validation.ValidationException;
 
@@ -172,15 +171,14 @@ public class ConcessionaireServiceImpl extends ConcessionaireService {
 		}
 		
 		//Validate repeated
-		List<ConcessionaireDTO> concessionaireDTOs = listAll(null).getCollection();
-		for( ConcessionaireDTO concessionaire : concessionaireDTOs ) {
-			if( concessionaire.isActive() ) {
-				if( update.getValue() && concessionaire.getId() == concessionaireDto.getId() ) {
-					continue;
-				}
-				if( concessionaire.getName().compareToIgnoreCase( concessionaireDto.getName() ) == 0 ) {
-					throw new ValidationException( "Ya existe una concesionaria con el mismo nombre" );
-				}
+		short idFound = super.findByName( concessionaireDto );
+		if( idFound > 0 ) {
+			exceptionMessage = "Ya existe una concesionaria con el mismo nombre";
+			if( update == UpdateEnum.IS_NOT_UPDATE ) {
+				throw new ValidationException( exceptionMessage );
+			}
+			if( update == UpdateEnum.IS_UPDATE && ( idFound != concessionaireDto.getId() ) ) {
+				throw new ValidationException( exceptionMessage );
 			}
 		}
 	}

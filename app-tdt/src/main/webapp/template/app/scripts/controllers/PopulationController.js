@@ -122,6 +122,7 @@ angular.module( APP_NAME ).controller( 'PopulationController', ['$scope', '$http
 		
 		$scope.update = function( population ) {
 			$scope.population = PopulationDTO.build();
+			$scope.population.id = population.id;
 			$scope.population.name = population.name;
 			$scope.population.state = population.state;
 			$scope.selectedState = population.state.id;

@@ -1,7 +1,6 @@
 package com.efe13.tdt.service.impl;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.validation.ValidationException;
 
@@ -31,7 +30,7 @@ public class ChannelServiceImpl extends ChannelService {
 	private static final int LATITUDE_FIELD_MAX_LENGTH = 15;
 	private static final int EFFECTIVE_DATE_START_FIELD_MAX_LENGTH = 60;
 	private static final int EFFECTIVE_DATE_END_FIELD_MAX_LENGTH = 60;
-	
+
 	public ServiceResult<ChannelDTO> getById( ChannelDTO channelDTO ) {
 		try {
 			serviceResult = new ServiceResult<>();
@@ -154,7 +153,7 @@ public class ChannelServiceImpl extends ChannelService {
 		serviceResult.setStatusResult( statusResultService );
 		return serviceResult;
 	}
-	
+
 	@Override
 	public void validateDTO( DTOAPI dto, UpdateEnum update ) {
 		ChannelDTO channelDto = (ChannelDTO) sanitizeDTO( dto );
@@ -240,27 +239,49 @@ public class ChannelServiceImpl extends ChannelService {
 			throw new ValidationException( exceptionMessage );
 		}
 		*/
+		
 		//Validate repeated
-		List<ChannelDTO> channelDTOs = listAll(null).getCollection();
-		for( ChannelDTO channel : channelDTOs ) {
-			if( channel.isActive() ) {
-				if( update.getValue() && channel.getId() == channelDto.getId() ) {
-					continue;
-				}
-				if( channel.getDistinctive().compareToIgnoreCase( channelDto.getDistinctive() ) == 0 ) {
-					throw new ValidationException( "Ya existe un canal con el mismo distintivo" );
-				}
-				if( channel.getName().compareToIgnoreCase( channelDto.getName() ) == 0 ) {
-					throw new ValidationException( "Ya existe un canal con el mismo nombre" );
-				}
-				if( channel.getPhysicChannel() == channelDto.getPhysicChannel() &&
-					channel.getPopulation().getId() == channelDto.getPopulation().getId() ) {
-					throw new ValidationException( "El canal físico ya se encuentra asignado en esa población" );
-				}
-				if( channel.getVirtualChannel() == channelDto.getVirtualChannel() &&
-					channel.getPopulation().getId() == channelDto.getPopulation().getId() ) {
-					throw new ValidationException( "El canal virtual ya se encuentra asignado en esa población" );
-				}
+		short idFound = super.findByDistinctive( channelDto );
+		if( idFound > 0 ) {
+			exceptionMessage = "Ya existe un canal con el mismo distintivo";
+			if( update == UpdateEnum.IS_NOT_UPDATE ) {
+				throw new ValidationException( exceptionMessage );
+			}
+			if( update == UpdateEnum.IS_UPDATE && ( idFound != channelDto.getId() ) ) {
+				throw new ValidationException( exceptionMessage );
+			}
+		}
+		
+		idFound = super.findByName( channelDto );
+		if( idFound > 0 ) {
+			exceptionMessage = "Ya existe un canal con el mismo nombre";
+			if( update == UpdateEnum.IS_NOT_UPDATE ) {
+				throw new ValidationException( exceptionMessage );
+			}
+			if( update == UpdateEnum.IS_UPDATE && ( idFound != channelDto.getId() ) ) {
+				throw new ValidationException( exceptionMessage );
+			}
+		}
+		
+		idFound = super.findByPhysicChannel( channelDto );
+		if( idFound > 0 ) {
+			exceptionMessage = "El canal físico ya se encuentra asignado en esa población";
+			if( update == UpdateEnum.IS_NOT_UPDATE ) {
+				throw new ValidationException( exceptionMessage );
+			}
+			if( update == UpdateEnum.IS_UPDATE && ( idFound != channelDto.getId() ) ) {
+				throw new ValidationException( exceptionMessage );
+			}
+		}
+		
+		idFound = super.findByVirtualChannel( channelDto );
+		if( idFound > 0 ) {
+			exceptionMessage = "El canal virtual ya se encuentra asignado en esa población";
+			if( update == UpdateEnum.IS_NOT_UPDATE ) {
+				throw new ValidationException( exceptionMessage );
+			}
+			if( update == UpdateEnum.IS_UPDATE && ( idFound != channelDto.getId() ) ) {
+				throw new ValidationException( exceptionMessage );
 			}
 		}
 	}

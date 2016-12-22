@@ -8,18 +8,15 @@
  * Main module of the application.
  */
 angular
-  .module( APP_NAME, [
-    'oc.lazyLoad',
-    'ui.router',
+  .module( APP_NAME, ['oc.lazyLoad',
+	'ui.router',
 	'smart-table',
-    'ui.bootstrap',
-    'angular-loading-bar'
-  ])
-  .config(['$stateProvider','$urlRouterProvider','$ocLazyLoadProvider',function ($stateProvider,$urlRouterProvider,$ocLazyLoadProvider) {
+	'ui.bootstrap',
+	'angular-loading-bar']).config(['$stateProvider', '$urlRouterProvider', '$ocLazyLoadProvider', function ($stateProvider,$urlRouterProvider,$ocLazyLoadProvider) {
     
     $ocLazyLoadProvider.config({
-      debug:false,
-      events:true,
+      debug: false,
+      events: true,
     });
 
     $urlRouterProvider.otherwise('/dashboard/home');

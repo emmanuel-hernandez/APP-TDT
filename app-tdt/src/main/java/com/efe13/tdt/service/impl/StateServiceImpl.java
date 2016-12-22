@@ -1,7 +1,6 @@
 package com.efe13.tdt.service.impl;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.validation.ValidationException;
 
@@ -182,18 +181,25 @@ public class StateServiceImpl extends StateService {
 		}
 		
 		//Validate repeated
-		List<StateDTO> stateDTOs = listAll(null).getCollection();
-		for( StateDTO state : stateDTOs ) {
-			if( state.isActive() ) {
-				if( update.getValue() && state.getId() == stateDto.getId() ) {
-					continue;
-				}
-				if( state.getName().compareToIgnoreCase( stateDto.getName() ) == 0 ) {
-					throw new ValidationException( "Ya existe un estado con el mismo nombre" );
-				}
-				if( state.getShortName().compareToIgnoreCase( stateDto.getShortName() ) == 0 ) {
-					throw new ValidationException( "Ya existe un estado con la misma abreviatura" );
-				}
+		short idFound = super.findByName( stateDto );
+		if( idFound > 0 ) {
+			exceptionMessage = "Ya existe un estado con el mismo nombre";
+			if( update == UpdateEnum.IS_NOT_UPDATE ) {
+				throw new ValidationException( exceptionMessage );
+			}
+			if( update == UpdateEnum.IS_UPDATE && ( idFound != stateDto.getId() ) ) {
+				throw new ValidationException( exceptionMessage );
+			}
+		}
+		
+		idFound = super.findByShortName( stateDto );
+		if( idFound > 0 ) {
+			exceptionMessage = "Ya existe un estado con la misma abreviatura";
+			if( update == UpdateEnum.IS_NOT_UPDATE ) {
+				throw new ValidationException( exceptionMessage );
+			}
+			if( update == UpdateEnum.IS_UPDATE && ( idFound != stateDto.getId() ) ) {
+				throw new ValidationException( exceptionMessage );
 			}
 		}
 	}

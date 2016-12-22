@@ -1,7 +1,6 @@
 package com.efe13.tdt.service.impl;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.validation.ValidationException;
 
@@ -175,16 +174,14 @@ public class PopulationServiceImpl extends PopulationService {
 		}
 		
 		//Validate repeated
-		List<PopulationDTO> populationDTOs = listAll(null).getCollection();
-		for( PopulationDTO population : populationDTOs ) {
-			if( population.isActive() ) {
-				if( update.getValue() && population.getId() == populationDto.getId() ) {
-					continue;
-				}
-				if( population.getName().compareToIgnoreCase( populationDto.getName() ) == 0 &&
-					population.getState().getId() == populationDto.getState().getId() ) {
-						throw new ValidationException( "Ya existe una población con el mismo nombre en el mismo estado" );
-				}
+		short idFound = super.findByNameAndState( populationDto );
+		if( idFound > 0 ) {
+			exceptionMessage = "Ya existe una población con el mismo nombre en el mismo estado";
+			if( update == UpdateEnum.IS_NOT_UPDATE ) {
+				throw new ValidationException( exceptionMessage );
+			}
+			if( update == UpdateEnum.IS_UPDATE && ( idFound != populationDto.getId() ) ) {
+				throw new ValidationException( exceptionMessage );
 			}
 		}
 	}

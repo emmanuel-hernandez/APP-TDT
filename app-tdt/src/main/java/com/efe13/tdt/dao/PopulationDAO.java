@@ -7,6 +7,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 
 import com.efe13.mvc.commons.api.enums.ActiveEnum;
+import com.efe13.mvc.commons.api.util.Utils;
 import com.efe13.mvc.dao.api.impl.DAOAPI;
 import com.efe13.tdt.model.entity.Population;
 import com.efe13.tdt.utils.AppConstant;
@@ -17,15 +18,22 @@ public class PopulationDAO extends DAOAPI<Population> {
 		super( AppConstant.ACTIVE_COLUMN_NAME, ActiveEnum.ACTIVE );
 	}
 
-	public int findByNameAndState( Population population ) throws HibernateException {
+	public short findByNameAndState( Population population ) throws HibernateException {
 		try {
 			Criteria criteria = getCriteria( "p" )
-				.setProjection( Projections.rowCount() )
+				.setProjection( Projections.id() )
 				.createAlias( "state", "s", JoinType.INNER_JOIN )
 				.add( Restrictions.eq( "p.name", population.getName() ) )
-				.add( Restrictions.eq( "s.id", population.getState().getId() ) );
+				.add( Restrictions.eq( "s.id", population.getState().getId() ) )
+				.add( Restrictions.eq( "p.active", ActiveEnum.ACTIVE.getValue() ) );
+
+			Object object = criteria.uniqueResult();
 			
-			return (Integer) criteria.uniqueResult();
+			if( !Utils.isNull( object  ) ) {
+				return (short) object;
+			}
+			
+			return 0;
 		}
 		finally {
 			closeSession();

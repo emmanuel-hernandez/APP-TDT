@@ -60,6 +60,22 @@ public class ConcessionaireService extends ServiceAPI {
 		return dtos;
 	}
 
+	public short findByName( DTOAPI concessionaireDTO ) {
+		Concessionaire entity = new Concessionaire();
+		short id = 0;
+		
+		try {
+			entity = (Concessionaire) map( concessionaireDTO, entity );
+			id = CONCESSIONAIRE_DAO.findByName( entity );
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+			throw ex;
+		}
+		
+		return id;
+	}
+	
 	@Override
 	public Short save(DTOAPI concessionaireDTO) {
 		try {
