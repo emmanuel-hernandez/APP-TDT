@@ -16,9 +16,17 @@ angular.module( APP_NAME ).directive( 'listTable', function( $window ) {
 	        columns: '=',
 	        updateFn: '&',
 	        deleteFn: '&',
-	        detailsFn: '&'
+	        detailsFn: '&',
+	        helper: '='
   		},
   		link: function( $scope, element, attrs ) {
+  			console.log( $scope.helper );
+  			$scope.pages = new Array();
+  			for( var i=1; i<=$scope.helper.paginationAPI; i++ ) {
+  				$scope.pages.push( i );
+  				console.log( 'adding: ' + i );
+  			}
+  			
   			$scope.details = function( object ) {
   				$scope.detailsFn()( object );
   			};

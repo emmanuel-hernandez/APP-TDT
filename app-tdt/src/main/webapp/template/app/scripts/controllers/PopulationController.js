@@ -11,7 +11,7 @@ angular.module( APP_NAME ).controller( 'PopulationController', ['$scope', '$http
 		
 		var init = function() {
 			$scope.alert = AlertDTO.build( null, ERROR_MESSAGE, false );
-			$scope.queryHelper = QueryHelper.build( PaginationAPI.build( 1, 15, 0 ),
+			$scope.queryHelper = QueryHelper.build( PaginationAPI.build( 1, 15, 0, 0 ),
 													FilterAPI.build( null ),
 													OrderAPI.build( 'name', ORDER_ASCENDING ) );
 			$scope.columns = [
@@ -48,6 +48,7 @@ angular.module( APP_NAME ).controller( 'PopulationController', ['$scope', '$http
 		$scope.get = function() {
 			httpService.get( POPULATION_URL +'?'+ GET_PARAMETER_NAME +'='+ JSON.stringify($scope.queryHelper) ).success( function(data) {
 				if( data.statusResult.value ) {
+					$scope.queryHelper = data.queryHelper;
 					$scope.populations = new Array();
 
 					for(var i=0; i<data.collection.length; i++ ) {

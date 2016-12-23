@@ -52,12 +52,12 @@ public class PopulationServiceImpl extends PopulationService {
 		return serviceResult;
 	}
 
-	public ServiceResult<PopulationDTO> listAll( QueryHelper serviceRequest ) {
+	public ServiceResult<PopulationDTO> listAll( QueryHelper queryHelper ) {
 		try {
 			serviceResult = new ServiceResult<>();
-			
+
 			ArrayList<PopulationDTO> dtos = new ArrayList<>();
-			for( DTOAPI dto : super.getAll( serviceRequest ) ) {
+			for( DTOAPI dto : super.getAll( queryHelper ) ) {
 				dtos.add( (PopulationDTO) dto );
 			}
 			
@@ -67,6 +67,10 @@ public class PopulationServiceImpl extends PopulationService {
 			dtos.add( 0, defaultPopulation );
 			
 			serviceResult.setCollection( dtos );
+			if( !Utils.isNull( queryHelper ) ) {
+				serviceResult.setQueryHelper( getQueryHelper( queryHelper ) );
+			}
+			
 			statusResultService = StatusResultService.STATUS_SUCCESS;
 		}
 		catch( Exception ex ) {
@@ -193,5 +197,21 @@ public class PopulationServiceImpl extends PopulationService {
 		populationDTO.setName( Utils.toUpperCase( populationDTO.getName() ) );
 		
 		return populationDTO;
+	}
+	
+	public QueryHelper getQueryHelper( QueryHelper queryHelper ) {
+		long total = getCount();
+		long pageNumber = Math.floorDiv( total, queryHelper.getPaginationAPI().getPageSize() ); //20.6
+
+		/*
+		 * Total= 301
+		 * pSize: 15
+		 * pActual: 2
+		 * 
+		 */
+		queryHelper.getPaginationAPI().setTotal( (int)total );
+		queryHelper.getPaginationAPI().setTotalPage( (int)pageNumber );
+		
+		return queryHelper;
 	}
 }

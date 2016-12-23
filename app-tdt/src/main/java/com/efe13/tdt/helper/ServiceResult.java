@@ -3,6 +3,7 @@ package com.efe13.tdt.helper;
 import java.util.Collections;
 import java.util.List;
 
+import com.efe13.mvc.model.api.impl.helper.QueryHelper;
 import com.efe13.tdt.enums.StatusResultService;
 
 public class ServiceResult<T> {
@@ -11,6 +12,7 @@ public class ServiceResult<T> {
 	private List<T> collection = Collections.emptyList();
 	private StatusResultService statusResult;
 	private String message;
+	private QueryHelper queryHelper;
 	
 	public ServiceResult() {
 	}
@@ -64,5 +66,13 @@ public class ServiceResult<T> {
 	
 	public void setCollection(List<T> collection) {
 		this.collection = collection;
+	}
+
+	public QueryHelper getQueryHelper() {
+		return queryHelper;
+	}
+
+	public void setQueryHelper(QueryHelper queryHelper) {
+		this.queryHelper = queryHelper;
 	}
 }

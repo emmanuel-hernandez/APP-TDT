@@ -21,6 +21,16 @@ public class PopulationService extends ServiceAPI {
 	private static final Logger log = Logger.getLogger( PopulationService.class );
 	private static final PopulationDAO POPULATION_DAO = new PopulationDAO();
 	
+	public long getCount() {
+		try {
+			return POPULATION_DAO.getTotalRecords();
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+			throw ex;
+		}
+	}
+	
 	@Override
 	public PopulationDTO getById( DTOAPI populationDTO ) {
 		Population entity = new Population();
