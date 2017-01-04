@@ -10,7 +10,7 @@ public class ConcessionaireDTO extends DTOAPI {
 	private short id;
 	private String name;
 	private boolean active;
-	private Set<ChannelDTO> channels = new HashSet<>();
+	//private Set<ChannelDTO> channels = new HashSet<>();
 	
 	@Override
 	public Short getId() {
@@ -40,6 +40,7 @@ public class ConcessionaireDTO extends DTOAPI {
 		this.active = active;
 	}
 
+	/*
 	public Set<ChannelDTO> getChannels() {
 		return channels;
 	}
@@ -47,5 +48,6 @@ public class ConcessionaireDTO extends DTOAPI {
 	public void setChannels(Set<ChannelDTO> channels) {
 		this.channels = channels;
 	}
+	*/
 	
 }

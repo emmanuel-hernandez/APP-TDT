@@ -1,31 +1,197 @@
 <div>
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Informaci&oacute;n general</h1>
+            <h1 class="page-header">Informaci&oacute;n a detalle</h1>
         </div><!-- /.col-lg-12 -->
     </div><!-- /.row -->
     <div class="row">
     	<div class="col-lg-12 col-sm-12">
-			<p><br/>
-				<alert-info message="{{alert.message}}" type="{{alert.type}}" show="{{alert.show}}"/>
-			</p>
+			<alert-info message="{{alert.message}}" type="{{alert.type}}" show="alert.show"/>
 		</div>
 		<div class="col-lg-12 col-sm-12">
     		<stats ng-repeat="stat in stats" number="{{stat.total}}" comments="{{stat.comment}}" colour="{{stat.color}}" type="{{stat.icon}}" goto="{{stat.url}}"/>
-    	</div>
-    </div>
+    	</div><!-- /.col-lg-12 -->
+    </div><!-- /.row -->
     
-    <!-- /.panel -->
     <div class="row">
         <div class="col-lg-12">
-            <div class="panel panel-default">
+        
+            <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <i class="fa fa-map-marker fa-fw"></i> Mapa
+                    <i class="fa fa-map-marker fa-fw"></i> Filtros
                 </div><!-- /.panel-heading -->
                 <div class="panel-body">
-                	<h2>Infraestrucutra TDT en el país</h2>
-               	</div><!-- /.panel-body -->
-            </div><!-- /.panel -->
-        </div><!-- /.col-lg-12 -->
-    </div><!-- /.row -->
-</div>
+                	<div class="panel-group" id="accordion">
+                	
+                		<div class="panel panel-info">
+			                <div class="panel-heading">
+			                    <h4 class="panel-title" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
+			                    	<i class="icon-collapse fa fa-minus"></i>
+                                    Canales por estado/población
+                                </h4>
+			                </div><!-- /.panel-heading -->
+			                <div id="collapseOne" class="panel-collapse collapse in">
+			                	<div class="panel-body">
+			                		<div class="row">
+			                			<form role="form">
+			                				<div class="col-lg-6">
+				                				<div class="form-group">
+				                					<label for="state">Estado:</label>
+				                					<select id="state" class="form-control" ng-model="selectedState" ng-change="stateOnChange()">
+					                                	<option ng-repeat="state in states" value="{{state.id}}">{{state.name}}</option>
+					                                </select>
+				                				</div>
+				                			</div>
+				                			<div class="col-lg-6">
+					                			<div class="form-group">
+					                				<label for="population">Población:</label>
+					                				<select id="population" class="form-control" ng-model="selectedPopulation" ng-disabled="selectPopulation == false" ng-change="populationOnChange()">
+							                			<option ng-repeat="population in populations" value="{{population.id}}">{{population.name}}</option>
+							                		</select>
+				                				</div>
+			                				</div>
+			                			</form>
+			                		</div>
+				                	<div class="row">
+				                		<div class="col-lg-12">
+						                	<div class="dataTable_wrapper">
+							            		<list-table collection="channels" columns="columns" details-fn="details" has-details="true" is-crud="false" has-filter="false"/>
+							                </div><!-- /.table-responsive -->
+						                </div>
+						            </div>
+			                	</div>
+			             	</div><!-- /#collapseOne -->
+			           	</div><!-- /.panel-body -->
+			           	
+			           	<div class="panel panel-info">
+			                <div class="panel-heading">
+			                    <h4 class="panel-title" data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo">
+			                    	<i class="icon-collapse fa fa-plus"></i>
+                                    Canales por concesionaría/tipo de concesión
+                                </h4>
+			                </div><!-- /.panel-heading -->
+			                <div id="collapseTwo" class="panel-collapse collapse">
+			                	<div class="panel-body">
+			                		<div class="row">
+			                			<form role="form">
+			                				<div class="col-lg-6">
+				                				<div class="form-group">
+				                					<label for="concessionaire">Concesionaria:</label>
+				                					<select id="concessionaire" class="form-control" ng-model="selectedConcessionaire" ng-change="concessionaireOnChange()">
+					                                	<option ng-repeat="concessionaire in concessionaires" value="{{concessionaire.id}}">{{concessionaire.name}}</option>
+					                                </select>
+				                				</div>
+				                			</div>
+				                			<div class="col-lg-6">
+					                			<div class="form-group">
+					                				<label for="concessionType">Tipo de concesión:</label>
+					                				<select id="concessionType" class="form-control" ng-model="selectedConcessionType" ng-change="concessionTypeOnChange()">
+							                			<option ng-repeat="concessionType in concessionTypes" value="{{concessionType.id}}">
+							                				{{ concessionType.type + (concessionType.description!=null ? ' - ' + concessionType.description : '') }}
+							                			</option>
+							                		</select>
+				                				</div>
+			                				</div>
+			                			</form>
+			                		</div>
+				                	<div class="row">
+				                		<div class="col-lg-12">
+						                	<div class="dataTable_wrapper">
+							            		<list-table collection="channels" columns="columns" details-fn="details" has-details="true" is-crud="false" has-filter="false"/>
+							                </div><!-- /.table-responsive -->
+						                </div>
+						            </div>
+			                	</div>
+			             	</div><!-- /#collapseOne -->
+			           	</div><!-- /.panel-body -->
+			           	
+	               		<div class="panel panel-info">
+			                <div class="panel-heading">
+			                    <h4 class="panel-title" data-toggle="collapse" data-parent="#accordion" data-target="#collapseThree">
+			                    	<i class="icon-collapse fa fa-plus"></i>
+	                                Mapa
+	                            </h4>
+			                </div><!-- /.panel-heading -->
+			                <div id="collapseThree" class="panel-collapse collapse">
+			                	<div class="panel-body">
+			                		<h2>Mapa de la estación</h2>
+			                	</div>
+			               	</div><!-- /#collapseTwo -->
+			            </div><!-- /.panel -->
+			            
+					</div> <!-- /·accordion -->          		
+                </div><!-- /.panel-body -->
+            </div><!-- /.panel-primary -->
+            
+            <!-- Modal -->
+		    <div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="channelDetail" aria-hidden="true" width="80%">
+		        <div class="modal-dialog modal-lg">
+		            <div class="modal-content">
+		                <div class="modal-header">
+		                    <h4 class="modal-title" id="channelDetail">Detalles</h4>
+		                </div>
+		                <div class="modal-body">
+		                	<table class="table table-striped">
+		               			<tr>
+		               				<td width="25%"><b>Distintivo:</b></td>
+		               				<td width="25%">{{selectedChannel.distinctive}}</td>
+		               				<td width="25%"><b>Nombre:</b></td>
+		               				<td width="25%">{{selectedChannel.name}}</td>
+		               			</tr>
+		               			<tr>
+		               				<td><b>Canal Virtual:</b></td>
+		               				<td>{{selectedChannel.virtualChannel}}</td>
+		               				<td><b>Canal Físico:</b></td>
+		               				<td>{{selectedChannel.physicChannel}}</td>
+		               			</tr>
+		               			<tr>
+		               				<td><b>Calidad:</b></td>
+		               				<td>{{selectedChannel.quality}}</td>
+		               				<td><b>Resolución:</b></td>
+		               				<td>{{selectedChannel.resolution}}</td>
+		               			</tr>
+		               			<tr>
+		               				<td><b>Potencia:</b></td>
+		               				<td>{{selectedChannel.power}}</td>
+		               				<td><b>ACESLI: <i class="fa fa-question-circle" tooltip="{{acesliTooltip}}"></i></b></td>
+		               				<td>{{selectedChannel.acesli}}</td>
+		               			</tr>
+		               			<tr>
+		               				<td><b>Latitud:</b></td>
+		               				<td>{{selectedChannel.latitude}}</td>
+		               				<td><b>Longitud:</b></td>
+		               				<td>{{selectedChannel.longitude}}</td>
+		               			</tr>
+		               			<tr>
+		               				<td><b>Banda:</b></td>
+		               				<td>{{selectedChannel.channelBand.name}}</td>
+		               				<td><b>Población:</b></td>
+		               				<td>{{selectedChannel.population.name}}</td>
+		               			</tr>
+		               			<tr>
+		               				<td><b>Concesionaria:</b></td>
+		               				<td>{{selectedChannel.concessionaire.name}}</td>
+		               				<td><b>Tipo de Concesión:</b></td>
+		               				<td>{{selectedChannel.concessionType.type}} <i class="fa fa-question-circle" tooltip="{{selectedChannel.concessionType.description}}"></i></td>
+		               			</tr>
+		               			<tr>
+		               				<td><b>Vigencia (fecha de inicio):</b></td>
+		               				<td>{{selectedChannel.effectiveDateStart}}</td>
+		               				<td><b>Vigencia (fecha final):</b></td>
+		               				<td>{{selectedChannel.effectiveDateEnd}}</td>
+		               			</tr>
+		                	</table>
+		                	<p><b>Ubicación</b><br></p>
+		                	<div id="map" style="height:450px"></div>
+		                </div>
+		                <div class="modal-footer">
+		                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+		                </div>
+		            </div><!-- /.modal-content -->
+		        </div><!-- /.modal-dialog -->
+		    </div><!-- /.modal -->
+            
+          </div><!-- /.col-lg-12 -->  
+
+		</div><!-- /.row -->
+	</div>

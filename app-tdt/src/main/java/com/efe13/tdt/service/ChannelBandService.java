@@ -22,6 +22,17 @@ public class ChannelBandService extends ServiceAPI {
 	private static final ChannelBandDAO CHANNEL_BAND_DAO = new ChannelBandDAO();
 	
 	@Override
+	public long getTableCount() {
+		try {
+			return CHANNEL_BAND_DAO.getTableCount();
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+			throw ex;
+		}
+	}
+	
+	@Override
 	public ChannelBandDTO getById( DTOAPI dto ) {
 		ChannelBand entity = new ChannelBand();
 		

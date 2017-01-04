@@ -11,19 +11,18 @@ angular.module( APP_NAME ).controller( 'ConcessionTypeController', ['$scope', '$
 		
 		var init = function() {
 			$scope.alert = AlertDTO.build( null, ERROR_MESSAGE, false );
-			$scope.queryHelper = QueryHelper.build( PaginationAPI.build( 1, 15, 0 ),
+			$scope.queryHelper = QueryHelper.build( PaginationAPI.build( 1, 15, 0, 0 ),
 													FilterAPI.build( null ),
 													OrderAPI.build( 'type', ORDER_ASCENDING ) );
-			$scope.columns = [
-  				'Tipo',
-  				'Descripción'
-  			];
+			$scope.columns = {name: [ 'Tipo', 'Descripción' ],
+							  id: [ 'type', 'description' ]};
 			
 			$scope.concessionTypes = new Array();			
 		};
 
 		var reset = function() {
 			isUpdate = false;
+			$scope.alert.show = false;
 			
 			$scope.concessionType = ConcessionTypeDTO.build();
 			$scope.concessionType.id = 0;
@@ -31,9 +30,17 @@ angular.module( APP_NAME ).controller( 'ConcessionTypeController', ['$scope', '$
 			$scope.concessionType.description = null;
 		};
 		
-		$scope.get = function() {
-			httpService.get( CONCESSION_TYPE_URL +'?'+ GET_PARAMETER_NAME +'='+ JSON.stringify($scope.queryHelper) ).success( function(data) {
+		$scope.get = function(page, order, filter) {
+			$scope.queryHelper.paginationAPI.currentPage = ( page == null || page == undefined ) ? 1 : page;
+			$scope.queryHelper.orderAPI.field = (order == null || order == undefined ) ? null : $scope.columns.id[order.field];
+			$scope.queryHelper.orderAPI.ascending = (order == null || order == undefined ) ? false : order.ascending;
+			$scope.queryHelper.filterAPI.filter = ( filter == null || filter == undefined ) ? {name:null} : {type:filter, description:filter};
+			
+			var urlRequest = CONCESSION_TYPE_URL +'?'+ GET_PARAMETER_NAME +'='+ JSON.stringify( $scope.queryHelper );
+			
+			httpService.get( urlRequest ).success( function(data) {
 				if( data.statusResult.value ) {
+					$scope.queryHelper = data.queryHelper;
 					$scope.concessionTypes = new Array();
 					
 					for(var i=0; i<data.collection.length; i++ ) {

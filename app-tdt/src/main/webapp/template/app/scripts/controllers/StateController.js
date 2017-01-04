@@ -11,13 +11,13 @@ angular.module( APP_NAME ).controller( 'StateController', ['$scope', '$http', 'h
 
 		var init = function() {
 			$scope.alert = AlertDTO.build( null, ERROR_MESSAGE, false );
-			$scope.queryHelper = QueryHelper.build( PaginationAPI.build( 1, 15, 0 ),
+			$scope.queryHelper = QueryHelper.build( PaginationAPI.build( 1, 15, 0, 0 ),
 													FilterAPI.build( null ),
 													OrderAPI.build( 'name', ORDER_ASCENDING ) );			
-			$scope.columns = [
-  				'Nombre',
-  				'Abreviatura'
-  			];
+			$scope.columns = {
+				name: [ 'Nombre', 'Abreviatura' ],
+				id: [ 'name', 'shortName' ]
+			};
 			$scope.states = new Array();
 		};
 		
@@ -28,11 +28,20 @@ angular.module( APP_NAME ).controller( 'StateController', ['$scope', '$http', 'h
 			$scope.state.id = 0;
 			$scope.state.name = null;
 			$scope.state.shortName = null;
+			$scope.alert.show = false;
 		};
 		
-		$scope.get = function() {
-			httpService.get( STATE_URL +'?'+ GET_PARAMETER_NAME +'='+ JSON.stringify($scope.queryHelper) ).success( function(data) {
+		$scope.get = function(page, order, filter) {
+			$scope.queryHelper.paginationAPI.currentPage = ( page == null || page == undefined ) ? 1 : page;
+			$scope.queryHelper.orderAPI.field = (order == null || order == undefined ) ? null : $scope.columns.id[order.field];
+			$scope.queryHelper.orderAPI.ascending = (order == null || order == undefined ) ? false : order.ascending;
+			$scope.queryHelper.filterAPI.filter = ( filter == null || filter == undefined ) ? {name:null} : {name:filter, shortName:filter};
+			
+			var urlRequest = STATE_URL +'?'+ GET_PARAMETER_NAME +'='+ JSON.stringify( $scope.queryHelper );
+			
+			httpService.get( urlRequest ).success( function(data) {
 				if( data.statusResult.value ) {
+					$scope.queryHelper = data.queryHelper;
 					$scope.states = new Array();
 					
 					for(var i=0; i<data.collection.length; i++ ) {
@@ -55,6 +64,7 @@ angular.module( APP_NAME ).controller( 'StateController', ['$scope', '$http', 'h
 		}
 		
 		$scope.save = function() {
+			console.log( JSON.stringify($scope.state) );
 			if( !isUpdate ) {
 				httpService.post( STATE_URL, JSON.stringify($scope.state) ).success( function(data) {
 					$scope.alert.type = ( data.statusResult.value ) ? SUCCESS_MESSAGE : ERROR_MESSAGE;

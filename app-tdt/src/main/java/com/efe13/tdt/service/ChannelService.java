@@ -15,11 +15,25 @@ import com.efe13.mvc.service.api.impl.ServiceAPI;
 import com.efe13.tdt.dao.ChannelDAO;
 import com.efe13.tdt.model.dto.ChannelDTO;
 import com.efe13.tdt.model.entity.Channel;
+import com.efe13.tdt.model.entity.ConcessionType;
+import com.efe13.tdt.model.entity.Concessionaire;
+import com.efe13.tdt.model.entity.Population;
 
 public class ChannelService extends ServiceAPI {
 	
 	private static final Logger log = Logger.getLogger( ChannelService.class );
 	private static final ChannelDAO CHANNEL_DAO = new ChannelDAO();
+	
+	@Override
+	public long getTableCount() {
+		try {
+			return CHANNEL_DAO.getTableCount();
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+			throw ex;
+		}
+	}
 	
 	@Override
 	public ChannelDTO getById( DTOAPI dto ) {
@@ -46,6 +60,72 @@ public class ChannelService extends ServiceAPI {
 		try {
 			
 			List<EntityAPI> entities = CHANNEL_DAO.getAll( queryHelper );
+			if( !entities.isEmpty() ) {
+				dtos = new ArrayList<>();
+				
+				for( EntityAPI entity : entities ) {
+					dtos.add( (ChannelDTO) map( entity, new ChannelDTO() ) );
+				}			
+			}
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+		}
+		
+		return dtos;
+	}
+	
+	public <E> List<DTOAPI> getByPopulation( DTOAPI populationDTO ) {
+		List<DTOAPI> dtos = Collections.emptyList();
+		
+		try {
+			Population population = new Population();
+			population = (Population) map( populationDTO, population );
+			List<EntityAPI> entities = CHANNEL_DAO.getByPopulation( population );
+			if( !entities.isEmpty() ) {
+				dtos = new ArrayList<>();
+				
+				for( EntityAPI entity : entities ) {
+					dtos.add( (ChannelDTO) map( entity, new ChannelDTO() ) );
+				}			
+			}
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+		}
+		
+		return dtos;
+	}
+	
+	public <E> List<DTOAPI> getByConcessionaire( DTOAPI concessionaireDTO ) {
+		List<DTOAPI> dtos = Collections.emptyList();
+		
+		try {
+			Concessionaire concessionaire = new Concessionaire();
+			concessionaire = (Concessionaire) map( concessionaireDTO, concessionaire );
+			List<EntityAPI> entities = CHANNEL_DAO.getByConcessionaire( concessionaire );
+			if( !entities.isEmpty() ) {
+				dtos = new ArrayList<>();
+				
+				for( EntityAPI entity : entities ) {
+					dtos.add( (ChannelDTO) map( entity, new ChannelDTO() ) );
+				}			
+			}
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+		}
+		
+		return dtos;
+	}
+	
+	public <E> List<DTOAPI> getByConcessionType( DTOAPI concessionTypeDTO ) {
+		List<DTOAPI> dtos = Collections.emptyList();
+		
+		try {
+			ConcessionType concessionType = new ConcessionType();
+			concessionType = (ConcessionType) map( concessionTypeDTO, concessionType );
+			List<EntityAPI> entities = CHANNEL_DAO.getByConcessionType( concessionType );
 			if( !entities.isEmpty() ) {
 				dtos = new ArrayList<>();
 				

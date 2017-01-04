@@ -22,6 +22,17 @@ public class ConcessionaireService extends ServiceAPI {
 	private static final ConcessionaireDAO CONCESSIONAIRE_DAO = new ConcessionaireDAO();
 	
 	@Override
+	public long getTableCount() {
+		try {
+			return CONCESSIONAIRE_DAO.getTableCount();
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+			throw ex;
+		}
+	}
+	
+	@Override
 	public ConcessionaireDTO getById( DTOAPI dto ) {
 		Concessionaire entity = new Concessionaire();
 		

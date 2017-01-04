@@ -1,5 +1,7 @@
 package com.efe13.tdt.dao;
 
+import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.criterion.Projections;
@@ -10,7 +12,11 @@ import org.hibernate.sql.JoinType;
 import com.efe13.mvc.commons.api.enums.ActiveEnum;
 import com.efe13.mvc.commons.api.util.Utils;
 import com.efe13.mvc.dao.api.impl.DAOAPI;
+import com.efe13.mvc.model.api.impl.entity.EntityAPI;
 import com.efe13.tdt.model.entity.Channel;
+import com.efe13.tdt.model.entity.ConcessionType;
+import com.efe13.tdt.model.entity.Concessionaire;
+import com.efe13.tdt.model.entity.Population;
 import com.efe13.tdt.utils.AppConstant;
 
 public class ChannelDAO extends DAOAPI<Channel> {
@@ -99,6 +105,48 @@ public class ChannelDAO extends DAOAPI<Channel> {
 			}
 			
 			return 0;
+		}
+		finally {
+			closeSession();
+		}
+	}
+	
+	public List<EntityAPI> getByPopulation( Population population ) throws HibernateException {
+		try {
+			Criteria criteria = getCriteria( "c" )
+				.createAlias( "population", "p", JoinType.INNER_JOIN )
+				.add( Restrictions.eq( "p.id", population.getId() ) )
+				.add( ACTIVE_RESTRICTION );
+
+			return criteria.list();
+		}
+		finally {
+			closeSession();
+		}
+	}
+	
+	public List<EntityAPI> getByConcessionaire( Concessionaire concessionaire ) throws HibernateException {
+		try {
+			Criteria criteria = getCriteria( "c" )
+				.createAlias( "concessionaire", "cc", JoinType.INNER_JOIN )
+				.add( Restrictions.eq( "cc.id", concessionaire.getId() ) )
+				.add( ACTIVE_RESTRICTION );
+
+			return criteria.list();
+		}
+		finally {
+			closeSession();
+		}
+	}
+	
+	public List<EntityAPI> getByConcessionType( ConcessionType concessionType ) throws HibernateException {
+		try {
+			Criteria criteria = getCriteria( "c" )
+				.createAlias( "concessionType", "ct", JoinType.INNER_JOIN )
+				.add( Restrictions.eq( "ct.id", concessionType.getId() ) )
+				.add( ACTIVE_RESTRICTION );
+
+			return criteria.list();
 		}
 		finally {
 			closeSession();

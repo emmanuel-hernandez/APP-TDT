@@ -37,6 +37,7 @@ angular
                     'scripts/directives/sidebar/sidebar-search/sidebar-search.js',
                     'scripts/directives/dashboard/list-table/list-table.js',
                     'scripts/directives/alerts/alerts.js',
+                    'https://maps.googleapis.com/maps/api/js?key='+GMAP_API_KEY,
                     
                     'scripts/utils/Utils.js',
                     'scripts/model/AlertDTO.js',

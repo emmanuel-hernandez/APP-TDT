@@ -22,6 +22,17 @@ public class ConcessionTypeService extends ServiceAPI {
 	private static final ConcessionTypeDAO CONCESSION_TYPE_DAO = new ConcessionTypeDAO();
 	
 	@Override
+	public long getTableCount() {
+		try {
+			return CONCESSION_TYPE_DAO.getTableCount();
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+			throw ex;
+		}
+	}
+	
+	@Override
 	public ConcessionTypeDTO getById( DTOAPI dto ) {
 		ConcessionType entity = new ConcessionType();
 		

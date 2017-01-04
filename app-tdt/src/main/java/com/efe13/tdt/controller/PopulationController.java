@@ -45,6 +45,18 @@ public class PopulationController {
 		}
 	}
 	
+	@RequestMapping( value="/state/{stateId}", method=RequestMethod.GET )
+	public ServiceResult<PopulationDTO> getPopulationsByState( @PathVariable("stateId") short stateId ) {
+		try {
+			StateDTO stateDTO = new StateDTO();
+			stateDTO.setId( stateId );
+			return POPULATION_SERVICE.getByState( stateDTO );
+		}
+		catch( Exception ex ) {
+			return new ServiceResult<PopulationDTO>( ex.getMessage(), StatusResultService.STATUS_FAILED );
+		}
+	}
+	
 	@RequestMapping( value="/{id}", method=RequestMethod.GET )
 	public ServiceResult<PopulationDTO> getPopulation( @PathVariable("id") short populationId ) {
 		try {
@@ -56,7 +68,7 @@ public class PopulationController {
 			return new ServiceResult<PopulationDTO>( ex.getMessage(), StatusResultService.STATUS_FAILED );
 		}
 	}
-	
+
 	@RequestMapping( value="/", method=RequestMethod.POST )
 	public ServiceResult<PopulationDTO> savePopulation( @RequestBody PopulationDTO populationDTO ) {
 		try {

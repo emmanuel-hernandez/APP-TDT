@@ -14,10 +14,8 @@ angular.module( APP_NAME ).controller( 'PopulationController', ['$scope', '$http
 			$scope.queryHelper = QueryHelper.build( PaginationAPI.build( 1, 15, 0, 0 ),
 													FilterAPI.build( null ),
 													OrderAPI.build( 'name', ORDER_ASCENDING ) );
-			$scope.columns = [
-				'Nombre',
-				'Estado'
-			];
+			$scope.columns = {name: [ 'Nombre', 'Estado' ],
+							  id: [ 'name', 'state.name' ]};
 	
 			$scope.populations = new Array();
 			$scope.states = new Array();
@@ -25,6 +23,7 @@ angular.module( APP_NAME ).controller( 'PopulationController', ['$scope', '$http
 		
 		var reset = function() {
 			isUpdate = false;
+			$scope.alert.show = false;
 			
 			$scope.population = PopulationDTO.build();
 			$scope.population.id = 0;
@@ -39,14 +38,21 @@ angular.module( APP_NAME ).controller( 'PopulationController', ['$scope', '$http
 					$scope.states = data.collection;
 				}
 				else {
-					$scope.alert.show = true;
 					$scope.alert.message = data.message;
+					$scope.alert.show = true;
 				}
 			});
 		};
 		
-		$scope.get = function() {
-			httpService.get( POPULATION_URL +'?'+ GET_PARAMETER_NAME +'='+ JSON.stringify($scope.queryHelper) ).success( function(data) {
+		$scope.get = function(page, order, filter) {
+			$scope.queryHelper.paginationAPI.currentPage = ( page == null || page == undefined ) ? 1 : page;
+			$scope.queryHelper.orderAPI.field = (order == null || order == undefined ) ? null : $scope.columns.id[order.field];
+			$scope.queryHelper.orderAPI.ascending = (order == null || order == undefined ) ? false : order.ascending;
+			$scope.queryHelper.filterAPI.filter = ( filter == null || filter == undefined ) ? {name:null} : {name:filter};
+			
+			var urlRequest = POPULATION_URL +'?'+ GET_PARAMETER_NAME +'='+ JSON.stringify( $scope.queryHelper );
+			
+			httpService.get( urlRequest ).success( function(data) {
 				if( data.statusResult.value ) {
 					$scope.queryHelper = data.queryHelper;
 					$scope.populations = new Array();
@@ -133,6 +139,7 @@ angular.module( APP_NAME ).controller( 'PopulationController', ['$scope', '$http
 		$scope.cancel = function() {
 			reset();
 		}
+		
 		
 		/* Initialization */
 		init();

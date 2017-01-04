@@ -22,6 +22,17 @@ public class StateService extends ServiceAPI {
 	private static final StateDAO STATE_DAO = new StateDAO();
 	
 	@Override
+	public long getTableCount() {
+		try {
+			return STATE_DAO.getTableCount();
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+			throw ex;
+		}
+	}
+	
+	@Override
 	public StateDTO getById(DTOAPI stateDTO) {
 		State entity = new State();
 		

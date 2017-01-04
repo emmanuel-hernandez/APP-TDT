@@ -8,7 +8,7 @@
 	<div class="row">
 		<div class="col-lg-12 col-sm-12">
 			<p><br/>
-				<alert-info message="{{alert.message}}" type="{{alert.type}}" show="{{alert.show}}"/>
+				<alert-info message="{{alert.message}}" type="{{alert.type}}" show="alert.show"/>
 			</p>
 		</div>
 	    <div class="col-lg-12 col-sm-12">
@@ -129,7 +129,7 @@
 	            <div class="panel-heading">Listado</div>
 	            <div class="panel-body">
 	            	<div class="dataTable_wrapper">
-	            		<list-table collection="channels" columns="columns" update-fn="update" delete-fn="delete" details-fn="details"/>
+	            		<list-table collection="channels" columns="columns" update-fn="update" delete-fn="delete" details-fn="details" helper="queryHelper" query-fn="get" has-details="true"/>
 	                </div><!-- /.table-responsive -->
 	            </div>
 	        </div>

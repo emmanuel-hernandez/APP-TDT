@@ -53,12 +53,12 @@ public class StateServiceImpl extends StateService {
 		return serviceResult;
 	}
 
-	public ServiceResult<StateDTO> listAll( QueryHelper serviceRequest ) {
+	public ServiceResult<StateDTO> listAll( QueryHelper queryHelper ) {
 		try {
 			serviceResult = new ServiceResult<>();
 			
 			ArrayList<StateDTO> dtos = new ArrayList<>();
-			for( DTOAPI dto : super.getAll( serviceRequest ) ) {
+			for( DTOAPI dto : super.getAll( queryHelper ) ) {
 				dtos.add( (StateDTO) dto );
 			}
 			
@@ -68,6 +68,9 @@ public class StateServiceImpl extends StateService {
 			dtos.add( 0, defaultState );
 			
 			serviceResult.setCollection( dtos );
+			if( !Utils.isNull( queryHelper ) ) {
+				serviceResult.setQueryHelper( getQueryHelper( getTableCount(), queryHelper ) );
+			}
 			statusResultService = StatusResultService.STATUS_SUCCESS;
 		}
 		catch( Exception ex ) {

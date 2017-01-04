@@ -54,16 +54,19 @@ public class ChannelBandServiceImpl extends ChannelBandService {
 		return serviceResult;
 	}
 
-	public ServiceResult<ChannelBandDTO> listAll( QueryHelper serviceRequest ) {
+	public ServiceResult<ChannelBandDTO> listAll( QueryHelper queryHelper ) {
 		try {
 			serviceResult = new ServiceResult<>();
 			
 			ArrayList<ChannelBandDTO> dtos = new ArrayList<>();
-			for( DTOAPI dto : super.getAll( serviceRequest ) ) {
+			for( DTOAPI dto : super.getAll( queryHelper ) ) {
 				dtos.add( (ChannelBandDTO) dto );
 			}
 			
 			serviceResult.setCollection( dtos );
+			if( !Utils.isNull( queryHelper ) ) {
+				serviceResult.setQueryHelper( getQueryHelper( getTableCount(), queryHelper ) );
+			}
 			statusResultService = StatusResultService.STATUS_SUCCESS;
 		}
 		catch( Exception ex ) {

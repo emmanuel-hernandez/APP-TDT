@@ -1,50 +1,60 @@
 <div>
-	<table st-table="channels" st-pipe st-sticky-header class="table table-striped">
-	    <thead>
-	        <tr>
-	            <th ng-repeat="column in columns">{{ column }}</th>
-	            <th align="center" colspan="3" width="30%">Acciones</th>
-	        </tr>
-	    </thead>
-	    <tbody>
-	        <tr ng-repeat="item in collection">
-	        	<td ng-repeat="(key, value) in item.properties">{{ value.value }}</td>
-                <td class="center">
-                	 <button type="button" class="btn btn-primary" ng-click="details( item.object )">Detalles</button>
-                </td>
-                <td class="center">
-                	 <button type="button" class="btn btn-danger" ng-click="delete( item.object )">Eliminar</button>
-                </td>
-                <td class="center">
-          			 <button type="button" class="btn btn-default" ng-click="update( item.object )">Actualizar</button>
-                </td>
-            </tr>
-         </tbody>
-		<tfoot>
-			<tr>
-				<td colspan="10" align="right">
-					<!--div st-pagination="" st-items-by-page="5" st-displayed-pages="7"></div-->
-					<nav aria-label="Page navigation">
-					  <ul class="pagination pagination-lg">
-					    <li>
-					      <a href="#" aria-label="Anterior">
-					        <span aria-hidden="true">&laquo;</span>
-					      </a>
-					    </li>
-					    <!--li class="disabled"><a href="#">1</a></li>
-					    <li class="active"><a href="#">2</a></li>
-					    <li><a href="#">3</a></li>
-					    <li><a href="#">4</a></li-->
-					    <li ng-repeat="page in pages"><a href="#">{{ page }}</a></li>
-					    <li>
-					      <a href="#" aria-label="Siguiente">
-					        <span aria-hidden="true">&raquo;</span>
-					      </a>
-					    </li>
-					  </ul>
-					</nav>
-				</td>
-			</tr>
-		</tfoot>
-	</table>
+	<div class="row" ng-if="hasFilter">
+		<div class="col-lg-10">
+			<input class="form-control" id="busqueda" placeholder="Busqueda" ng-model="filterText" ng-keyup="keyEvent($event)">
+		</div>
+		<div class="col-lg-2">
+			<button type="button" class="btn btn-primary" ng-click="filter()">Buscar</button>
+		</div>
+	</div>
+		<p><br></p>
+		<table class="table table-striped">
+		    <thead>
+		        <tr>
+		            <th ng-repeat="column in columns.name" ng-click="order($index)">{{ column }}</th>
+		            <th align="center" colspan="3" width="30%">Acciones</th>
+		        </tr>
+		    </thead>
+		    <tbody>
+		        <tr ng-repeat="item in collection">
+		        	<td ng-repeat="(key, value) in item.properties">{{ value.value }}</td>
+	                <td class="center" ng-if="hasDetails">
+	                	 <button type="button" class="btn btn-primary" ng-click="details( item.object )">Detalles</button>
+	                </td>
+	                <td class="center" ng-if="isCrud">
+	                	 <button type="button" class="btn btn-danger" ng-click="delete( item.object )">Eliminar</button>
+	                </td>
+	                <td class="center" ng-if="isCrud">
+	          			 <button type="button" class="btn btn-default" ng-click="update( item.object )">Actualizar</button>
+	                </td>
+	            </tr>
+	            <tr ng-if="collection.length == 0">
+	            	<td colspan="{{columns.name.length + 1}}">Sin registros aún</td>
+	            </tr>
+	         </tbody>
+			<tfoot>
+				<tr>
+					<td colspan="10" align="right">
+						<nav aria-label="Page navigation">
+						  <ul class="pagination pagination-lg">
+						    <li ng-if="currentPage > 1">
+						      <a href ng-click="navigateTo( currentPage - 1 )" aria-label="Anterior">
+						        <span aria-hidden="true">&laquo;</span>
+						      </a>
+						    </li>
+						    <li ng-repeat="page in pages track by $index" ng-class="{'active': page == currentPage}">
+						    	<span ng-if="page == currentPage">{{page}}</span>
+						    	<a href ng-click="navigateTo( page )" ng-if="page != currentPage">{{page}}</a>
+						    </li>
+						    <li ng-if="currentPage < lastPage">
+						      <a href ng-click="navigateTo( currentPage + 1 )" aria-label="Siguiente">
+						        <span aria-hidden="true">&raquo;</span>
+						      </a>
+						    </li>
+						  </ul>
+						</nav>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
 </div>

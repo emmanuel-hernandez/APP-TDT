@@ -6,11 +6,11 @@ angular.module( APP_NAME ).factory( 'httpService', ['$http', function( $http ) {
 		get: function( url ) {
 			return $http.get( url );
 		},
-		post: function( url ) {
-			return $http.post( url );
+		post: function( url, data ) {
+			return $http.post( url, data );
 		},
-		put: function( url ) {
-			return $http.put( url );
+		put: function( url, data ) {
+			return $http.put( url, data );
 		},
 		delete: function( url ) {
 			return $http.delete( url );

@@ -19,6 +19,10 @@ const CONCESSIONAIRE_URL = REST_URL + '/concessionaire/';
 const CONCESSION_TYPE_URL= REST_URL + '/concessionType/';
 
 /* Global Config */
+const GMAP_API_KEY = 'AIzaSyCL6KrEpBzBrPSeXMEUMlxhcbdYS8mL_7k';
+const DEFAULT_LATITUDE = 19.3910038;
+const DEFAULT_LONGITUDE = -99.2837001;
+
 const GET_PARAMETER_NAME = 'queryHelper';
 const ORDER_ASCENDING = true;
 const ORDER_DESCENDING = true;
@@ -28,6 +32,11 @@ const SUCCESS_MESSAGE = 'success';
 const DEFAULT_SELECTED_VALUE = -1;
 const DEFAULT_DELETE_MESSAGE = '¿Estas seguro que deseas eliminar este registro?';
 const ACESLI_TOOLTIP = 'Altura del Centro Eléctrico Sobre el Lugar de Instalación';
+const LEFT_HAND_SIDE_PAGES = 3;
+const RIGHT_HAND_SIDE_PAGES = 3;
+const KEY_CODE = {
+	INTRO_KEY: 13
+};
 
 /* Utilities Constants */
 

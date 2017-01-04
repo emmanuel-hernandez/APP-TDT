@@ -14,7 +14,16 @@ angular.module( APP_NAME ).directive( 'alertInfo', function($timeout) {
         scope: {
         	message: "@",
             type: "@",
-            show: "@"
+            show: "="
+        },
+        link: function( scope, element, attrs ) {
+        	scope.$watch( 'show', function(newValue, oldValue, scope) {
+        		scope.show = newValue;
+        	});
+        	
+        	scope.close = function() {
+        		scope.show = false;
+        	};
         }
 	}
 });

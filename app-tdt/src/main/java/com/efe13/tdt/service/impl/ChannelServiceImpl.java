@@ -13,6 +13,9 @@ import com.efe13.mvc.model.api.impl.helper.QueryHelper;
 import com.efe13.tdt.enums.StatusResultService;
 import com.efe13.tdt.helper.ServiceResult;
 import com.efe13.tdt.model.dto.ChannelDTO;
+import com.efe13.tdt.model.dto.ConcessionTypeDTO;
+import com.efe13.tdt.model.dto.ConcessionaireDTO;
+import com.efe13.tdt.model.dto.PopulationDTO;
 import com.efe13.tdt.service.ChannelService;
 
 public class ChannelServiceImpl extends ChannelService {
@@ -57,12 +60,84 @@ public class ChannelServiceImpl extends ChannelService {
 		return serviceResult;
 	}
 
-	public ServiceResult<ChannelDTO> listAll( QueryHelper serviceRequest ) {
+	public ServiceResult<ChannelDTO> listAll( QueryHelper queryHelper ) {
 		try {
 			serviceResult = new ServiceResult<>();
 			
 			ArrayList<ChannelDTO> dtos = new ArrayList<>();
-			for( DTOAPI dto : super.getAll( serviceRequest ) ) {
+			for( DTOAPI dto : super.getAll( queryHelper ) ) {
+				dtos.add( (ChannelDTO) dto );
+			}
+			
+			serviceResult.setCollection( dtos );
+			if( !Utils.isNull( queryHelper ) ) {
+				serviceResult.setQueryHelper( getQueryHelper( getTableCount(), queryHelper ) );
+			}
+			statusResultService = StatusResultService.STATUS_SUCCESS;
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+			resultMessage = ex.getMessage();
+			statusResultService = StatusResultService.STATUS_FAILED;
+		}
+		
+		serviceResult.setMessage( resultMessage );
+		serviceResult.setStatusResult( statusResultService );
+		return serviceResult;
+	}
+	
+	public ServiceResult<ChannelDTO> getByPopulation( PopulationDTO populationDTO ) {
+		try {
+			serviceResult = new ServiceResult<>();
+			
+			ArrayList<ChannelDTO> dtos = new ArrayList<>();
+			for( DTOAPI dto : super.getByPopulation( populationDTO ) ) {
+				dtos.add( (ChannelDTO) dto );
+			}
+			
+			serviceResult.setCollection( dtos );
+			statusResultService = StatusResultService.STATUS_SUCCESS;
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+			resultMessage = ex.getMessage();
+			statusResultService = StatusResultService.STATUS_FAILED;
+		}
+		
+		serviceResult.setMessage( resultMessage );
+		serviceResult.setStatusResult( statusResultService );
+		return serviceResult;
+	}
+	
+	public ServiceResult<ChannelDTO> getByConcessionaire( ConcessionaireDTO concessionaireDTO ) {
+		try {
+			serviceResult = new ServiceResult<>();
+			
+			ArrayList<ChannelDTO> dtos = new ArrayList<>();
+			for( DTOAPI dto : super.getByConcessionaire( concessionaireDTO ) ) {
+				dtos.add( (ChannelDTO) dto );
+			}
+			
+			serviceResult.setCollection( dtos );
+			statusResultService = StatusResultService.STATUS_SUCCESS;
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+			resultMessage = ex.getMessage();
+			statusResultService = StatusResultService.STATUS_FAILED;
+		}
+		
+		serviceResult.setMessage( resultMessage );
+		serviceResult.setStatusResult( statusResultService );
+		return serviceResult;
+	}
+	
+	public ServiceResult<ChannelDTO> getByConcessionType( ConcessionTypeDTO concessionTypeDTO ) {
+		try {
+			serviceResult = new ServiceResult<>();
+			
+			ArrayList<ChannelDTO> dtos = new ArrayList<>();
+			for( DTOAPI dto : super.getByConcessionType( concessionTypeDTO ) ) {
 				dtos.add( (ChannelDTO) dto );
 			}
 			

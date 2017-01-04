@@ -53,13 +53,13 @@ public class ConcessionTypeServiceImpl extends ConcessionTypeService {
 		return serviceResult;
 	}
 
-	public ServiceResult<ConcessionTypeDTO> listAll( QueryHelper serviceRequest ) {
+	public ServiceResult<ConcessionTypeDTO> listAll( QueryHelper queryHelper ) {
 		try {
 			serviceResult = new ServiceResult<>();
 			resultMessage = null;
 			
 			ArrayList<ConcessionTypeDTO> dtos = new ArrayList<>();
-			for( DTOAPI dto : super.getAll( serviceRequest ) ) {
+			for( DTOAPI dto : super.getAll( queryHelper ) ) {
 				dtos.add( (ConcessionTypeDTO) dto );
 			}
 			
@@ -69,6 +69,9 @@ public class ConcessionTypeServiceImpl extends ConcessionTypeService {
 			dtos.add( 0, defaultConcessionType );
 			
 			serviceResult.setCollection( dtos );
+			if( !Utils.isNull( queryHelper ) ) {
+				serviceResult.setQueryHelper( getQueryHelper( getTableCount(), queryHelper ) );
+			}
 			statusResultService = StatusResultService.STATUS_SUCCESS;
 		}
 		catch( Exception ex ) {

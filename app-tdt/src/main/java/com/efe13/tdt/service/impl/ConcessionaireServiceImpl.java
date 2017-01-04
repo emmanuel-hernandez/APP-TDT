@@ -52,12 +52,12 @@ public class ConcessionaireServiceImpl extends ConcessionaireService {
 		return serviceResult;
 	}
 
-	public ServiceResult<ConcessionaireDTO> listAll( QueryHelper serviceRequest ) {
+	public ServiceResult<ConcessionaireDTO> listAll( QueryHelper queryHelper ) {
 		try {
 			serviceResult = new ServiceResult<>();
 			
 			ArrayList<ConcessionaireDTO> dtos = new ArrayList<>();
-			for( DTOAPI dto : super.getAll( serviceRequest ) ) {
+			for( DTOAPI dto : super.getAll( queryHelper ) ) {
 				dtos.add( (ConcessionaireDTO) dto );
 			}
 			
@@ -67,6 +67,9 @@ public class ConcessionaireServiceImpl extends ConcessionaireService {
 			dtos.add( 0, defaultConcessionaire );
 			
 			serviceResult.setCollection( dtos );
+			if( !Utils.isNull( queryHelper ) ) {
+				serviceResult.setQueryHelper( getQueryHelper( getTableCount(), queryHelper ) );
+			}
 			statusResultService = StatusResultService.STATUS_SUCCESS;
 		}
 		catch( Exception ex ) {

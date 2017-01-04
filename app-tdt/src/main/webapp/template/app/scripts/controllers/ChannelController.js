@@ -11,18 +11,13 @@ angular.module( APP_NAME ).controller( 'ChannelController', ['$scope', '$http', 
 		
 		var init = function() {
 			$scope.alert = AlertDTO.build( null, ERROR_MESSAGE, false );
-			$scope.queryHelper = QueryHelper.build( PaginationAPI.build( 1, 15, 0 ),
+			$scope.queryHelper = QueryHelper.build( PaginationAPI.build( 1, 15, 0, 0 ),
 													FilterAPI.build( null ),
 													OrderAPI.build( 'distinctive', ORDER_ASCENDING ) );			
-			$scope.columns = [
-  				'Distintivo',
-  				'Nombre',
-  				'Canal virtual',
-  				'Canal físico',
-  				'Calidad',
-  				'Resolución',
-  				'Banda'
-  			];
+			$scope.columns = {
+				name: [ 'Distintivo', 'Nombre', 'Canal virtual', 'Canal físico', 'Calidad', 'Resolución', 'Banda'],
+		  		id: [ 'distinctive', 'name', 'virtualChannel', 'physicChannel' ,'quality', 'resolution', 'channelBand.name' ]};
+			
 			$scope.qualities = [QualityDTO.build( CHANNEL_QUALITY.SD.ID, CHANNEL_QUALITY.SD.VALUE ),
 			                    QualityDTO.build( CHANNEL_QUALITY.HD.ID, CHANNEL_QUALITY.HD.VALUE )];
 			$scope.resolutions = [ResolutionDTO.build( CHANNEL_RESOLUTION.SD.ID, CHANNEL_RESOLUTION.SD.VALUE ),
@@ -42,6 +37,7 @@ angular.module( APP_NAME ).controller( 'ChannelController', ['$scope', '$http', 
 
 		var reset = function() {
 			isUpdate = false;
+			$scope.alert.show = false;
 			
 			$scope.channel = ChannelDTO.build();
 			$scope.channel.id = 0;
@@ -112,9 +108,17 @@ angular.module( APP_NAME ).controller( 'ChannelController', ['$scope', '$http', 
 			});
 		};
 
-		$scope.get = function() {
-			httpService.get( CHANNEL_URL +'?'+ GET_PARAMETER_NAME +'='+ JSON.stringify($scope.queryHelper) ).success( function(data) {
+		$scope.get = function(page, order, filter) {
+			$scope.queryHelper.paginationAPI.currentPage = ( page == null || page == undefined ) ? 1 : page;
+			$scope.queryHelper.orderAPI.field = (order == null || order == undefined ) ? null : $scope.columns.id[order.field];
+			$scope.queryHelper.orderAPI.ascending = (order == null || order == undefined ) ? false : order.ascending;
+			$scope.queryHelper.filterAPI.filter = ( filter == null || filter == undefined ) ? {name:null} : {distinctive:filter, name:filter};
+			
+			var urlRequest = CHANNEL_URL +'?'+ GET_PARAMETER_NAME +'='+ JSON.stringify( $scope.queryHelper );
+			
+			httpService.get( urlRequest ).success( function(data) {
 				if( data.statusResult.value ) {
+					$scope.queryHelper = data.queryHelper;
 					$scope.channels = new Array();
 
 					for(var i=0; i<data.collection.length; i++ ) {
@@ -168,6 +172,7 @@ angular.module( APP_NAME ).controller( 'ChannelController', ['$scope', '$http', 
 			}
 			
 			if( !isUpdate ) {
+				console.log( JSON.stringify($scope.channel)  );
 				httpService.post( CHANNEL_URL, JSON.stringify($scope.channel) ).success( function(data) {
 					$scope.alert.type = ( data.statusResult.value ) ? SUCCESS_MESSAGE : ERROR_MESSAGE;
 					$scope.alert.message = data.message;
@@ -265,7 +270,7 @@ angular.module( APP_NAME ).controller( 'ChannelController', ['$scope', '$http', 
 		$scope.cancel = function() {
 			reset();
 		}
-
+		
 		/* Initialization */
 		init();
 		reset();

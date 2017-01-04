@@ -13,6 +13,7 @@ import com.efe13.mvc.model.api.impl.helper.QueryHelper;
 import com.efe13.tdt.enums.StatusResultService;
 import com.efe13.tdt.helper.ServiceResult;
 import com.efe13.tdt.model.dto.PopulationDTO;
+import com.efe13.tdt.model.dto.StateDTO;
 import com.efe13.tdt.service.PopulationService;
 
 public class PopulationServiceImpl extends PopulationService {
@@ -68,9 +69,37 @@ public class PopulationServiceImpl extends PopulationService {
 			
 			serviceResult.setCollection( dtos );
 			if( !Utils.isNull( queryHelper ) ) {
-				serviceResult.setQueryHelper( getQueryHelper( queryHelper ) );
+				serviceResult.setQueryHelper( getQueryHelper( getTableCount(), queryHelper ) );
 			}
 			
+			statusResultService = StatusResultService.STATUS_SUCCESS;
+		}
+		catch( Exception ex ) {
+			log.error( ex.getMessage(), ex );
+			resultMessage = ex.getMessage();
+			statusResultService = StatusResultService.STATUS_FAILED;
+		}
+		
+		serviceResult.setMessage( resultMessage );
+		serviceResult.setStatusResult( statusResultService );
+		return serviceResult;
+	}
+	
+	public ServiceResult<PopulationDTO> getByState( StateDTO stateDTO ) {
+		try {
+			serviceResult = new ServiceResult<>();
+
+			ArrayList<PopulationDTO> dtos = new ArrayList<>();
+			for( DTOAPI dto : super.getByState( stateDTO ) ) {
+				dtos.add( (PopulationDTO) dto );
+			}
+			
+			PopulationDTO defaultPopulation = new PopulationDTO();
+			defaultPopulation.setId( -1 );
+			defaultPopulation.setName( "Seleccionar..." );
+			dtos.add( 0, defaultPopulation );
+			
+			serviceResult.setCollection( dtos );
 			statusResultService = StatusResultService.STATUS_SUCCESS;
 		}
 		catch( Exception ex ) {
@@ -197,21 +226,5 @@ public class PopulationServiceImpl extends PopulationService {
 		populationDTO.setName( Utils.toUpperCase( populationDTO.getName() ) );
 		
 		return populationDTO;
-	}
-	
-	public QueryHelper getQueryHelper( QueryHelper queryHelper ) {
-		long total = getCount();
-		long pageNumber = Math.floorDiv( total, queryHelper.getPaginationAPI().getPageSize() ); //20.6
-
-		/*
-		 * Total= 301
-		 * pSize: 15
-		 * pActual: 2
-		 * 
-		 */
-		queryHelper.getPaginationAPI().setTotal( (int)total );
-		queryHelper.getPaginationAPI().setTotalPage( (int)pageNumber );
-		
-		return queryHelper;
 	}
 }
